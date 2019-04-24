@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/23 17:17:22 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 14:31:06 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,35 +65,30 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
-void	draw_sphere(t_ray ray, t_sphere sphere, t_mlx mlx, t_tools tools)
+void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 {
 	t_vector	inter_p;
-	t_vector	light_ray;
 	t_vector	normal;
-	t_sphere	light_src;
 	double		t;
+	double		ambient;
 
 	t = tools.s1 < tools.s2 ? tools.s1 : tools.s2;
 
-	light_src.center.x = WIDTH / 2;// creation d'une lumiere
-	light_src.center.y = HEIGHT / 3;
-	light_src.center.z = 0;
-	light_src.radius = 1;
+	inter_p.x = base.ray.origin.x + base.ray.direction.x * t;// intersection point
+	inter_p.y = base.ray.origin.y + base.ray.direction.y * t;
+	inter_p.z = base.ray.origin.z + base.ray.direction.z * t;
 
-	inter_p.x = ray.origin.x + ray.direction.x * t;// intersection point
-	inter_p.y = ray.origin.y + ray.direction.y * t;
-	inter_p.z = ray.origin.z + ray.direction.z * t;
-
-	light_ray.x = inter_p.x - light_src.center.x;	// area of the light spot
-	light_ray.y = inter_p.y - light_src.center.y;
-	light_ray.z = inter_p.z - light_src.center.z;
+	base.light.ray.x = inter_p.x - base.light.src.x;// area of the light spot
+	base.light.ray.y = inter_p.y - base.light.src.y;
+	base.light.ray.z = inter_p.z - base.light.src.z;
 
 	normal = getnormal_sphere(sphere, inter_p);// calcul normal
+	ambient = -dot(base.ray.direction, normal) * 0.2;
 
 	//********* normals ************
 	t_vector nm = normalize(normal);
-	t_vector lr = normalize(light_ray);
-	t_vector eye = normalize(ray.direction);
+	t_vector lr = normalize(base.light.ray);
+	t_vector eye = normalize(base.ray.direction);
 	t_vector half;
 	half.x = lr.x + eye.x;
 	half.y = lr.y + eye.y;
@@ -103,32 +98,23 @@ void	draw_sphere(t_ray ray, t_sphere sphere, t_mlx mlx, t_tools tools)
 	//********* diffuse ************
 	double	di = dot(nm, lr);
 	di = di < 0 ? 0 : di;
-	//di = di > 1 ? 1 : di;
 	di = di / (di + 1);
 	t_color	diff_color;
-	diff_color.r = 0x00 * di;
-	diff_color.g = 0xFF * di;
-	diff_color.b = 0x00 * di;
+	diff_color.r = sphere.color.r * di;
+	diff_color.g = sphere.color.g * di;
+	diff_color.b = sphere.color.b * di;
 
 	//********* specular ************
-	double	p = 100;//	shininess
+	double	p = 200;//	shininess
 	double dot_p = dot(nm, half);
 	dot_p = dot_p < 0 ? 0 : dot_p;
 	double si = power(dot_p, p);
-	//si = si > 1 ? 1 : si;
+	si = si < 0 ? 0 : si;
 	si = si / (si + 1);
 	t_color	spec_color;
-	spec_color.r = 0xFF * si;
-	spec_color.g = 0xFF * si;
-	spec_color.b = 0xFF * si;
-
-	//********* ambient ************
-	t_color	amb_color;
-	double	ambient = dot(lr, nm) * 0.8;
-	ambient = ambient < 0 ? 0 : ambient;
-	amb_color.r = 0x00 * ambient;
-	amb_color.g = 0xFF * ambient;
-	amb_color.b = 0x00 * ambient;
+	spec_color.r = sphere.color.r * si;
+	spec_color.g = sphere.color.g * si;
+	spec_color.b = sphere.color.b * si;
 
 	//********* final ************
 	t_color	final_color;
@@ -137,7 +123,7 @@ void	draw_sphere(t_ray ray, t_sphere sphere, t_mlx mlx, t_tools tools)
 	final_color.b = diff_color.b + spec_color.b;
 
 	//********* color ************
-	mlx.str[(tools.y * WIDTH + tools.x) * 4] = final_color.b;// Color the pixel
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = final_color.g;
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = final_color.r;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4] = final_color.b/*amb_color.b*/;// Color the pixel
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = final_color.g/*amb_color.g*/;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = final_color.r/*amb_color.r*/;
 }

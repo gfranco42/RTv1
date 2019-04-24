@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/23 12:34:00 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 14:13:50 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ typedef struct	s_vector
 	double		z;
 }				t_vector;
 
+typedef struct	s_light
+{
+	t_vector	src;
+	t_vector	ray;
+	t_color		color;
+}				t_light;
+
 typedef struct	s_ray
 {
 	t_vector	origin;
@@ -48,12 +55,14 @@ typedef struct	s_ray
 typedef struct s_sphere
 {
 	t_vector	center;
+	t_color		color;
 	double		radius;
 }				t_sphere;
 
 typedef struct s_plane
 {
 	t_vector	normal;
+	t_color		color;
 	t_vector	point;
 }				t_plane;
 
@@ -66,6 +75,12 @@ typedef struct	s_tools
 	double	s1;
 	double	s2;
 }				t_tools;
+
+typedef struct	s_base
+{
+	t_light		light;
+	t_ray		ray;
+}				t_base;
 
 
 typedef struct	s_mlx
@@ -92,8 +107,8 @@ typedef struct	s_all
 
 
 double		dot(t_vector a, t_vector b);
-void		draw_plane(t_ray ray, t_plane plane, t_mlx mlx, t_tools tools);
-void		draw_sphere(t_ray ray, t_sphere sphere, t_mlx mlx, t_tools tools);
+void		draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools);
+void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
 int			key(int key, void *param);
 t_vector	normalize(t_vector v);
 int			plane_intersect(t_plane plane, t_ray ray, double t);

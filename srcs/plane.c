@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/22 16:24:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 14:16:40 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,32 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	return (t);
 }
 
-void	draw_plane(t_ray ray, t_plane plane, t_mlx mlx, t_tools tools)
+void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)
 {
-	(void)ray;
 	t_vector	inter_p;
-	t_vector	light_ray;
-	t_sphere	light_src;
-	double		dt;
 
-	light_src.center.x = WIDTH / 2;// creation d'une lumiere
-	light_src.center.y = 0;
-	light_src.center.z = 0;
-	light_src.radius = 1;
+	inter_p.x = base.ray.origin.x + base.ray.direction.x * tools.p;// intersection point
+	inter_p.y = base.ray.origin.y + base.ray.direction.y * tools.p;
+	inter_p.z = base.ray.origin.z + base.ray.direction.z * tools.p;
 
-	inter_p.x = ray.origin.x + ray.direction.x * tools.p;// intersection point
-	inter_p.y = ray.origin.y + ray.direction.y * tools.p;
-	inter_p.z = ray.origin.z + ray.direction.z * tools.p;
+	base.light.ray.x = inter_p.x - base.light.src.x;	// area of the light spot
+	base.light.ray.y = inter_p.y - base.light.src.y;	// area of the light spot
+	base.light.ray.z = inter_p.z - base.light.src.z;	// area of the light spot
 
-	light_ray.x = inter_p.x - light_src.center.x;	// area of the light spot
-	light_ray.y = inter_p.y - light_src.center.y;	// area of the light spot
-	light_ray.z = inter_p.z - light_src.center.z;	// area of the light spot
+	double	ambient = 0.2;
 
-	double	ambient = 0.652;
+	//*********** diffuse ***********
+	t_vector lr = normalize(base.light.ray);
+	t_vector nm = normalize(plane.normal);
+	double	diffuse = dot(lr, nm);// calcul dot
+	diffuse = diffuse < ambient ? ambient : diffuse;
+	diffuse = diffuse / (diffuse + 1);
+	t_color	plane_color;
+	plane_color.r = plane.color.r * diffuse * 2;
+	plane_color.g = plane.color.g * diffuse * 2;
+	plane_color.b = plane.color.b * diffuse * 2;
 
-	double	diffuse = dot(normalize(light_ray), normalize(plane.normal));// calcul dot
-	diffuse = diffuse < 0 ? 0 : diffuse;
-
-	dt = ambient + diffuse;
-
-	mlx.str[(tools.y * WIDTH + tools.x) * 4] = 0xFF * dt/* / tools.p*/;// Color the pixel
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = 0x00 * dt/* / tools.p*/;
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = 0xFF * dt/* / tools.p*/;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4] = plane_color.b/* / tools.p*/;// Color the pixel
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = plane_color.g/* / tools.p*/;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = plane_color.r/* / tools.p*/;
 }
