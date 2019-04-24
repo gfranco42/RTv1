@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/24 14:27:47 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 15:53:19 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,13 @@ int		main()
 	plane.color.b = 0xFF;
 
 //	************** LIGHT *******************
-	base.light.src.x = WIDTH * 0.6;
+	base.light.src.x = WIDTH * 0.5;
 	base.light.src.y = HEIGHT * 0.8;
 	base.light.src.z = 0;
+
+	base.light.color.r = 0xFF;
+	base.light.color.g = 0xFF;
+	base.light.color.b = 0xFF;
 
 //	************** RAY *******************
 	base.ray.direction.x = 0;//la direction se place au tools 0/0 et look straight

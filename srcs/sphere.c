@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/24 14:31:17 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 17:14:10 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 	base.light.ray.z = inter_p.z - base.light.src.z;
 
 	normal = getnormal_sphere(sphere, inter_p);// calcul normal
-	ambient = -dot(base.ray.direction, normal) * 0.2;
 
 	//********* normals ************
 	t_vector nm = normalize(normal);
@@ -95,35 +94,52 @@ void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 	half.z = lr.z + eye.z;
 	half = normalize(half);
 
+
+	ambient = dot(eye, nm) * 0.3;
+
+
 	//********* diffuse ************
-	double	di = dot(nm, lr);
-	di = di < ambient ? ambient : di;
-	di = di / (di + 1);
+	double	di = dot(nm, lr) * 2;
+	di = di < 0 ? 0 : di;
+	di *= di;
+
 	t_color	diff_color;
 	diff_color.r = sphere.color.r * di;
 	diff_color.g = sphere.color.g * di;
 	diff_color.b = sphere.color.b * di;
 
 	//********* specular ************
-	double	p = 200;//	shininess
-	double dot_p = dot(nm, half);
+	double	p = 100;//	shininess
+	double dot_p = dot(nm, half) * 1.008;
 	dot_p = dot_p < 0 ? 0 : dot_p;
 	double si = power(dot_p, p);
 	si = si < 0 ? 0 : si;
-	si = si / (si + 1);
+
 	t_color	spec_color;
-	spec_color.r = sphere.color.r * si;
-	spec_color.g = sphere.color.g * si;
-	spec_color.b = sphere.color.b * si;
+	spec_color.r = base.light.color.r * si;
+	spec_color.g = base.light.color.g * si;
+	spec_color.b = base.light.color.b * si;
+
+	t_color effects;
+	effects.r = diff_color.r + spec_color.r + ambient * sphere.color.r;
+	effects.g = diff_color.g + spec_color.g + ambient * sphere.color.g;
+	effects.b = diff_color.b + spec_color.b + ambient * sphere.color.b;
+	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
+	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
+	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
+
+	double	eff = si + di + ambient;
+	eff = eff / (eff + 1);
 
 	//********* final ************
 	t_color	final_color;
-	final_color.r = diff_color.r + spec_color.r;
-	final_color.g = diff_color.g + spec_color.g;
-	final_color.b = diff_color.b + spec_color.b;
+	final_color.r = sphere.color.r * eff;
+	final_color.g = sphere.color.g * eff;
+	final_color.b = sphere.color.b * eff;
+
 
 	//********* color ************
-	mlx.str[(tools.y * WIDTH + tools.x) * 4] = final_color.b/*amb_color.b*/;// Color the pixel
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = final_color.g/*amb_color.g*/;
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = final_color.r/*amb_color.r*/;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b/*final_color.b*/;// Color the pixel
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = effects.g/*final_color.g*/;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = effects.r/*final_color.r*/;
 }

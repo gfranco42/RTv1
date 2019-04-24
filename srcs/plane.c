@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/24 14:16:40 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 17:12:05 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)
 	inter_p.z = base.ray.origin.z + base.ray.direction.z * tools.p;
 
 	base.light.ray.x = inter_p.x - base.light.src.x;	// area of the light spot
-	base.light.ray.y = inter_p.y - base.light.src.y;	// area of the light spot
-	base.light.ray.z = inter_p.z - base.light.src.z;	// area of the light spot
+	base.light.ray.y = inter_p.y - base.light.src.y;
+	base.light.ray.z = inter_p.z - base.light.src.z;
 
 	double	ambient = 0.2;
 
@@ -52,7 +52,14 @@ void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)
 	plane_color.g = plane.color.g * diffuse * 2;
 	plane_color.b = plane.color.b * diffuse * 2;
 
-	mlx.str[(tools.y * WIDTH + tools.x) * 4] = plane_color.b/* / tools.p*/;// Color the pixel
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = plane_color.g/* / tools.p*/;
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = plane_color.r/* / tools.p*/;
+	/*if (get_shadow(plane, base) == 0)
+	{
+		plane_color.r = 0;
+		plane_color.g = 0;
+		plane_color.b = 0;
+	}*/
+
+	mlx.str[(tools.y * WIDTH + tools.x) * 4] = plane_color.b;// Color the pixel
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = plane_color.g;
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = plane_color.r;
 }
