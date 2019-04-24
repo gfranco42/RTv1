@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/24 14:31:06 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/04/24 14:31:17 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 
 	//********* diffuse ************
 	double	di = dot(nm, lr);
-	di = di < 0 ? 0 : di;
+	di = di < ambient ? ambient : di;
 	di = di / (di + 1);
 	t_color	diff_color;
 	diff_color.r = sphere.color.r * di;
