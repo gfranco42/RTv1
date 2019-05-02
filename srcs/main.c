@@ -6,11 +6,26 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/04/24 15:53:19 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/02 17:20:04 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+//***************** METTRE LA COULEUR ****************************************
+
+t_vector	reflect(t_vector nm, t_vector lr)
+{
+	t_vector	res;
+	/*lr.x *= -1;
+	lr.y *= -1;
+	lr.z *= -1;*/
+
+	res.x = 2.0 * dot(nm, lr) * nm.x - lr.x;
+	res.y = 2.0 * dot(nm, lr) * nm.y - lr.y;
+	res.z = 2.0 * dot(nm, lr) * nm.z - lr.z;
+	return (res);
+}
 
 //***************** METTRE LA COULEUR ****************************************
 
@@ -67,10 +82,8 @@ int		main()
 // ---------------  declaration de variables   -------------------------------
 	t_mlx		mlx;
 	t_base		base;
-	t_sphere	sphere;
-	t_sphere	sphere2;
-	t_plane		plane;
 	t_tools		tools;
+	t_object	object;
 
 // ---------------  creation de la fenetre  ----------------------------------
 	win_create(&mlx);
@@ -78,47 +91,62 @@ int		main()
 // ---------------  initialisation des variables -----------------------------
 
 //	************** FIRST SPHERE *******************
-	sphere.center.x = WIDTH / 2;// creation d'un objet 'sphere'
-	sphere.center.y = HEIGHT / 2;
-	sphere.center.z = 200;
+	object.sphere.center.x = WIDTH * 0.3;// creation d'un objet 'sphere'
+	object.sphere.center.y = HEIGHT * 0.45;
+	object.sphere.center.z = 1200;
 
-	sphere.radius = 190;
+	object.sphere.radius = 100;
 
-	sphere.color.r = 0;
-	sphere.color.g = 0xFF;
-	sphere.color.b = 0;
+	object.sphere.color.r = 0;// 			COULEUR
+	object.sphere.color.g = 0xFF;
+	object.sphere.color.b = 0;
 
 //	************** SECOND SPHERE *******************
-	sphere2.center.x = WIDTH * 0.8;// creation d'un objet 'sphere'
-	sphere2.center.y = HEIGHT * 0.8;
-	sphere2.center.z = 700;
+	object.sphere2.center.x = WIDTH * 0.8;// creation d'un objet 'sphere'
+	object.sphere2.center.y = HEIGHT * 0.7;
+	object.sphere2.center.z = 300;
 
-	sphere2.radius = 690;
+	object.sphere2.radius = 200;
 
-	sphere2.color.r = 0;
-	sphere2.color.g = 200;
-	sphere2.color.b = 0xFF;
+	object.sphere2.color.r = 0;// 			COULEUR
+	object.sphere2.color.g = 0x50;
+	object.sphere2.color.b = 0xFF;
 
 //	************** PLANE *******************
-	plane.point.x = WIDTH / 2;
-	plane.point.y = HEIGHT * 0.9;
-	plane.point.z = 200;
+	object.plane.point.x = WIDTH / 2;//		POINT SUR LA PLAN
+	object.plane.point.y = HEIGHT * 0.9;
+	object.plane.point.z = 200;
 
-	plane.normal.x = 0;
-	plane.normal.y = HEIGHT / 3;
-	plane.normal.z = 100;
-	plane.normal = normalize(plane.normal);
+	object.plane.normal.x = 0;//			NORMALE DU PLAN
+	object.plane.normal.y = HEIGHT * 0.20;
+	object.plane.normal.z = 100;
+	object.plane.normal = normalize(object.plane.normal);
 
-	plane.color.r = 0xFF;
-	plane.color.g = 0;
-	plane.color.b = 0xFF;
+	object.plane.color.r = 0xB3;// 			COULEUR
+	object.plane.color.g = 0xFF;
+	object.plane.color.b = 0xFB;
+
+//	************** CONE *******************
+	object.cone.tip.x = WIDTH / 2;//		POSITION POINTE
+	object.cone.tip.y = HEIGHT / 2;
+	object.cone.tip.z = 200;
+
+	object.cone.direction.x = 0;//			DIRECTION
+	object.cone.direction.y = 1;
+	object.cone.direction.z = 0.15;
+
+	object.cone.angle = 500;
+
+	object.cone.color.r = 200;// 			COULEUR
+	object.cone.color.g = 0x50;
+	object.cone.color.b = 0;
 
 //	************** LIGHT *******************
-	base.light.src.x = WIDTH * 0.5;
-	base.light.src.y = HEIGHT * 0.8;
-	base.light.src.z = 0;
+	base.light.src.x = WIDTH / 2;//			POSITION SOURCE
+	base.light.src.y = HEIGHT / 2;
+	base.light.src.z = -500;
 
-	base.light.color.r = 0xFF;
+	base.light.color.r = 0xFF;// 			COULEUR
 	base.light.color.g = 0xFF;
 	base.light.color.b = 0xFF;
 
@@ -132,33 +160,55 @@ int		main()
 	tools.y = -1;// y = -1 car incrementation && t= 20000 pour donner un max
 // ---------------  debut ----------------------------------------------------
 	// balancer un rayon par pixel
+
 	while (++tools.y < HEIGHT)
 	{
 		tools.x = -1;
 		while (++tools.x < WIDTH)
 		{
-			tools.p = 1000;
-			tools.s1 = 20000;
-			tools.s2 = 20000;
+			tools.p = 2000;
+			tools.s1 = 200000;
+			tools.s2 = 200000;
+			tools.c = 200000;
+			tools.cy = 200000;
 			base.ray.origin.x = tools.x;// origin prend le tools en cours (x/y)
 			base.ray.origin.y = tools.y;
-			tools.p = plane_intersect(plane, base.ray, tools.p);//check si intersection avec le plan
-			tools.s1 = sphere_intersect(sphere, base.ray, tools.s1);// check si ya un obstacle
-			tools.s2 = sphere_intersect(sphere2, base.ray, tools.s2);// check si ya un obstacle
-			if (tools.p <= 1000 && tools.s1 == 1000 && tools.s2 == 1000 && tools.p)
-				draw_plane(base, plane, mlx, tools);
-			else if (tools.s1 < 20000 && tools.p == 20000 && tools.s2 == 20000)
-				draw_sphere(base, sphere, mlx, tools);
-			else if (tools.s2 < 20000 && tools.s1 == 20000 && tools.p == 20000)
-				draw_sphere(base, sphere2, mlx, tools);
+			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
+			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
+			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
+			tools.c = cone_intersect(object.cone, base.ray, tools.c);
+			if (tools.p < 2000 && tools.s1 == 200000 && tools.s2 == 200000
+				&& tools.c == 200000 && tools.cy == 200000)
+				draw_plane(base, object, mlx, tools);
+			else if (tools.s1 < 200000 && tools.p == 2000 && tools.s2 == 200000
+				&& tools.c == 200000 && tools.cy == 200000)
+				draw_sphere(base, object, mlx, tools);
+			else if (tools.s2 < 200000 && tools.s1 == 200000 && tools.p == 2000
+				&& tools.c == 200000 && tools.cy == 200000)
+				draw_sphere(base, object, mlx, tools);
+			else if (tools.c < 200000 && tools.s1 == 200000 && tools.p == 2000
+				&& tools.s2 == 200000 && tools.cy == 200000)
+				draw_cone(base, object, mlx, tools);
+			/*else if (tools.cy < 200000 && tools.s1 == 200000 && tools.p == 2000
+				&& tools.s2 == 200000 && tools.c == 200000)
+				draw_sphere(base, object, mlx, tools);*/
 			else
 			{
-				if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 1000)
-					draw_plane(base, plane, mlx, tools);
-				if (tools.s1 < tools.p && tools.s1 < tools.s2)
-					draw_sphere(base, sphere, mlx, tools);
-				if (tools.s2 < tools.s1 && tools.s2 < tools.p)
-					draw_sphere(base, sphere2, mlx, tools);
+				if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 2000
+					&& tools.p < tools.c && tools.p < tools.cy)
+					draw_plane(base, object, mlx, tools);
+				if (tools.s1 < tools.p && tools.s1 < tools.s2
+					&& tools.s1 < tools.c && tools.s1 < tools.cy)
+					draw_sphere(base, object, mlx, tools);
+				if (tools.s2 < tools.s1 && tools.s2 < tools.p
+					&& tools.s2 < tools.c && tools.s2 < tools.cy)
+					draw_sphere(base, object, mlx, tools);
+				if (tools.c < tools.s1 && tools.c < tools.p
+					&& tools.c < tools.s2 && tools.c < tools.cy)
+					draw_cone(base, object, mlx, tools);
+			/*	if (tools.cy < tools.s1 && tools.cy < tools.p
+					&& tools.cy < tools.c && tools.cy < tools.s2)
+					draw_sphere(base, object, mlx, tools);*/
 			}
 		}
 	}
