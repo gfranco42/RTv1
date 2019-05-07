@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/02 17:03:53 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/06 11:35:25 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	origin_center.z = ray.origin.z - plane.point.z;
 
 // ---------------  debut ----------------------------------------------------
-	if ((d1 = dot(ray.direction, plane.normal)) == 0)
+	if ((d1 = dot(ray.dir, plane.normal)) == 0)
 		return (t);
 	d2 = -dot(origin_center, plane.normal);
 	t = d2 / d1;
@@ -49,9 +49,9 @@ void	draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	t_vector	inter_p;
 
 	//************* calcul point intersection ***************
-	inter_p.x = base.ray.origin.x + base.ray.direction.x * tools.p;// intersection point
-	inter_p.y = base.ray.origin.y + base.ray.direction.y * tools.p;
-	inter_p.z = base.ray.origin.z + base.ray.direction.z * tools.p;
+	inter_p.x = base.ray.origin.x + base.ray.dir.x * tools.p;// intersection point
+	inter_p.y = base.ray.origin.y + base.ray.dir.y * tools.p;
+	inter_p.z = base.ray.origin.z + base.ray.dir.z * tools.p;
 
 	//************* calcul ray light ***************
 	base.light.ray.x = inter_p.x - base.light.src.x;	// area of the light spot
@@ -61,7 +61,7 @@ void	draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	//************* normalisation ***************
 	t_vector nm = normalize(object.plane.normal);
 	t_vector lr = normalize(base.light.ray);
-//	t_vector eye = normalize(base.ray.direction);
+//	t_vector eye = normalize(base.ray.dir);
 
 	//double	ambient = -dot(eye, nm) * 0.5;
 

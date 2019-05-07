@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/02 16:42:29 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/07 12:57:57 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct	s_light
 typedef struct	s_ray
 {
 	t_vector	origin;
-	t_vector	direction;
+	t_vector	dir;
 }				t_ray;
 
 typedef struct s_sphere
@@ -62,9 +62,11 @@ typedef struct s_sphere
 typedef struct	s_cone
 {
 	t_vector	tip;
-	t_vector	direction;
+	t_vector	dir;
 	t_color		color;
-	int			angle;
+	t_vector	b_center;
+	double		b_radius;
+	double		angle;
 }				t_cone;
 
 typedef struct s_plane
@@ -74,12 +76,21 @@ typedef struct s_plane
 	t_vector	point;
 }				t_plane;
 
+typedef struct	s_cylinder
+{
+	t_vector	center;
+	t_vector	dir;
+	t_color		color;
+	double		radius;
+}				t_cylinder;
+
 typedef struct	s_object
 {
 	t_sphere	sphere;
 	t_sphere	sphere2;
 	t_plane		plane;
 	t_cone		cone;
+	t_cylinder	cyl;
 }				t_object;
 
 typedef struct	s_tools
@@ -122,20 +133,33 @@ typedef struct	s_all
 	t_ray		ray;
 }				t_all;
 
+void		jojo(char *file);
 
 
+int			check_vec3(char *line);
+void		cone_ch(int fd);
 int			cone_intersect(t_cone cone, t_ray ray, double t);
+void		cylinder_ch(int fd);
+int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t);
 double		dot(t_vector a, t_vector b);
 void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools);
+void		draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools);
+void		fail(int i);
 int			key(int key, void *param);
+void		light_ch(int fd);
+double		norm(t_vector v);
 t_vector	normalize(t_vector v);
+void		plane_ch(int fd);
 int			plane_intersect(t_plane plane, t_ray ray, double t);
 double		power(double i, int power_value);
 void		put_color(int x, int y, unsigned int *str, double dt);
 t_vector	reflect(t_vector n, t_vector i);
+void		sphere_ch(int fd);
 int			sphere_intersect(t_sphere sphere, t_ray ray, double t);
 int			sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p);
+int			str_isdigit(char *str);
+int			str_isdouble(char *str);
 
 #endif

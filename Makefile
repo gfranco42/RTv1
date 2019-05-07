@@ -6,7 +6,7 @@
 #    By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/10 12:13:05 by gfranco           #+#    #+#              #
-#    Updated: 2019/05/02 16:37:21 by gfranco          ###   ########.fr        #
+#    Updated: 2019/05/07 12:57:32 by gfranco          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,9 @@ INCDIR =	./includes
 
 OBJDIR =	./objs
 
-SRC =		cone.c event.c main.c plane.c sphere.c
+SRC =		cone.c cone_check.c cylinder.c cylinder_check.c event.c \
+			light_check.c main.c objects_check.c parsing.c plane.c  \
+			plane_check.c sphere.c sphere_check.c
 
 INC =		rtv1.h
 

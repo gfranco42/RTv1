@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/02 17:20:04 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/06 19:41:49 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,22 @@ void	win_create(t_mlx *mlx)
 
 //***************** normaliser un vecteur  ***********************************
 
+double	norm(t_vector v)
+{
+	double	res;
+
+	v.x = v.x * v.x;
+	v.y = v.y * v.y;
+	v.z = v.z * v.z;
+
+	res = v.x + v.y + v.z;
+	res = sqrt(res);
+
+	return (res);
+}
+
+//***************** normaliser un vecteur  ***********************************
+
 t_vector	normalize(t_vector v)
 {
 	double	mg;
@@ -75,16 +91,37 @@ t_vector	normalize(t_vector v)
 	return (v);
 }
 
+void		fail(int i)
+{
+	if (i == 1)
+	{
+		write(1, "incorrect file\n", 15);
+		exit(0);
+	}
+	else if (i == 2)
+	{
+		write(1, "usage: ./rtv1 <file>\n", 21);
+		exit(0);
+	}
+	else if (i == 2)
+	{
+		write(1, "usage: ./rtv1 <file>\n", 21);
+		exit(0);
+	}
+}
+
 //***************** MAIN *****************************************************
 
-int		main()
+int		main(int ac, char **av)
 {
+	if (ac != 2)
+		fail(2);
 // ---------------  declaration de variables   -------------------------------
 	t_mlx		mlx;
 	t_base		base;
 	t_tools		tools;
 	t_object	object;
-
+	jojo(av[1]);
 // ---------------  creation de la fenetre  ----------------------------------
 	win_create(&mlx);
 
@@ -104,9 +141,9 @@ int		main()
 //	************** SECOND SPHERE *******************
 	object.sphere2.center.x = WIDTH * 0.8;// creation d'un objet 'sphere'
 	object.sphere2.center.y = HEIGHT * 0.7;
-	object.sphere2.center.z = 300;
+	object.sphere2.center.z = 100;
 
-	object.sphere2.radius = 200;
+	object.sphere2.radius = 100;
 
 	object.sphere2.color.r = 0;// 			COULEUR
 	object.sphere2.color.g = 0x50;
@@ -127,33 +164,48 @@ int		main()
 	object.plane.color.b = 0xFB;
 
 //	************** CONE *******************
-	object.cone.tip.x = WIDTH / 2;//		POSITION POINTE
-	object.cone.tip.y = HEIGHT / 2;
-	object.cone.tip.z = 200;
+	object.cone.tip.x = WIDTH / 2;//			POSITION POINTE
+	object.cone.tip.y = 200;
+	object.cone.tip.z = 500;
 
-	object.cone.direction.x = 0;//			DIRECTION
-	object.cone.direction.y = 1;
-	object.cone.direction.z = 0.15;
+	object.cone.b_center.x = WIDTH / 2;//		CENTRE BASE
+	object.cone.b_center.y = HEIGHT - 200;
+	object.cone.b_center.z = 500;
 
-	object.cone.angle = 500;
+	object.cone.b_radius = 0.14;
 
-	object.cone.color.r = 200;// 			COULEUR
-	object.cone.color.g = 0x50;
+	object.cone.color.r = 0xFF;// 			COULEUR
+	object.cone.color.g = 0x20;
 	object.cone.color.b = 0;
+
+//	************** cyl *******************
+	object.cyl.center.x = 100;
+	object.cyl.center.y = HEIGHT;
+	object.cyl.center.z = 400;
+
+	object.cyl.dir.x = 0;//			DIRECTION
+	object.cyl.dir.y = 1;
+	object.cyl.dir.z = 0;
+
+	object.cyl.radius = 50;
+
+	object.cyl.color.r = 0;
+	object.cyl.color.g = 0x50;
+	object.cyl.color.b = 0x50;
 
 //	************** LIGHT *******************
 	base.light.src.x = WIDTH / 2;//			POSITION SOURCE
-	base.light.src.y = HEIGHT / 2;
-	base.light.src.z = -500;
+	base.light.src.y = 0;
+	base.light.src.z = -1000;
 
 	base.light.color.r = 0xFF;// 			COULEUR
 	base.light.color.g = 0xFF;
 	base.light.color.b = 0xFF;
 
 //	************** RAY *******************
-	base.ray.direction.x = 0;//la direction se place au tools 0/0 et look straight
-	base.ray.direction.y = 0;
-	base.ray.direction.z = 1;
+	base.ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
+	base.ray.dir.y = 0;
+	base.ray.dir.z = 1;
 
 	base.ray.origin.z = 0;
 
@@ -177,6 +229,7 @@ int		main()
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
 			tools.c = cone_intersect(object.cone, base.ray, tools.c);
+			tools.cy = cylinder_intersect(object.cyl, base.ray, tools.cy);
 			if (tools.p < 2000 && tools.s1 == 200000 && tools.s2 == 200000
 				&& tools.c == 200000 && tools.cy == 200000)
 				draw_plane(base, object, mlx, tools);
@@ -189,9 +242,9 @@ int		main()
 			else if (tools.c < 200000 && tools.s1 == 200000 && tools.p == 2000
 				&& tools.s2 == 200000 && tools.cy == 200000)
 				draw_cone(base, object, mlx, tools);
-			/*else if (tools.cy < 200000 && tools.s1 == 200000 && tools.p == 2000
+			else if (tools.cy < 200000 && tools.s1 == 200000 && tools.p == 2000
 				&& tools.s2 == 200000 && tools.c == 200000)
-				draw_sphere(base, object, mlx, tools);*/
+				draw_cylinder(base, object, mlx, tools);
 			else
 			{
 				if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 2000
@@ -206,9 +259,9 @@ int		main()
 				if (tools.c < tools.s1 && tools.c < tools.p
 					&& tools.c < tools.s2 && tools.c < tools.cy)
 					draw_cone(base, object, mlx, tools);
-			/*	if (tools.cy < tools.s1 && tools.cy < tools.p
+				if (tools.cy < tools.s1 && tools.cy < tools.p
 					&& tools.cy < tools.c && tools.cy < tools.s2)
-					draw_sphere(base, object, mlx, tools);*/
+					draw_cylinder(base, object, mlx, tools);
 			}
 		}
 	}

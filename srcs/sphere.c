@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/02 17:11:48 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/06 12:15:20 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ int		sphere_intersect(t_sphere sphere, t_ray ray, double t)
 	o_center.y = ray.origin.y - sphere.center.y;
 	o_center.z = ray.origin.z - sphere.center.z;
 
-	a = dot(ray.direction, ray.direction);
-	b = 2 * dot(ray.direction, o_center);
+// ---------------  debut ----------------------------------------------------
+	a = dot(ray.dir, ray.dir);
+	b = 2 * dot(ray.dir, o_center);
 	c = dot(o_center, o_center) - sphere.radius * sphere.radius;
 	disc = b * b - 4.0 * a * c;
 
-// ---------------  debut ----------------------------------------------------
 	if (disc < 0)
 		return (t);
 	else
@@ -112,22 +112,23 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 
 	t = tools.s1 < tools.s2 ? tools.s1 : tools.s2;
 	if (t == tools.s2)
-	object.sphere = object.sphere2;
+		object.sphere = object.sphere2;
 
-	inter_p.x = base.ray.origin.x + base.ray.direction.x * t;// intersection point
-	inter_p.y = base.ray.origin.y + base.ray.direction.y * t;
-	inter_p.z = base.ray.origin.z + base.ray.direction.z * t;
+	//	************* calcul point intersection ***************
+	inter_p.x = base.ray.origin.x + base.ray.dir.x * t;// intersection point
+	inter_p.y = base.ray.origin.y + base.ray.dir.y * t;
+	inter_p.z = base.ray.origin.z + base.ray.dir.z * t;
 
+	//	************* calcul ray light ***************
 	base.light.ray.x = base.light.src.x - inter_p.x;// area of the light spot
 	base.light.ray.y = base.light.src.y - inter_p.y;
 	base.light.ray.z = base.light.src.z - inter_p.z;
 
-	normal = getnormal_sphere(object.sphere, inter_p);// calcul normal
-
 	//********* normals ************
+	normal = getnormal_sphere(object.sphere, inter_p);// calcul normal
 	t_vector nm = normalize(normal);
 	t_vector lr = normalize(base.light.ray);
-	t_vector eye = normalize(base.ray.direction);
+	t_vector eye = normalize(base.ray.dir);
 	t_vector half;
 	half.x = -lr.x + eye.x;
 	half.y = -lr.y + eye.y;
@@ -152,12 +153,6 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	double dot_p = dot(nm, half);
 	dot_p = dot_p < 0 ? 0 : dot_p;
 	double si = 3 * power(dot_p, p);
-
-	/*t_vector reflection = reflect(lr, nm);
-	double angle = dot(normalize(reflection), eye);
-	angle = angle < 0 ? 0 : angle;
-	si = 2 * power(angle, p / 4.0);*/
-	//si = si < 0 ? 0 : si;
 
 	t_color	spec_color;
 	spec_color.r = base.light.color.r * si;
