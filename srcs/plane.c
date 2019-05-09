@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 15:09:02 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 17:54:33 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,29 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 {
 // ---------------  declaration de variables   -------------------------------
 	t_vector	origin_center;
-	double	d1;
-	double	d2;
+	double	xv;
+	double	dv;
 
 // ---------------  initialisation des variables -----------------------------
 	origin_center.x = ray.origin.x - plane.point.x;
 	origin_center.y = ray.origin.y - plane.point.y;
 	origin_center.z = ray.origin.z - plane.point.z;
 
+	origin_center.x *= -1;
+	origin_center.y *= -1;
+	origin_center.z *= -1;
+
 // ---------------  debut ----------------------------------------------------
-	if ((d1 = dot(ray.dir, plane.normal)) == 0)
+	/*if ((d1 = dot(ray.dir, plane.normal)) == 0)
 		return (t);
 	d2 = -dot(origin_center, plane.normal);
-	t = d2 / d1;
+	t = d2 / d1;*/
+	xv = dot(origin_center, plane.normal);
+	if ((dv = dot(ray.dir, plane.normal)) <= 0)
+		return (t);
+	/*if ((xv < 0 && dv < 0) || (xv > 0 && dv > 0))
+		return (t);*/
+	t = xv / dv;
 	return (t);
 }
 

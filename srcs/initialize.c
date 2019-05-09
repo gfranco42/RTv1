@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:27:31 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 17:46:42 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_object		initialize_var(t_base *base)
 //	************** PLANE *******************
 	object.plane.point.x = WIDTH / 2;//		POINT SUR LA PLAN
 	object.plane.point.y = HEIGHT * 0.9;
-	object.plane.point.z = 200;
+	object.plane.point.z = 0;
 
 	object.plane.normal.x = 0;//			NORMALE DU PLAN
 	object.plane.normal.y = HEIGHT * 0.20;
