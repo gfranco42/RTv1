@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:25:45 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 17:26:18 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools);
-t_object	initialize_var(t_object object, t_base *base);
+t_object	initialize_var(t_base *base);
 void		fail(int i);
 int			key(int key, void *param);
 int			lexer(char *file, int number);

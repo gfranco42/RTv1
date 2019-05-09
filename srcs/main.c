@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:25:15 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 17:26:10 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int		main(int ac, char **av)
 	prim = create_tab(nb_obj);
 	prim = parser(av[1], nb_obj, prim);
 
-	object = initialize_var(object, &base);
+	object = initialize_var(&base);
 // ---------------  creation de la fenetre  ----------------------------------
 	win_create(&mlx);
 

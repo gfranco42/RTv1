@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:24:44 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 17:27:31 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 // ---------------  initialisation des variables -----------------------------
 
-//	************** FIRST SPHERE *******************
-t_object		initialize_var(t_object object, t_base *base)
+t_object		initialize_var(t_base *base)
 {
+	t_object	object;
+//	************** FIRST SPHERE *******************
 	object.sphere.center.x = WIDTH * 0.3;// creation d'un objet 'sphere'
 	object.sphere.center.y = HEIGHT * 0.45;
 	object.sphere.center.z = 1200;
@@ -99,4 +100,5 @@ t_object		initialize_var(t_object object, t_base *base)
 	base->ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
 	base->ray.dir.y = 0;
 	base->ray.dir.z = 0;
+	return (object);
 }
