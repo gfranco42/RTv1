@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/06 19:41:49 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/08 18:46:18 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,16 @@ void		fail(int i)
 		write(1, "usage: ./rtv1 <file>\n", 21);
 		exit(0);
 	}
+	else if (i == 3)
+	{
+		write(1, "fail to malloc obj tab\n", 23);
+		exit(0);
+	}
+	else if (i == 4)
+	{
+		write(1, "ERROR: problem occurs during data procurement\n", 46);
+		exit(0);
+	}
 }
 
 //***************** MAIN *****************************************************
@@ -121,7 +131,12 @@ int		main(int ac, char **av)
 	t_base		base;
 	t_tools		tools;
 	t_object	object;
-	jojo(av[1]);
+	t_prim		*prim;
+	int			nb_obj;
+
+	nb_obj = lexer(av[1], 0);
+	prim = create_tab(nb_obj);
+	prim = parser(av[1], nb_obj, prim);
 // ---------------  creation de la fenetre  ----------------------------------
 	win_create(&mlx);
 
@@ -134,9 +149,9 @@ int		main(int ac, char **av)
 
 	object.sphere.radius = 100;
 
-	object.sphere.color.r = 0;// 			COULEUR
-	object.sphere.color.g = 0xFF;
-	object.sphere.color.b = 0;
+	object.sphere.color.r = prim[0].sphere.color.r;// 			COULEUR
+	object.sphere.color.g = prim[0].sphere.color.g;
+	object.sphere.color.b = prim[0].sphere.color.b;
 
 //	************** SECOND SPHERE *******************
 	object.sphere2.center.x = WIDTH * 0.8;// creation d'un objet 'sphere'
@@ -179,17 +194,17 @@ int		main(int ac, char **av)
 	object.cone.color.b = 0;
 
 //	************** cyl *******************
-	object.cyl.center.x = 100;
+	object.cyl.center.x = 100;//		CENTER BASE
 	object.cyl.center.y = HEIGHT;
-	object.cyl.center.z = 400;
+	object.cyl.center.z = 100;
 
-	object.cyl.dir.x = 0;//			DIRECTION
+	object.cyl.dir.x = 10;//			DIRECTION
 	object.cyl.dir.y = 1;
-	object.cyl.dir.z = 0;
+	object.cyl.dir.z = 1;
 
-	object.cyl.radius = 50;
+	object.cyl.radius = 50;//			RADIUS BASE
 
-	object.cyl.color.r = 0;
+	object.cyl.color.r = 0;//			COULEUR
 	object.cyl.color.g = 0x50;
 	object.cyl.color.b = 0x50;
 
@@ -203,11 +218,13 @@ int		main(int ac, char **av)
 	base.light.color.b = 0xFF;
 
 //	************** RAY *******************
+	base.ray.origin.x = 600;
+	base.ray.origin.y = 600;
+	base.ray.origin.z = -1500;
+
 	base.ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
 	base.ray.dir.y = 0;
-	base.ray.dir.z = 1;
-
-	base.ray.origin.z = 0;
+	base.ray.dir.z = 0;
 
 	tools.y = -1;// y = -1 car incrementation && t= 20000 pour donner un max
 // ---------------  debut ----------------------------------------------------
@@ -218,36 +235,38 @@ int		main(int ac, char **av)
 		tools.x = -1;
 		while (++tools.x < WIDTH)
 		{
-			tools.p = 2000;
+			tools.p = 200000;
 			tools.s1 = 200000;
 			tools.s2 = 200000;
 			tools.c = 200000;
 			tools.cy = 200000;
-			base.ray.origin.x = tools.x;// origin prend le tools en cours (x/y)
-			base.ray.origin.y = tools.y;
+			base.ray.dir.x = tools.x - base.ray.origin.x;// origin prend le tools en cours (x/y)
+			base.ray.dir.y = tools.y - base.ray.origin.y;
+			base.ray.dir.z = 0 - base.ray.origin.z;
+			base.ray.dir = normalize(base.ray.dir);
 			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
 			tools.c = cone_intersect(object.cone, base.ray, tools.c);
 			tools.cy = cylinder_intersect(object.cyl, base.ray, tools.cy);
-			if (tools.p < 2000 && tools.s1 == 200000 && tools.s2 == 200000
+			if (tools.p < 5000 && tools.s1 == 200000 && tools.s2 == 200000
 				&& tools.c == 200000 && tools.cy == 200000)
 				draw_plane(base, object, mlx, tools);
 			else if (tools.s1 < 200000 && tools.p == 2000 && tools.s2 == 200000
 				&& tools.c == 200000 && tools.cy == 200000)
 				draw_sphere(base, object, mlx, tools);
-			else if (tools.s2 < 200000 && tools.s1 == 200000 && tools.p == 2000
+			else if (tools.s2 < 200000 && tools.s1 == 200000 && tools.p == 5000
 				&& tools.c == 200000 && tools.cy == 200000)
 				draw_sphere(base, object, mlx, tools);
-			else if (tools.c < 200000 && tools.s1 == 200000 && tools.p == 2000
+			else if (tools.c < 200000 && tools.s1 == 200000 && tools.p == 5000
 				&& tools.s2 == 200000 && tools.cy == 200000)
 				draw_cone(base, object, mlx, tools);
-			else if (tools.cy < 200000 && tools.s1 == 200000 && tools.p == 2000
+			else if (tools.cy < 200000 && tools.s1 == 200000 && tools.p == 5000
 				&& tools.s2 == 200000 && tools.c == 200000)
 				draw_cylinder(base, object, mlx, tools);
 			else
 			{
-				if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 2000
+				if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 5000
 					&& tools.p < tools.c && tools.p < tools.cy)
 					draw_plane(base, object, mlx, tools);
 				if (tools.s1 < tools.p && tools.s1 < tools.s2

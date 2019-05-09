@@ -6,11 +6,26 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:58:46 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/07 13:39:25 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/08 16:56:20 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+int			str_isdot(char *str)
+{
+	size_t		i;
+	int			dot;
+
+	i = -1;
+	dot = 0;
+	while (++i < ft_strlen(str))
+	{
+		if (str[i] == '.')
+			return (1);
+	}
+	return (0);
+}
 
 int			str_isdouble(char *str)
 {
