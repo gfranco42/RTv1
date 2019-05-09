@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/06 12:15:20 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 12:55:10 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	o_center.x = inter_p.x - sphere.center.x;
 	o_center.y = inter_p.y - sphere.center.y;
 	o_center.z = inter_p.z - sphere.center.z;
-
-
-	/*light.src.x -= light.ray.x;
-	light.src.y -= light.ray.y;
-	light.src.z -= light.ray.z;*/
 
 	t_vector	lr;
 	lr.x = light.src.x - inter_p.x;

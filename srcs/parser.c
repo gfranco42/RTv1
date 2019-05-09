@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:49:29 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/08 18:43:23 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 15:12:05 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,16 @@ t_prim			*parser(char *file, int number, t_prim *prim)
 		fail(1);
 	while (get_next_line(fd, &line) > 0)
 	{
-		printf("GOOOOOOOO\n");
 		if (ft_strcmp(line, "") == 0)
 			continue ;
 		if ((i = name_obj(line, &number)) != -1)
-		{
-
-			printf("i: %d\n", i);
 			prim_obj[i](fd, prim, i);
-		}
 		else
 		{
 			free(line);
 			fail(1);
 		}
 		free(line);
-		printf("x: %lf, y: %lf, z: %lf\n", prim[i].sphere.center.x, prim[i].sphere.center.y, prim[i].sphere.center.z);
-		printf("radius: %lf\n", prim[i].sphere.radius);
-		printf("r: %d, g: %d, b: %d\n", prim[i].sphere.color.r, prim[i].sphere.color.g, prim[i].sphere.color.b);
 	}
 	return (prim);
 }

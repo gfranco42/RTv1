@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/08 18:43:38 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 15:33:14 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ typedef enum	e_type
 //************* STRUCTURE UNION ****************
 typedef	struct	s_prim
 {
-	t_type		type;
+	int				type;
 	union
 	{
 		t_sphere	sphere;

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 12:16:23 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 15:20:00 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,27 @@ int		main(int ac, char **av)
 	nb_obj = lexer(av[1], 0);
 	prim = create_tab(nb_obj);
 	prim = parser(av[1], nb_obj, prim);
+	printf("x: %lf, y: %lf, z: %lf\n", prim[0].sphere.center.x, prim[0].sphere.center.y, prim[0].sphere.center.z);
+	printf("radius: %lf\n", prim[0].sphere.radius);
+	printf("r: %d, g: %d, b: %d\n", prim[0].sphere.color.r, prim[0].sphere.color.g, prim[0].sphere.color.b);
+	printf("\n");
+	printf("x: %lf, y: %lf, z: %lf\n", prim[1].plane.point.x, prim[1].plane.point.y, prim[1].plane.point.z);
+	printf("x: %lf, y: %lf, z: %lf\n", prim[1].plane.normal.x, prim[1].plane.normal.y, prim[1].plane.normal.z);
+	printf("r: %d, g: %d, b: %d\n", prim[1].plane.color.r, prim[1].plane.color.g, prim[1].plane.color.b);
+	printf("\n");
+	printf("x: %lf, y: %lf, z: %lf\n", prim[2].cone.tip.x, prim[2].cone.tip.y, prim[2].cone.tip.z);
+	printf("x: %lf, y: %lf, z: %lf\n", prim[2].cone.b_center.x, prim[2].cone.b_center.y, prim[2].cone.b_center.z);
+	printf("r: %d, g: %d, b: %d\n", prim[2].cone.color.r, prim[2].cone.color.g, prim[2].cone.color.b);
+	printf("radius: %lf\n", prim[2].cone.b_radius);
+	printf("\n");
+	printf("x: %lf, y: %lf, z: %lf\n", prim[3].cyl.center.x, prim[3].cyl.center.y, prim[3].cyl.center.z);
+	printf("x: %lf, y: %lf, z: %lf\n", prim[3].cyl.dir.x, prim[3].cyl.dir.y, prim[3].cyl.dir.z);
+	printf("r: %d, g: %d, b: %d\n", prim[3].cyl.color.r, prim[3].cyl.color.g, prim[3].cyl.color.b);
+	printf("radius: %lf\n", prim[3].cyl.radius);
+	printf("\n");
+	printf("x: %lf, y: %lf, z: %lf\n", prim[4].light.src.x, prim[4].light.src.y, prim[4].light.src.z);
+	printf("r: %d, g: %d, b: %d\n", prim[4].light.color.r, prim[4].light.color.g, prim[4].light.color.b);
+	printf("\n");
 // ---------------  creation de la fenetre  ----------------------------------
 	win_create(&mlx);
 
@@ -174,7 +195,7 @@ int		main(int ac, char **av)
 	object.plane.normal.z = 100;
 	object.plane.normal = normalize(object.plane.normal);
 
-	object.plane.color.r = 0xB3;// 			COULEUR
+	object.plane.color.r = 0;// 			COULEUR
 	object.plane.color.g = 0xFF;
 	object.plane.color.b = 0xFB;
 
@@ -196,11 +217,12 @@ int		main(int ac, char **av)
 //	************** cyl *******************
 	object.cyl.center.x = 100;//		CENTER BASE
 	object.cyl.center.y = HEIGHT;
-	object.cyl.center.z = 100;
+	object.cyl.center.z = 1000;
 
-	object.cyl.dir.x = 10;//			DIRECTION
+	object.cyl.dir.x = -1;//			DIRECTION
 	object.cyl.dir.y = 1;
-	object.cyl.dir.z = 1;
+	object.cyl.dir.z = 0;
+	object.cyl.dir = normalize(object.cyl.dir);
 
 	object.cyl.radius = 50;//			RADIUS BASE
 
@@ -211,20 +233,19 @@ int		main(int ac, char **av)
 //	************** LIGHT *******************
 	base.light.src.x = WIDTH / 2;//			POSITION SOURCE
 	base.light.src.y = 0;
-	base.light.src.z = -1000;
+	base.light.src.z = -200;
 
 	base.light.color.r = 0xFF;// 			COULEUR
 	base.light.color.g = 0xFF;
 	base.light.color.b = 0xFF;
 
 //	************** RAY *******************
-	base.ray.origin.x = 0;
-	base.ray.origin.y = 0;
-	base.ray.origin.z = 0;
-
+	base.ray.origin.x = 600;
+	base.ray.origin.y = 600;
+	base.ray.origin.z = -1000;
 	base.ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
 	base.ray.dir.y = 0;
-	base.ray.dir.z = 1;
+	base.ray.dir.z = 0;
 
 	tools.y = -1;// y = -1 car incrementation && t= 20000 pour donner un max
 // ---------------  debut ----------------------------------------------------
@@ -240,50 +261,30 @@ int		main(int ac, char **av)
 			tools.s2 = 200000;
 			tools.c = 200000;
 			tools.cy = 200000;
-			//base.ray.dir.x = tools.x - base.ray.origin.x;// origin prend le tools en cours (x/y)
-			//base.ray.dir.y = tools.y - base.ray.origin.y;
-			//base.ray.dir.z = 0 - base.ray.origin.z;
-			//base.ray.dir = normalize(base.ray.dir);
-			base.ray.origin.x = tools.x;
-			base.ray.origin.y = tools.y;
+			base.ray.dir.x = tools.x - base.ray.origin.x;// origin prend le tools en cours (x/y)
+			base.ray.dir.y = tools.y - base.ray.origin.y;
+			base.ray.dir.z = 0 - base.ray.origin.z;
+			base.ray.dir = normalize(base.ray.dir);
 			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
 			tools.c = cone_intersect(object.cone, base.ray, tools.c);
 			tools.cy = cylinder_intersect(object.cyl, base.ray, tools.cy);
-			if (tools.p < 5000 && tools.s1 == 200000 && tools.s2 == 200000
-				&& tools.c == 200000 && tools.cy == 200000)
+			if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 10000
+				&& tools.p < tools.c && tools.p < tools.cy)
 				draw_plane(base, object, mlx, tools);
-			else if (tools.s1 < 200000 && tools.p == 2000 && tools.s2 == 200000
-				&& tools.c == 200000 && tools.cy == 200000)
+			if (tools.s1 < tools.p && tools.s1 < tools.s2
+				&& tools.s1 < tools.c && tools.s1 < tools.cy)
 				draw_sphere(base, object, mlx, tools);
-			else if (tools.s2 < 200000 && tools.s1 == 200000 && tools.p == 5000
-				&& tools.c == 200000 && tools.cy == 200000)
+			if (tools.s2 < tools.s1 && tools.s2 < tools.p
+				&& tools.s2 < tools.c && tools.s2 < tools.cy)
 				draw_sphere(base, object, mlx, tools);
-			else if (tools.c < 200000 && tools.s1 == 200000 && tools.p == 5000
-				&& tools.s2 == 200000 && tools.cy == 200000)
+			if (tools.c < tools.s1 && tools.c < tools.p
+				&& tools.c < tools.s2 && tools.c < tools.cy)
 				draw_cone(base, object, mlx, tools);
-			else if (tools.cy < 200000 && tools.s1 == 200000 && tools.p == 5000
-				&& tools.s2 == 200000 && tools.c == 200000)
+			if (tools.cy < tools.s1 && tools.cy < tools.p
+				&& tools.cy < tools.c && tools.cy < tools.s2)
 				draw_cylinder(base, object, mlx, tools);
-			else
-			{
-				if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 5000
-					&& tools.p < tools.c && tools.p < tools.cy)
-					draw_plane(base, object, mlx, tools);
-				if (tools.s1 < tools.p && tools.s1 < tools.s2
-					&& tools.s1 < tools.c && tools.s1 < tools.cy)
-					draw_sphere(base, object, mlx, tools);
-				if (tools.s2 < tools.s1 && tools.s2 < tools.p
-					&& tools.s2 < tools.c && tools.s2 < tools.cy)
-					draw_sphere(base, object, mlx, tools);
-				if (tools.c < tools.s1 && tools.c < tools.p
-					&& tools.c < tools.s2 && tools.c < tools.cy)
-					draw_cone(base, object, mlx, tools);
-				if (tools.cy < tools.s1 && tools.cy < tools.p
-					&& tools.cy < tools.c && tools.cy < tools.s2)
-					draw_cylinder(base, object, mlx, tools);
-			}
 		}
 	}
 	mlx_hook(mlx.win, KEYPRESS, KEYPRESSMASK, key, 0);

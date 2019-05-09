@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:11:46 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/07 17:48:54 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 15:28:44 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 int			name_obj(char *line, int *number)
 {
-	int		i;
+	int			i;
 	const char	*obj_name[] = {"sphere", "plane", "cone", "cylinder", "light"};
 
 	i = -1;
 	*number = sizeof(obj_name) / sizeof(char *);
-
 	while (++i < *number)
 		if (ft_strcmp(obj_name[i], line) == 0)
 			return (i);
@@ -28,11 +27,11 @@ int			name_obj(char *line, int *number)
 
 int			lexer(char *file, int number)
 {
-	int		i;
-	int		fd;
-	char	*line;
+	int				i;
+	int				fd;
+	char			*line;
 	typedef void	(*t_check)(int);
-	const t_check prim_obj[] = {&sphere_ch, &plane_ch, &cone_ch, &cylinder_ch,
+	const t_check	prim_obj[] = {&sphere_ch, &plane_ch, &cone_ch, &cylinder_ch,
 	&light_ch};
 
 	number = 0;
