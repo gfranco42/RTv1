@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/08 18:46:18 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/09 12:16:23 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,13 +218,13 @@ int		main(int ac, char **av)
 	base.light.color.b = 0xFF;
 
 //	************** RAY *******************
-	base.ray.origin.x = 600;
-	base.ray.origin.y = 600;
-	base.ray.origin.z = -1500;
+	base.ray.origin.x = 0;
+	base.ray.origin.y = 0;
+	base.ray.origin.z = 0;
 
 	base.ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
 	base.ray.dir.y = 0;
-	base.ray.dir.z = 0;
+	base.ray.dir.z = 1;
 
 	tools.y = -1;// y = -1 car incrementation && t= 20000 pour donner un max
 // ---------------  debut ----------------------------------------------------
@@ -240,10 +240,12 @@ int		main(int ac, char **av)
 			tools.s2 = 200000;
 			tools.c = 200000;
 			tools.cy = 200000;
-			base.ray.dir.x = tools.x - base.ray.origin.x;// origin prend le tools en cours (x/y)
-			base.ray.dir.y = tools.y - base.ray.origin.y;
-			base.ray.dir.z = 0 - base.ray.origin.z;
-			base.ray.dir = normalize(base.ray.dir);
+			//base.ray.dir.x = tools.x - base.ray.origin.x;// origin prend le tools en cours (x/y)
+			//base.ray.dir.y = tools.y - base.ray.origin.y;
+			//base.ray.dir.z = 0 - base.ray.origin.z;
+			//base.ray.dir = normalize(base.ray.dir);
+			base.ray.origin.x = tools.x;
+			base.ray.origin.y = tools.y;
 			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
