@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 12:55:10 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/10 14:16:20 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	double		b;
 	double		c;
 	double		disc;
+	double		t0;
+	double		t1;
+	double		t;
 
 // --------------- initialisation des variables ------------------------------
 	o_center.x = inter_p.x - sphere.center.x;
@@ -35,12 +38,16 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	b = 2 * dot(o_center, lr);
 	c = dot(o_center, o_center) - sphere.radius * sphere.radius;
 	disc = b * b - 4.0 * a * c;
-
 // ---------------  debut ----------------------------------------------------
 	if (disc < 0)
 		return (0);
-	else
+	disc = sqrt(disc);
+	t1 = (-b + disc) / (2 * a);
+	t0 = (-b - disc) / (2 * a);
+	t = (t0 < 0) ? t1 : t0;
+	if (t > 0)
 		return (1);
+	return (0);
 }
 
 //***************** CHECK INTERSECTION ***************************************

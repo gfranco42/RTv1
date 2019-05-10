@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:54:33 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/10 12:21:24 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,9 @@ void	draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
 
 	if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
-		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
+		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
+		|| cone_light_inter(object.cone, base.light, inter_p) == 1
+		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
 	{
 		effects.r = 0;
 		effects.g = 0;

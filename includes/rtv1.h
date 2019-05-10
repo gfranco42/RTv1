@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:26:18 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/10 12:21:01 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,9 +162,11 @@ t_color		color_extract(int fd);
 void		cone_ch(int fd);
 void		cone_fill(int fd, t_prim *prim, int index);
 int			cone_intersect(t_cone cone, t_ray ray, double t);
+int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p);
 void		cylinder_ch(int fd);
 void		cylinder_fill(int fd, t_prim *prim, int index);
 int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t);
+int			cylinder_light_inter(t_cylinder cyl, t_light light, t_vector inter_p);
 double		dot(t_vector a, t_vector b);
 double		double_extract(int fd);
 void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools);

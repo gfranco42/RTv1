@@ -6,15 +6,69 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/06 19:02:45 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/10 14:22:04 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-void			cone_light_inter()
+int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 {
+// ---------------  declaration de variables   -------------------------------
+	t_vector	o_tip;
+	t_vector	height;
+	t_vector	h;
+	double		n_height;
+	double		m;
+	double		a;
+	double		b;
+	double		c;
+	double		disc;
+	double		t0;
+	double		t1;
+	double		t;
 
+
+// ---------------  initialisation des variables -----------------------------
+	o_tip.x = inter_p.x - cone.tip.x;//		distance pointe - origine
+	o_tip.y = inter_p.y - cone.tip.y;
+	o_tip.z = inter_p.z - cone.tip.z;
+
+	t_vector	lr;
+	lr.x = light.src.x - inter_p.x;
+	lr.y = light.src.y - inter_p.y;
+	lr.z = light.src.z - inter_p.z;
+
+
+	height.x = cone.b_center.x - cone.tip.x;//	hauteur cone
+	height.y = cone.b_center.y - cone.tip.y;
+	height.z = cone.b_center.z - cone.tip.z;
+	n_height = norm(height);
+
+	h.x = height.x / n_height;//		axis???
+	h.y = height.y / n_height;
+	h.z = height.z / n_height;
+
+	m = cone.b_radius * cone.b_radius / n_height * n_height;//	???
+
+	a = dot(lr, lr) - m * dot(lr, h)
+		* dot(lr, h) - dot(lr, h) * dot(lr, h);
+	b = 2 * (dot(lr, o_tip) - m * dot(lr, h)
+		* dot(o_tip, h) - dot(lr, h) * dot(o_tip, h));
+	c = dot(o_tip, o_tip) - m * dot(o_tip, h) * dot(o_tip, h) - dot(o_tip, h)
+		* dot(o_tip, h);
+	disc = b * b - 4.0 * a * c;
+
+// ---------------  debut ----------------------------------------------------
+	if (disc < 0)
+		return (0);
+	disc = sqrt(disc);
+	t1 = (-b + disc) / (2 * a);
+	t0 = (-b - disc) / (2 * a);
+	t = (t0 < 0) ? t1 : t0;
+	if (t > 0)
+		return (1);
+	return (0);
 }
 
 int			cone_intersect(t_cone cone, t_ray ray, double t)
@@ -68,7 +122,6 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 		t = (t0 < 0) ? t1 : t0;
 		return (t);
 	}
-
 }
 
 t_vector	getnormal_cone(t_vector	inter_p)
@@ -104,7 +157,7 @@ void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	half.z = -lr.z + eye.z;
 	half = normalize(half);
 
-	double	ambient = dot(eye, nm) * 0.5;
+	double	ambient = -dot(eye, nm) * 0.5;
 
 //	********* diffuse ************
 	double	di = dot(nm, lr) * 2.5;
@@ -118,7 +171,7 @@ void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools)
 
 //	********* specular ************
 	double	p = 100;//	shininess
-	double dot_p = dot(nm, half);
+	double dot_p = -dot(nm, half);
 	dot_p = dot_p < 0 ? 0 : dot_p;
 	double si = 3 * power(dot_p, p);
 

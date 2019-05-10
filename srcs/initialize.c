@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 17:46:42 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/10 14:24:04 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_object		initialize_var(t_base *base)
 	t_object	object;
 //	************** FIRST SPHERE *******************
 	object.sphere.center.x = WIDTH * 0.3;// creation d'un objet 'sphere'
-	object.sphere.center.y = HEIGHT * 0.45;
+	object.sphere.center.y = HEIGHT * 0.3;
 	object.sphere.center.z = 1200;
 
 	object.sphere.radius = 100;
@@ -54,35 +54,35 @@ t_object		initialize_var(t_base *base)
 	object.plane.color.b = 0xFB;
 
 //	************** CONE *******************
-	object.cone.tip.x = WIDTH / 2;//			POSITION POINTE
+	object.cone.tip.x = WIDTH * 0.1;//			POSITION POINTE
 	object.cone.tip.y = 200;
 	object.cone.tip.z = 500;
 
-	object.cone.b_center.x = WIDTH / 2;//		CENTRE BASE
+	object.cone.b_center.x = WIDTH * 0.1;//		CENTRE BASE
 	object.cone.b_center.y = HEIGHT - 200;
-	object.cone.b_center.z = 500;
+	object.cone.b_center.z = 1000;
 
 	object.cone.b_radius = 0.14;
 
 	object.cone.color.r = 0xFF;// 			COULEUR
-	object.cone.color.g = 0x20;
-	object.cone.color.b = 0;
+	object.cone.color.g = 0;
+	object.cone.color.b = 0x10;
 
 //	************** cyl *******************
-	object.cyl.center.x = 100;//		CENTER BASE
-	object.cyl.center.y = HEIGHT;
+	object.cyl.center.x = 1000;//		CENTER BASE
+	object.cyl.center.y = 0;
 	object.cyl.center.z = 1000;
 
-	object.cyl.dir.x = -1;//			DIRECTION
-	object.cyl.dir.y = 1;
+	object.cyl.dir.x = 1;//			DIRECTION
+	object.cyl.dir.y = -2;
 	object.cyl.dir.z = 0;
 	object.cyl.dir = normalize(object.cyl.dir);
 
 	object.cyl.radius = 50;//			RADIUS BASE
 
-	object.cyl.color.r = 0;//			COULEUR
-	object.cyl.color.g = 0x50;
-	object.cyl.color.b = 0x50;
+	object.cyl.color.r = 0x100;//			COULEUR
+	object.cyl.color.g = 0x100;
+	object.cyl.color.b = 0;
 
 //	************** LIGHT *******************
 	base->light.src.x = WIDTH / 2;//			POSITION SOURCE

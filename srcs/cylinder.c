@@ -6,11 +6,52 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 14:43:06 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/10 14:12:55 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+int		cylinder_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
+{
+// ---------------  declaration de variables   -------------------------------
+	t_vector	o_center;
+	double		a;
+	double		b;
+	double		c;
+	double		disc;
+	double		t0;
+	double		t1;
+	double		t;
+
+// ---------------  initialisation des variables -----------------------------
+	o_center.x = inter_p.x - cyl.center.x;
+	o_center.y = inter_p.y - cyl.center.y;
+	o_center.z = inter_p.z - cyl.center.z;
+
+	t_vector	lr;
+	lr.x = light.src.x - inter_p.x;
+	lr.y = light.src.y - inter_p.y;
+	lr.z = light.src.z - inter_p.z;
+
+// ---------------  debut ----------------------------------------------------
+	a = dot(lr, lr) - dot(lr, cyl.dir) * dot(lr, cyl.dir);
+	b = 2 * (dot(lr, o_center) - dot(lr, cyl.dir)
+	* dot(o_center, cyl.dir));
+	c = dot(o_center, o_center) - dot(o_center, cyl.dir)
+	* dot(o_center, cyl.dir) - cyl.radius * cyl.radius;
+	disc = b * b - 4.0 * a * c;
+
+	if (disc < 0)
+		return (0);
+	disc = sqrt(disc);
+	t1 = (-b + disc) / (2 * a);
+	t0 = (-b - disc) / (2 * a);
+	t = (t0 < 0) ? t1 : t0;
+	if (t > 0)
+		return (1);
+	return (0);
+}
 
 int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 {
@@ -94,10 +135,10 @@ void	draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	half = normalize(half);
 
 	//********* ambient ************
-	ambient = dot(eye, nm) * 0.5;
+	ambient = -dot(eye, nm) * 0.5;
 
 	//********* diffuse ************
-	double	di = -dot(nm, lr) * 2.5;
+	double	di = dot(nm, lr) * 2.5;
 	di = di < 0 ? 0 : di;
 	di *= di;
 
@@ -107,8 +148,8 @@ void	draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	diff_color.b = object.cyl.color.b * di;
 
 	//********* specular ************
-	double	p = 100;//	shininess
-	double dot_p = dot(nm, half);
+	double	p = 80;//	shininess
+	double dot_p = -dot(nm, half);
 	dot_p = dot_p < 0 ? 0 : dot_p;
 	double si = 3 * power(dot_p, p);
 
@@ -119,9 +160,9 @@ void	draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools)
 
 	//********* all effects ************
 	t_color effects;
-	effects.r = diff_color.r + spec_color.r + ambient * object.sphere.color.r;
-	effects.g = diff_color.g + spec_color.g + ambient * object.sphere.color.g;
-	effects.b = diff_color.b + spec_color.b + ambient * object.sphere.color.b;
+	effects.r = diff_color.r + spec_color.r + ambient * object.cyl.color.r;
+	effects.g = diff_color.g + spec_color.g + ambient * object.cyl.color.g;
+	effects.b = diff_color.b + spec_color.b + ambient * object.cyl.color.b;
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
