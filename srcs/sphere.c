@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/10 14:16:20 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/13 12:12:28 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	t1 = (-b + disc) / (2 * a);
 	t0 = (-b - disc) / (2 * a);
 	t = (t0 < 0) ? t1 : t0;
-	if (t > 0)
+	if (t >= 0 && t <= 1)
 		return (1);
 	return (0);
 }
@@ -81,8 +81,10 @@ int		sphere_intersect(t_sphere sphere, t_ray ray, double t)
 		t1 = (-b + disc) / (2 * a);
 		t0 = (-b - disc) / (2 * a);
 		t = (t0 < 0) ? t1 : t0;
-		return (t);
+		if (t > 0)
+			return (t);
 	}
+	return (t);
 }
 
 t_vector	getnormal_sphere(t_sphere sphere, t_vector inter_p)

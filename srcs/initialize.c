@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/10 14:24:04 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/13 11:54:06 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_object		initialize_var(t_base *base)
 	object.cyl.center.z = 1000;
 
 	object.cyl.dir.x = 1;//			DIRECTION
-	object.cyl.dir.y = -2;
-	object.cyl.dir.z = 0;
+	object.cyl.dir.y = 1;
+	object.cyl.dir.z = 10;
 	object.cyl.dir = normalize(object.cyl.dir);
 
 	object.cyl.radius = 50;//			RADIUS BASE
@@ -96,7 +96,7 @@ t_object		initialize_var(t_base *base)
 //	************** RAY *******************
 	base->ray.origin.x = 600;
 	base->ray.origin.y = 600;
-	base->ray.origin.z = -1000;
+	base->ray.origin.z = -500;
 	base->ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
 	base->ray.dir.y = 0;
 	base->ray.dir.z = 0;

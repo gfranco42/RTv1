@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/10 14:12:55 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/13 12:12:41 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		cylinder_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
 	t1 = (-b + disc) / (2 * a);
 	t0 = (-b - disc) / (2 * a);
 	t = (t0 < 0) ? t1 : t0;
-	if (t > 0)
+	if (t >= 0 && t <= 1)
 		return (1);
 	return (0);
 }
@@ -70,8 +70,8 @@ int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 	o_center.z = ray.origin.z - cyl.center.z;
 
 // ---------------  debut ----------------------------------------------------
-	a = dot(ray.dir, ray.dir) - dot(ray.dir, cyl.dir) * dot(ray.dir, cyl.dir);
-	b = 2 * (dot(ray.dir, o_center) - dot(ray.dir, cyl.dir)
+	a = dot(normalize(ray.dir), normalize(ray.dir)) - dot(normalize(ray.dir), cyl.dir) * dot(normalize(ray.dir), cyl.dir);
+	b = 2 * (dot(normalize(ray.dir), o_center) - dot(normalize(ray.dir), cyl.dir)
 	* dot(o_center, cyl.dir));
 	c = dot(o_center, o_center) - dot(o_center, cyl.dir)
 	* dot(o_center, cyl.dir) - cyl.radius * cyl.radius;
@@ -85,8 +85,10 @@ int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 		t1 = (-b + disc) / (2 * a);
 		t0 = (-b - disc) / (2 * a);
 		t = (t0 < 0) ? t1 : t0;
-		return (t);
+		if (t > 0)
+			return (t);
 	}
+	return (200000);
 }
 
 t_vector	getnormal_cylinder(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)

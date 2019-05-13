@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/10 12:00:30 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/13 12:04:29 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int		main(int ac, char **av)
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
 			tools.c = cone_intersect(object.cone, base.ray, tools.c);
 			tools.cy = cylinder_intersect(object.cyl, base.ray, tools.cy);
-			if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 10000
+			if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 100000
 				&& tools.p < tools.c && tools.p < tools.cy)
 				draw_plane(base, object, mlx, tools);
 			if (tools.s1 < tools.p && tools.s1 < tools.s2
