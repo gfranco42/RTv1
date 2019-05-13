@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/10 12:21:01 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/13 15:13:30 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct	s_cone
 	t_vector	tip;
 	t_color		color;
 	t_vector	b_center;
+	t_vector	dir;
+	double		angle;
 	double		b_radius;
 }				t_cone;
 

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 12:11:47 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/13 15:45:07 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 {
 // ---------------  declaration de variables   -------------------------------
 	t_vector	o_tip;
-	t_vector	height;
-	t_vector	h;
-	double		n_height;
-	double		m;
+	//t_vector	height;
+	//t_vector	h;
+	//double		n_height;
+	//double		m;
 	double		a;
 	double		b;
 	double		c;
@@ -40,7 +40,7 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 	lr.z = light.src.z - inter_p.z;
 
 
-	height.x = cone.b_center.x - cone.tip.x;//	hauteur cone
+	/*height.x = cone.b_center.x - cone.tip.x;//	hauteur cone
 	height.y = cone.b_center.y - cone.tip.y;
 	height.z = cone.b_center.z - cone.tip.z;
 	n_height = norm(height);
@@ -56,7 +56,13 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 	b = 2 * (dot(lr, o_tip) - m * dot(lr, h)
 		* dot(o_tip, h) - dot(lr, h) * dot(o_tip, h));
 	c = dot(o_tip, o_tip) - m * dot(o_tip, h) * dot(o_tip, h) - dot(o_tip, h)
-		* dot(o_tip, h);
+		* dot(o_tip, h);*/
+	a = dot(lr, lr) - (1 + cone.angle * cone.angle)
+	* dot(lr, cone.dir) * dot(lr, cone.dir);
+	b = 2 * (dot(lr, o_tip) - (1 + cone.angle * cone.angle)
+	* dot(lr, cone.dir) * dot(o_tip, cone.dir));
+	c = dot(o_tip, o_tip) - (1 + cone.angle * cone.angle)
+	* dot(o_tip, cone.dir) * dot(o_tip, cone.dir);
 	disc = b * b - 4.0 * a * c;
 
 // ---------------  debut ----------------------------------------------------
@@ -75,10 +81,10 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 {
 // ---------------  declaration de variables   -------------------------------
 	t_vector	o_tip;
-	t_vector	height;
-	t_vector	h;
-	double		n_height;
-	double		m;
+	//t_vector	height;
+	//t_vector	h;
+	//double		n_height;
+	//double		m;
 	double		a;
 	double		b;
 	double		c;
@@ -92,7 +98,7 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 	o_tip.y = ray.origin.y - cone.tip.y;
 	o_tip.z = ray.origin.z - cone.tip.z;
 
-	height.x = cone.b_center.x - cone.tip.x;//	hauteur cone
+/*	height.x = cone.b_center.x - cone.tip.x;//	hauteur cone
 	height.y = cone.b_center.y - cone.tip.y;
 	height.z = cone.b_center.z - cone.tip.z;
 	n_height = norm(height);
@@ -108,7 +114,13 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 	b = 2 * (dot(ray.dir, o_tip) - m * dot(ray.dir, h)
 		* dot(o_tip, h) - dot(ray.dir, h) * dot(o_tip, h));
 	c = dot(o_tip, o_tip) - m * dot(o_tip, h) * dot(o_tip, h) - dot(o_tip, h)
-		* dot(o_tip, h);
+		* dot(o_tip, h);*/
+	a = dot(ray.dir, ray.dir) - (1 + cone.angle * cone.angle)
+	* dot(ray.dir, cone.dir) * dot(ray.dir, cone.dir);
+	b = 2 * (dot(ray.dir, o_tip) - (1 + cone.angle * cone.angle)
+	* dot(ray.dir, cone.dir) * dot(o_tip, cone.dir));
+	c = dot(o_tip, o_tip) - (1 + cone.angle * cone.angle)
+	* dot(o_tip, cone.dir) * dot(o_tip, cone.dir);
 	disc = b * b - 4.0 * a * c;
 
 // ---------------  debut ----------------------------------------------------
@@ -126,13 +138,32 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 	return (200000);
 }
 
-t_vector	getnormal_cone(t_vector	inter_p)
+t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 {
+/*	t_vector	normal;
+
+	normal.x = inter_p.x - cone.tip.x - (1 + cone.angle * cone.angle)
+	* cone.dir.x;
+	normal.y = inter_p.y - cone.tip.y - (1 + cone.angle * cone.angle)
+	* cone.dir.y;
+	normal.x = inter_p.z - cone.tip.z - (1 + cone.angle * cone.angle)
+	* cone.dir.z;*/
+
 	t_vector	normal;
+	t_vector	o_center;
+	double		m;
 
-	inter_p.y *= -1;
+	o_center.x = ray.origin.x - cone.tip.x;
+	o_center.y = ray.origin.y - cone.tip.y;
+	o_center.z = ray.origin.z - cone.tip.z;
 
-	normal = normalize(inter_p);
+	m = dot(ray.dir, cone.dir) * t + dot(o_center, cone.dir);
+	normal.x = inter_p.x - cone.tip.x - cone.dir.x * m;
+	normal.y = inter_p.y - cone.tip.y - cone.dir.y * m;
+	normal.z = inter_p.z - cone.tip.z - cone.dir.z * m;
+
+//	return (normal);
+	normal = normalize(normal);
 	return (normal);
 }
 
@@ -150,7 +181,7 @@ void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	base.light.ray.z = base.light.src.z - inter_p.z;
 
 //	************* normalisation ***************
-	t_vector nm = getnormal_cone(inter_p);
+	t_vector nm = getnormal_cone(inter_p, object.cone, base.ray, tools.c);
 	t_vector lr = normalize(base.light.ray);
 	t_vector eye = normalize(base.ray.dir);
 	t_vector half;
