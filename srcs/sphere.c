@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 12:12:28 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/15 12:47:21 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	t1 = (-b + disc) / (2 * a);
 	t0 = (-b - disc) / (2 * a);
 	t = (t0 < 0) ? t1 : t0;
-	if (t >= 0 && t <= 1)
+	if (t >= 0/* && t <= 1*/)
 		return (1);
 	return (0);
 }
@@ -111,12 +111,15 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 {
 	t_vector	inter_p;
 	t_vector	normal;
+	t_sphere	sphere;
 	double		t;
 	double		ambient;
 
 	t = tools.s1 < tools.s2 ? tools.s1 : tools.s2;
 	if (t == tools.s2)
-		object.sphere = object.sphere2;
+		sphere = object.sphere2;
+	else
+		sphere = object.sphere;
 
 	//	************* calcul point intersection ***************
 	inter_p.x = base.ray.origin.x + base.ray.dir.x * t;// intersection point
@@ -129,7 +132,7 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	base.light.ray.z = base.light.src.z - inter_p.z;
 
 	//********* normals ************
-	normal = getnormal_sphere(object.sphere, inter_p);// calcul normal
+	normal = getnormal_sphere(sphere, inter_p);// calcul normal
 	t_vector nm = normalize(normal);
 	t_vector lr = normalize(base.light.ray);
 	t_vector eye = normalize(base.ray.dir);
@@ -148,9 +151,9 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	di *= di;
 
 	t_color	diff_color;
-	diff_color.r = object.sphere.color.r * di;
-	diff_color.g = object.sphere.color.g * di;
-	diff_color.b = object.sphere.color.b * di;
+	diff_color.r = sphere.color.r * di;
+	diff_color.g = sphere.color.g * di;
+	diff_color.b = sphere.color.b * di;
 
 	//********* specular ************
 	double	p = 100;//	shininess
@@ -165,12 +168,23 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 
 	//********* all effects ************
 	t_color effects;
-	effects.r = diff_color.r + spec_color.r + ambient * object.sphere.color.r;
-	effects.g = diff_color.g + spec_color.g + ambient * object.sphere.color.g;
-	effects.b = diff_color.b + spec_color.b + ambient * object.sphere.color.b;
+	effects.r = diff_color.r + spec_color.r + ambient * sphere.color.r;
+	effects.g = diff_color.g + spec_color.g + ambient * sphere.color.g;
+	effects.b = diff_color.b + spec_color.b + ambient * sphere.color.b;
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
+
+	//*********** SHADOWS ************
+	if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
+		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
+		|| cone_light_inter(object.cone, base.light, inter_p) == 1
+		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
+	{
+		effects.r = 0;
+		effects.g = 0;
+		effects.b = 0;
+	}
 
 	//********* color ************
 	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b/*final_color.b*/;// Color the pixel

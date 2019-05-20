@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 15:05:36 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/15 12:27:53 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,16 @@ void	draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
+
+	//********** SHADOWS **********
+	if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
+		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
+		|| cone_light_inter(object.cone, base.light, inter_p) == 1)
+	{
+		effects.r = 0;
+		effects.g = 0;
+		effects.b = 0;
+	}
 
 	//********* color ************
 	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b;// Color the pixel

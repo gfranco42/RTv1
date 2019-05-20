@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 15:45:07 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/14 16:32:29 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 	* cone.dir.z;*/
 
 	t_vector	normal;
+	t_vector	vec_minus;
 	t_vector	o_center;
 	double		m;
 
@@ -158,13 +159,24 @@ t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 	o_center.z = ray.origin.z - cone.tip.z;
 
 	m = dot(ray.dir, cone.dir) * t + dot(o_center, cone.dir);
-	normal.x = inter_p.x - cone.tip.x - cone.dir.x * m;
-	normal.y = inter_p.y - cone.tip.y - cone.dir.y * m;
-	normal.z = inter_p.z - cone.tip.z - cone.dir.z * m;
+	normal.x = cone.dir.x * m * (1 + cone.angle * cone.angle);
+	normal.y = cone.dir.y * m * (1 + cone.angle * cone.angle);
+	normal.z = cone.dir.z * m * (1 + cone.angle * cone.angle);
 
-//	return (normal);
-	normal = normalize(normal);
+	vec_minus.x = inter_p.x - cone.tip.x - normal.x;
+	vec_minus.y = inter_p.y - cone.tip.y - normal.y;
+	vec_minus.z = inter_p.z - cone.tip.z - normal.z;
+
+	normal = normalize(vec_minus);
+
+	if (dot(ray.dir, normal) > 0.0001)
+	{
+		normal.x *= -1;
+		normal.y *= -1;
+		normal.z *= -1;
+	}
 	return (normal);
+//	return (normalize(inter_p));
 }
 
 void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools)
@@ -221,6 +233,16 @@ void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
+
+	//*********** SHADOWS ************
+	if (sphere_light_inter(object.sphere2, base.light, inter_p) == 1
+		|| sphere_light_inter(object.sphere, base.light, inter_p) == 1
+		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
+	{
+		effects.r = 0;
+		effects.g = 0;
+		effects.b = 0;
+	}
 
 	//********* color ************
 	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b;// Color the pixel

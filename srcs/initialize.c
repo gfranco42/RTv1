@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 15:20:46 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/20 18:33:06 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_object		initialize_var(t_base *base)
 	t_object	object;
 //	************** FIRST SPHERE *******************
 	object.sphere.center.x = WIDTH * 0.3;// creation d'un objet 'sphere'
-	object.sphere.center.y = HEIGHT * 0.3;
-	object.sphere.center.z = 1200;
+	object.sphere.center.y = HEIGHT * 0.7;
+	object.sphere.center.z = 300;
 
 	object.sphere.radius = 100;
 
@@ -29,11 +29,11 @@ t_object		initialize_var(t_base *base)
 	object.sphere.color.b = 0;
 
 //	************** SECOND SPHERE *******************
-	object.sphere2.center.x = WIDTH * 0.8;// creation d'un objet 'sphere'
-	object.sphere2.center.y = HEIGHT * 0.7;
+	object.sphere2.center.x = WIDTH * 0.25;// creation d'un objet 'sphere'
+	object.sphere2.center.y = HEIGHT * 0.65;
 	object.sphere2.center.z = 100;
 
-	object.sphere2.radius = 100;
+	object.sphere2.radius = 20;
 
 	object.sphere2.color.r = 0;// 			COULEUR
 	object.sphere2.color.g = 0x50;
@@ -54,7 +54,7 @@ t_object		initialize_var(t_base *base)
 	object.plane.color.b = 0xFB;
 
 //	************** CONE *******************
-	object.cone.tip.x = WIDTH * 0.1;//			POSITION POINTE
+	object.cone.tip.x = WIDTH * 0.5;//			POSITION POINTE
 	object.cone.tip.y = 200;
 	object.cone.tip.z = 500;
 
@@ -62,11 +62,11 @@ t_object		initialize_var(t_base *base)
 	object.cone.dir.y = 1;
 	object.cone.dir.z = 0;
 
-	object.cone.b_center.x = WIDTH * 0.1;//		CENTRE BASE
+	/*object.cone.b_center.x = WIDTH * 0.1;//		CENTRE BASE
 	object.cone.b_center.y = HEIGHT - 200;
-	object.cone.b_center.z = 1000;
+	object.cone.b_center.z = 1000;*/
 
-	object.cone.b_radius = 0.14;
+	//object.cone.b_radius = 0.14;
 
 	object.cone.angle = 0.2;
 
@@ -81,30 +81,61 @@ t_object		initialize_var(t_base *base)
 
 	object.cyl.dir.x = 1;//			DIRECTION
 	object.cyl.dir.y = 1;
-	object.cyl.dir.z = 10;
+	object.cyl.dir.z = 0;
 	object.cyl.dir = normalize(object.cyl.dir);
 
-	object.cyl.radius = 50;//			RADIUS BASE
+	object.cyl.radius = 100;//			RADIUS BASE
 
 	object.cyl.color.r = 0x100;//			COULEUR
 	object.cyl.color.g = 0x100;
 	object.cyl.color.b = 0;
 
 //	************** LIGHT *******************
-	base->light.src.x = WIDTH / 2;//			POSITION SOURCE
-	base->light.src.y = 0;
-	base->light.src.z = -200;
+	base->light.src.x = 250;//			POSITION SOURCE
+	base->light.src.y = 750;
+	base->light.src.z = -100;
 
 	base->light.color.r = 0xFF;// 			COULEUR
 	base->light.color.g = 0xFF;
 	base->light.color.b = 0xFF;
 
+//	************** CAMERA *******************
+	base->cam.pos.x = 0.5;//			POSITION
+	base->cam.pos.y = 0.5;
+	base->cam.pos.z = -1;
+	base->cam.pos = normalize(base->cam.pos);
+
+	base->cam.target.x = 1;//			POINT REGARDÉ
+	base->cam.target.y = 1;
+	base->cam.target.z = 1;
+	base->cam.target = normalize(base->cam.target);
+
+	base->cam.forward.x = base->cam.target.x - base->cam.pos.x;//			VECTEUR DEVANT
+	base->cam.forward.y = base->cam.target.y - base->cam.pos.y;
+	base->cam.forward.z = base->cam.target.z - base->cam.pos.z;
+	base->cam.forward = normalize(base->cam.forward);
+
+	base->cam.up.x = 0;//				VECTEUR HAUT
+	base->cam.up.y = -1;
+	base->cam.up.z = 0;
+	base->cam.up = normalize(base->cam.up);
+
+	base->cam.right = cross(base->cam.forward, base->cam.up);//			VECTEUR DROITE
+	base->cam.right = normalize(base->cam.right);
+
+	base->cam.w_view = 0.5;
+	base->cam.h_view = 0.35;
+	base->cam.dist = 1.0;
+
+
 //	************** RAY *******************
-	base->ray.origin.x = 600;
-	base->ray.origin.y = 600;
-	base->ray.origin.z = -500;
-	base->ray.dir.x = 0;//la direction se place au tools 0/0 et look straight
-	base->ray.dir.y = 0;
-	base->ray.dir.z = 0;
+	base->ray.origin.x = base->cam.pos.x;
+	base->ray.origin.y = base->cam.pos.y;
+	base->ray.origin.z = base->cam.pos.z;
+	base->ray.cam_dir.x = 1;//la direction se place au tools 0/0 et look straight
+	base->ray.cam_dir.y = 1;
+	base->ray.cam_dir.z = 0;
+	base->ray.cam_dir = normalize(base->ray.cam_dir);
+
 	return (object);
 }

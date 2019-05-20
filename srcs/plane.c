@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 12:12:37 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/15 12:06:25 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,14 @@ void	draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools)
 
 	//********* all effects ************
 	t_color effects;
-	effects.r = diff_color.r + spec_color.r + ambient * object.plane.color.r;
-	effects.g = diff_color.g + spec_color.g + ambient * object.plane.color.g;
-	effects.b = diff_color.b + spec_color.b + ambient * object.plane.color.b;
+	effects.r = diff_color.r /*+ spec_color.r */+ ambient * object.plane.color.r;
+	effects.g = diff_color.g /*+ spec_color.g */+ ambient * object.plane.color.g;
+	effects.b = diff_color.b /*+ spec_color.b */+ ambient * object.plane.color.b;
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
 
+	//********** SHADOWS **********
 	if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
 		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
 		|| cone_light_inter(object.cone, base.light, inter_p) == 1

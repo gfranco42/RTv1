@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 12:04:29 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/20 18:32:24 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,16 @@ t_vector	normalize(t_vector v)
 	return (v);
 }
 
+t_vector	cross(t_vector a, t_vector b)
+{
+	t_vector	vector;
+
+	vector.x = a.y * b.z - a.z * b.y;
+	vector.y = a.z * b.x - a.x * b.z;
+	vector.z = a.x * b.y - a.y * b.x;
+	return (vector);
+}
+
 void		fail(int i)
 {
 	if (i == 1)
@@ -134,11 +144,26 @@ int		main(int ac, char **av)
 	t_prim		*prim;
 	int			nb_obj;
 
+	t_vector	upleft;
+
+//-------------- INITIALISATION VARIABLES ----------------------------------
+
+	object = initialize_var(&base);
+
+	// * * * * * UP LEFT * * * * *
+	upleft.x = base.cam.dist * base.cam.forward.x + base.cam.h_view / 2
+	* base.cam.up.x - base.cam.w_view / 2 * base.cam.right.x;
+	upleft.y = base.cam.dist * base.cam.forward.y + base.cam.h_view / 2
+	* base.cam.up.y - base.cam.w_view / 2 * base.cam.right.y;
+	upleft.z = base.cam.dist * base.cam.forward.z + base.cam.h_view / 2
+	* base.cam.up.z - base.cam.w_view / 2 * base.cam.right.z;
+	upleft = normalize(upleft);
+
+//-------------- CREATION TABLEAU STRUCTURES ----------------------------------
 	nb_obj = lexer(av[1], 0);
 	prim = create_tab(nb_obj);
 	prim = parser(av[1], nb_obj, prim);
 
-	object = initialize_var(&base);
 // ---------------  creation de la fenetre  ----------------------------------
 	win_create(&mlx);
 
@@ -156,10 +181,36 @@ int		main(int ac, char **av)
 			tools.s2 = 200000;
 			tools.c = 200000;
 			tools.cy = 200000;
-			base.ray.dir.x = tools.x - base.ray.origin.x;// origin prend le tools en cours (x/y)
-			base.ray.dir.y = tools.y - base.ray.origin.y;
-			base.ray.dir.z = 0 - base.ray.origin.z;
+
+			base.ray.dir.x = upleft.x + base.cam.right.x * base.cam.h_view
+			/ WIDTH * tools.x - base.cam.up.x * base.cam.w_view / HEIGHT * tools.y;
+			base.ray.dir.y = upleft.y + base.cam.right.y * base.cam.h_view
+			/ WIDTH * tools.x - base.cam.up.y * base.cam.w_view / HEIGHT * tools.y;
+			base.ray.dir.z = upleft.z + base.cam.right.z * base.cam.h_view
+			/ WIDTH * tools.x - base.cam.up.z * base.cam.w_view / HEIGHT * tools.y;
+
+
+			base.ray.dir.x = base.ray.origin.x - base.ray.dir.x;
+			base.ray.dir.y = base.ray.origin.y - base.ray.dir.y;
 			base.ray.dir = normalize(base.ray.dir);
+
+		//	printf("%lf|", base.ray.dir.x);
+
+
+			/*base.ray.dir.x = upleft.x + right.x * 0.35 / WIDTH * tools.x - up.x * 0.5 / HEIGHT * tools.y;
+			base.ray.dir.y = upleft.y + right.y * 0.35 / WIDTH * tools.x - up.y * 0.5 / HEIGHT * tools.y;
+			base.ray.dir.z = upleft.z + right.z * 0.35 / WIDTH * tools.x - up.z * 0.5 / HEIGHT * tools.y;*/
+			//printf("%lf|", base.ray.dir.x);
+
+			/*base.ray.dir.x = -1 * WIDTH / 2 + tools.x
+			* base.ray.cam_dir.z;
+			base.ray.dir.y = (base.ray.origin.y - HEIGHT / 2 + tools.y)
+			- base.ray.origin.y;
+			base.ray.dir.z = 1000 * base.ray.cam_dir.z + tools.x
+			* base.ray.cam_dir.x + tools.y * base.ray.cam_dir.y;*/
+		/*	printf("x: %lf|", base.ray.dir.x);
+			printf("y: %lf|", base.ray.dir.y);
+			printf("z: %lf|", base.ray.dir.z);*/
 			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle

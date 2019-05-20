@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/13 15:13:30 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/20 18:14:03 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WIDTH 1200
-# define HEIGHT 1200
+# define WIDTH 640
+# define HEIGHT 480
 
 //*************  STRUCTURES  ****************
 typedef struct	s_color
@@ -51,7 +51,21 @@ typedef struct	s_ray
 {
 	t_vector	origin;
 	t_vector	dir;
+	t_vector	cam_dir;
 }				t_ray;
+
+typedef struct	s_cam
+{
+	t_vector	pos;
+	t_vector	target;
+	t_vector	up;
+	t_vector	right;
+	t_vector	forward;
+	double		w_view;
+	double		h_view;
+	double		dist;
+}				t_cam;
+
 
 typedef struct s_sphere
 {
@@ -110,6 +124,7 @@ typedef struct	s_base
 {
 	t_light		light;
 	t_ray		ray;
+	t_cam		cam;
 }				t_base;
 
 
@@ -160,6 +175,7 @@ typedef	struct	s_prim
 
 //*************  FUNCTIONS ****************
 int			check_vec3(char *line);
+t_vector	cross(t_vector a, t_vector b);
 t_color		color_extract(int fd);
 void		cone_ch(int fd);
 void		cone_fill(int fd, t_prim *prim, int index);
