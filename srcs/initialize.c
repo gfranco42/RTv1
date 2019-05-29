@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/20 18:33:06 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/29 11:43:24 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ t_object		initialize_var(t_base *base)
 	base->cam.pos.z = -1;
 	base->cam.pos = normalize(base->cam.pos);
 
-	base->cam.target.x = 1;//			POINT REGARDÉ
-	base->cam.target.y = 1;
+	base->cam.target.x = 0.5;//			POINT REGARDÉ
+	base->cam.target.y = 0.5;
 	base->cam.target.z = 1;
 	base->cam.target = normalize(base->cam.target);
 
@@ -116,7 +116,7 @@ t_object		initialize_var(t_base *base)
 	base->cam.forward = normalize(base->cam.forward);
 
 	base->cam.up.x = 0;//				VECTEUR HAUT
-	base->cam.up.y = -1;
+	base->cam.up.y = 1;
 	base->cam.up.z = 0;
 	base->cam.up = normalize(base->cam.up);
 
