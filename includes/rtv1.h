@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/20 18:14:03 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/29 15:44:53 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 1200
+# define HEIGHT 1200
 
 //*************  STRUCTURES  ****************
 typedef struct	s_color
@@ -59,6 +59,7 @@ typedef struct	s_cam
 	t_vector	pos;
 	t_vector	target;
 	t_vector	up;
+	t_vector	vertical;
 	t_vector	right;
 	t_vector	forward;
 	double		w_view;

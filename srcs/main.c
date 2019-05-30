@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/20 18:32:24 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/29 15:47:52 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,21 @@ int		main(int ac, char **av)
 			tools.c = 200000;
 			tools.cy = 200000;
 
+			/*base.ray.dir.x = base.cam.forward.x + 2 * (tools.x / WIDTH - 0.5)
+			* base.cam.w_view + 2 * (tools.y / HEIGHT - 0.5) * base.cam.h_view;
+			base.ray.dir.y = base.cam.forward.y + 2 * (tools.x / WIDTH - 0.5)
+			* base.cam.w_view + 2 * (tools.y / HEIGHT - 0.5) * base.cam.h_view;
+			base.ray.dir.z = base.cam.forward.z + 2 * (tools.x / WIDTH - 0.5)
+			* base.cam.w_view + 2 * (tools.y / HEIGHT - 0.5) * base.cam.h_view;*/
+		/*	base.ray.dir.x = base.ray.origin.x + base.cam.forward.x - WIDTH / 2
+			* tools.x * base.cam.right.x + HEIGHT / 2 * tools.y
+			* base.cam.vertical.x;
+			base.ray.dir.y = base.ray.origin.y + base.cam.forward.y - WIDTH / 2
+			* tools.x * base.cam.right.y + HEIGHT / 2 * tools.y
+			* base.cam.vertical.y;
+			base.ray.dir.z = base.ray.origin.z + base.cam.forward.z - WIDTH / 2
+			* tools.x * base.cam.right.z + HEIGHT / 2 * tools.y
+			* base.cam.vertical.z;*/
 			base.ray.dir.x = upleft.x + base.cam.right.x * base.cam.h_view
 			/ WIDTH * tools.x - base.cam.up.x * base.cam.w_view / HEIGHT * tools.y;
 			base.ray.dir.y = upleft.y + base.cam.right.y * base.cam.h_view
@@ -190,8 +205,8 @@ int		main(int ac, char **av)
 			/ WIDTH * tools.x - base.cam.up.z * base.cam.w_view / HEIGHT * tools.y;
 
 
-			base.ray.dir.x = base.ray.origin.x - base.ray.dir.x;
-			base.ray.dir.y = base.ray.origin.y - base.ray.dir.y;
+		//	base.ray.dir.x = base.ray.origin.x - base.ray.dir.x;
+		//	base.ray.dir.y = base.ray.origin.y - base.ray.dir.y;
 			base.ray.dir = normalize(base.ray.dir);
 
 		//	printf("%lf|", base.ray.dir.x);

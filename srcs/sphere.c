@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/15 12:47:21 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/05/30 17:00:58 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	t1 = (-b + disc) / (2 * a);
 	t0 = (-b - disc) / (2 * a);
 	t = (t0 < 0) ? t1 : t0;
-	if (t >= 0/* && t <= 1*/)
+	if (t >= 0 && t < 1)
 		return (1);
 	return (0);
 }
@@ -166,6 +166,20 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	spec_color.g = base.light.color.g * si;
 	spec_color.b = base.light.color.b * si;
 
+	//*********** SHADOWS ************
+	if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
+		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
+		|| cone_light_inter(object.cone, base.light, inter_p) == 1
+		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
+	{
+		spec_color.r = 0;
+		spec_color.g = 0;
+		spec_color.b = 0;
+		diff_color.r = 0;
+		diff_color.g = 0;
+		diff_color.b = 0;
+	}
+
 	//********* all effects ************
 	t_color effects;
 	effects.r = diff_color.r + spec_color.r + ambient * sphere.color.r;
@@ -174,17 +188,6 @@ void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
-
-	//*********** SHADOWS ************
-	if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
-		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
-		|| cone_light_inter(object.cone, base.light, inter_p) == 1
-		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
-	{
-		effects.r = 0;
-		effects.g = 0;
-		effects.b = 0;
-	}
 
 	//********* color ************
 	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b/*final_color.b*/;// Color the pixel
