@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/30 17:02:32 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/03 13:01:28 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,15 +140,6 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 
 t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 {
-/*	t_vector	normal;
-
-	normal.x = inter_p.x - cone.tip.x - (1 + cone.angle * cone.angle)
-	* cone.dir.x;
-	normal.y = inter_p.y - cone.tip.y - (1 + cone.angle * cone.angle)
-	* cone.dir.y;
-	normal.x = inter_p.z - cone.tip.z - (1 + cone.angle * cone.angle)
-	* cone.dir.z;*/
-
 	t_vector	normal;
 	t_vector	vec_minus;
 	t_vector	o_center;
@@ -176,7 +167,6 @@ t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 		normal.z *= -1;
 	}
 	return (normal);
-//	return (normalize(inter_p));
 }
 
 void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools)

@@ -1,37 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder_check.c                                   :+:      :+:    :+:   */
+/*   camera_fill.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/06 20:00:22 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 12:02:10 by gfranco          ###   ########.fr       */
+/*   Created: 2019/06/06 12:10:31 by gfranco           #+#    #+#             */
+/*   Updated: 2019/06/06 12:13:15 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-void		cylinder_ch(int fd)
+void		camera_fill(int fd, t_prim *prim, int index)
 {
-	int		i;
-	char	*line;
-
-	i = -1;
-	while (++i < 3)
-	{
-		if (get_next_line(fd, &line) > 0)
-			if (check_vec3(line) == 0)
-				fail(1);
-		if (ft_strcmp(line, "") == 0)
-			fail(1);
-		free(line);
-	}
-	if (get_next_line(fd, &line) > 0)
-		if (str_isdouble(line) == 0)
-			fail(1);
-	if (ft_strcmp(line, "") == 0)
-		fail(1);
-	free(line);
-	printf("cylinder OK\n");
+	prim[index].camera.pos = vec3_extract(fd);
+	prim[index].camera.target = vec3_extract(fd);
+	prim[index].camera.up = vec3_extract(fd);
+	prim[index].type = 5;
 }

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder_check.c                                   :+:      :+:    :+:   */
+/*   camera_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/06 20:00:22 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 12:02:10 by gfranco          ###   ########.fr       */
+/*   Created: 2019/06/06 11:47:51 by gfranco           #+#    #+#             */
+/*   Updated: 2019/06/06 12:08:00 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-void		cylinder_ch(int fd)
+void		camera_ch(int fd)
 {
 	int		i;
 	char	*line;
@@ -27,11 +27,5 @@ void		cylinder_ch(int fd)
 			fail(1);
 		free(line);
 	}
-	if (get_next_line(fd, &line) > 0)
-		if (str_isdouble(line) == 0)
-			fail(1);
-	if (ft_strcmp(line, "") == 0)
-		fail(1);
-	free(line);
-	printf("cylinder OK\n");
+	printf("camera OK\n");
 }

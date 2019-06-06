@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/30 17:03:07 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/06 12:43:17 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ t_object		initialize_var(t_base *base)
 	base->light.color.b = 0xFF;
 
 //	************** CAMERA *******************
-	base->cam.pos.x = -600;//			POSITION
-	base->cam.pos.y = 0;
-	base->cam.pos.z = 2000;
+	base->cam.pos.x = 600;//			POSITION
+	base->cam.pos.y = 600;
+	base->cam.pos.z = -600;
 	//base->cam.pos = normalize(base->cam.pos);
 
 	base->cam.target.x = 600;//			POINT REGARDÉ

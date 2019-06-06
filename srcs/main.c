@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/29 15:47:52 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/06 14:09:28 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,6 @@ void		fail(int i)
 		write(1, "usage: ./rtv1 <file>\n", 21);
 		exit(0);
 	}
-	else if (i == 2)
-	{
-		write(1, "usage: ./rtv1 <file>\n", 21);
-		exit(0);
-	}
 	else if (i == 3)
 	{
 		write(1, "fail to malloc obj tab\n", 23);
@@ -126,6 +121,11 @@ void		fail(int i)
 	else if (i == 4)
 	{
 		write(1, "ERROR: problem occurs during data procurement\n", 46);
+		exit(0);
+	}
+	else if (i == 5)
+	{
+		write(1, "ERROR: Wrong camera settings\n", 29);
 		exit(0);
 	}
 }
@@ -143,6 +143,7 @@ int		main(int ac, char **av)
 	t_object	object;
 	t_prim		*prim;
 	int			nb_obj;
+	int			cam;
 
 	t_vector	upleft;
 
@@ -160,7 +161,10 @@ int		main(int ac, char **av)
 	upleft = normalize(upleft);
 
 //-------------- CREATION TABLEAU STRUCTURES ----------------------------------
-	nb_obj = lexer(av[1], 0);
+	cam = 0;
+	nb_obj = lexer(av[1], 0, &cam);
+	if (cam != 1)
+		fail(1);
 	prim = create_tab(nb_obj);
 	prim = parser(av[1], nb_obj, prim);
 

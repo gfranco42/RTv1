@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:49:29 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/09 16:05:31 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/06 13:48:01 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_prim			*parser(char *file, int number, t_prim *prim)
 	char	*line;
 	typedef void	(*t_check)(int, t_prim*, int);
 	const t_check prim_obj[] = {&sphere_fill, &plane_fill, &cone_fill,
-	&cylinder_fill, &light_fill};
+	&cylinder_fill, &light_fill, &camera_fill};
 	number = 0;
 	if ((fd = open(file, O_RDONLY)) < 0)
 		fail(1);

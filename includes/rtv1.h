@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/29 15:44:53 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/06 14:08:26 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ typedef struct	s_light
 	t_color		color;
 }				t_light;
 
+typedef	struct	s_camera
+{
+	t_vector	pos;
+	t_vector	target;
+	t_vector	up;
+}				t_camera;
+
+
 typedef struct	s_ray
 {
 	t_vector	origin;
@@ -67,6 +75,13 @@ typedef struct	s_cam
 	double		dist;
 }				t_cam;
 
+typedef struct	s_l_eff
+{
+	t_color		specular;
+	t_color		diffuse;
+	t_color 	effect;
+	double		ambient;
+}				t_l_eff;
 
 typedef struct s_sphere
 {
@@ -171,11 +186,16 @@ typedef	struct	s_prim
 		t_cone		cone;
 		t_cylinder	cyl;
 		t_light		light;
+		t_camera	camera;
 	};
 }				t_prim;
 
 //*************  FUNCTIONS ****************
+double		ambient_l(t_vector eye, t_vector normal);
+void		camera_ch(int fd);
+void		camera_fill(int fd, t_prim *prim, int index);
 int			check_vec3(char *line);
+t_prim		*create_tab(int nb_obj);
 t_vector	cross(t_vector a, t_vector b);
 t_color		color_extract(int fd);
 void		cone_ch(int fd);
@@ -186,6 +206,7 @@ void		cylinder_ch(int fd);
 void		cylinder_fill(int fd, t_prim *prim, int index);
 int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t);
 int			cylinder_light_inter(t_cylinder cyl, t_light light, t_vector inter_p);
+t_color		diffuse_l(t_vector normal, t_vector lr, t_color color);
 double		dot(t_vector a, t_vector b);
 double		double_extract(int fd);
 void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools);
@@ -195,8 +216,9 @@ void		draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools);
 t_object	initialize_var(t_base *base);
 void		fail(int i);
 int			key(int key, void *param);
-int			lexer(char *file, int number);
+int			lexer(char *file, int number, int *cam);
 void		light_ch(int fd);
+t_color		light_effect(t_color diff, t_color spec, double amb, t_color color);
 void		light_fill(int fd, t_prim *prim, int index);
 int			name_obj(char *line);
 double		norm(t_vector v);
@@ -205,10 +227,12 @@ void		plane_ch(int fd);
 void		plane_fill(int fd, t_prim *prim, int index);
 int			plane_intersect(t_plane plane, t_ray ray, double t);
 t_prim		*parser(char *file, int number, t_prim *prim);
+void		print_pixel(t_mlx mlx, t_tools tools, t_color color);
 double		power(double i, int power_value);
-t_prim		*create_tab(int nb_obj);
 void		put_color(int x, int y, unsigned int *str, double dt);
 t_vector	reflect(t_vector n, t_vector i);
+t_color		rgb_value(t_color color, double r, double g, double b);
+t_color		specular_l(t_vector normal, t_vector half, t_color color);
 void		sphere_ch(int fd);
 void		sphere_fill(int fd, t_prim *prim, int index);
 int			sphere_intersect(t_sphere sphere, t_ray ray, double t);
@@ -216,6 +240,14 @@ int			sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p);
 int			str_isdigit(char *str);
 int			str_isdot(char *str);
 int			str_isdouble(char *str);
+t_vector	vec_add(t_vector a, t_vector b);
+t_vector	vec_sub(t_vector a, t_vector b);
+t_vector	vec_mult(t_vector a, t_vector b);
+t_vector	vec_div(t_vector a, t_vector b);
+t_vector	vec_add_double(t_vector a, double b);
+t_vector	vec_sub_double(t_vector a, double b);
+t_vector	vec_mult_double(t_vector a, double b);
+t_vector	vec_div_double(t_vector a, double b);
 t_vector	vec3_extract(int fd);
 
 #endif
