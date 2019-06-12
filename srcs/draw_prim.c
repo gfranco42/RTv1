@@ -6,13 +6,13 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:50:07 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/12 12:40:18 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/12 14:48:32 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-double		intersect_prim(t_prim *prim, int i, t_base base)
+/*double		intersect_prim(t_prim *prim, int i, t_base base)
 {
 	double		t;
 
@@ -33,4 +33,12 @@ void	draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i)
 		draw_sphere(base, prim[i].sphere, mlx, base.t)
 
 
-}
+}*/
+/*
+	Pour chaque objet du tableau, check intersection garder la distance
+	la plus courte et l'objet associé.
+
+	Si intersection
+		draw le pixel de l'objet en question
+
+*/

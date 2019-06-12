@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/12 12:49:01 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/12 14:50:26 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int		main(int ac, char **av)
 	t_tools		tools;
 	t_object	object;
 	t_prim		*prim;
-	double		t;
-	double		tmp;
+/*	double		t;
+	double		tmp;*/
 	int			nb_obj;
 	int			cam;
 
@@ -76,6 +76,7 @@ int		main(int ac, char **av)
 	int	i = -1;
 	while (++i < nb_obj)
 		printf("%d\n", prim[i].type);
+	i = -1;
 
 	win_create(&mlx);
 
@@ -85,12 +86,11 @@ int		main(int ac, char **av)
 		tools.x = -1;
 		while (++tools.x < WIDTH)
 		{
-			tools.p = 200000;
-			tools.s1 = 200000;
-			tools.s2 = 200000;
-			tools.c = 200000;
-			tools.cy = 200000;
-
+			tools.p = 20000;
+			tools.s1 = 20000;
+			tools.s2 = 20000;
+			tools.c = 20000;
+			tools.cy = 20000;
 			base.ray.dir.x = upleft.x + base.cam.right.x * base.cam.h_view
 			/ WIDTH * tools.x - base.cam.up.x * base.cam.w_view / HEIGHT * tools.y;
 			base.ray.dir.y = upleft.y + base.cam.right.y * base.cam.h_view
@@ -100,11 +100,11 @@ int		main(int ac, char **av)
 
 			base.ray.dir = normalize(base.ray.dir);
 
-			while (++i < nb)
+		/*	while (++i < nb_obj)
 			{
-
-				t = intersect_prim(prim, i, base) < t ? intersect
-			}
+				tmp = t;
+				tools.t = intersect_prim(prim, i, base) < tmp ?
+			}*/
 			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
