@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 14:15:40 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/11 16:49:56 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,40 +84,31 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
-void	draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools)
+void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 {
 	t_vector	inter_p;
 	t_vector	normal;
 	t_vector 	half;
 	t_vector 	eye;
-	t_sphere	sphere;
 	t_l_eff		l_e;
-	double		t;
 
-	t = tools.s1 < tools.s2 ? tools.s1 : tools.s2;
-	if (t == tools.s2)
-		sphere = object.sphere2;
-	else
-		sphere = object.sphere;
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, t));
+	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.s1));
 	base.light.ray = normalize(vec_sub(base.light.src, inter_p));
 	normal = getnormal_sphere(sphere, inter_p);// calcul normal
 	eye = normalize(base.ray.dir);
-	//**************************LIGHT BEGINS******************************
 	half = vec_add(vec_mult_double(base.light.ray, -1), eye);
 	half = normalize(half);
 	l_e.ambient = ambient_l(eye, normal);
 	l_e.diffuse = diffuse_l(normal, base.light.ray, sphere.color);
 	l_e.specular = specular_l(normal, half, base.light.color);
-	if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
+	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
 		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
 		|| cone_light_inter(object.cone, base.light, inter_p) == 1
 		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-	}
+	}*/
 	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, sphere.color);
 	print_pixel(mlx, tools, l_e.effect);
-	//**************************LIGHT ENDS******************************
 }

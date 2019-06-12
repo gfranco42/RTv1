@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 14:08:26 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/11 18:54:15 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,9 @@ typedef struct	s_base
 	t_light		light;
 	t_ray		ray;
 	t_cam		cam;
+	int			x;
+	int			y;
+	double		t;
 }				t_base;
 
 
@@ -178,7 +181,7 @@ typedef enum	e_type
 //************* STRUCTURE UNION ****************
 typedef	struct	s_prim
 {
-	int				type;
+	t_type				type;
 	union
 	{
 		t_sphere	sphere;
@@ -195,13 +198,13 @@ double		ambient_l(t_vector eye, t_vector normal);
 void		camera_ch(int fd);
 void		camera_fill(int fd, t_prim *prim, int index);
 int			check_vec3(char *line);
-t_prim		*create_tab(int nb_obj);
-t_vector	cross(t_vector a, t_vector b);
 t_color		color_extract(int fd);
 void		cone_ch(int fd);
 void		cone_fill(int fd, t_prim *prim, int index);
 int			cone_intersect(t_cone cone, t_ray ray, double t);
 int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p);
+t_prim		*create_tab(int nb_obj);
+t_vector	cross(t_vector a, t_vector b);
 void		cylinder_ch(int fd);
 void		cylinder_fill(int fd, t_prim *prim, int index);
 int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t);
@@ -212,7 +215,7 @@ double		double_extract(int fd);
 void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools);
 void		draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools);
-void		draw_sphere(t_base base, t_object object, t_mlx mlx, t_tools tools);
+void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
 t_object	initialize_var(t_base *base);
 void		fail(int i);
 int			key(int key, void *param);
@@ -240,6 +243,7 @@ int			sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p);
 int			str_isdigit(char *str);
 int			str_isdot(char *str);
 int			str_isdouble(char *str);
+t_vector	upleft_calc(t_base base);
 t_vector	vec_add(t_vector a, t_vector b);
 t_vector	vec_sub(t_vector a, t_vector b);
 t_vector	vec_mult(t_vector a, t_vector b);
