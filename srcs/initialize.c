@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 12:43:17 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/15 13:18:36 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,6 @@ t_object		initialize_var(t_base *base)
 	object.cone.dir.y = 1;
 	object.cone.dir.z = 0;
 
-	/*object.cone.b_center.x = WIDTH * 0.1;//		CENTRE BASE
-	object.cone.b_center.y = HEIGHT - 200;
-	object.cone.b_center.z = 1000;*/
-
-	//object.cone.b_radius = 0.14;
-
 	object.cone.angle = 0.2;
 
 	object.cone.color.r = 0xFF;// 			COULEUR
@@ -100,15 +94,13 @@ t_object		initialize_var(t_base *base)
 	base->light.color.b = 0xFF;
 
 //	************** CAMERA *******************
-	base->cam.pos.x = 600;//			POSITION
+	base->cam.pos.x = 600;
 	base->cam.pos.y = 600;
 	base->cam.pos.z = -600;
-	//base->cam.pos = normalize(base->cam.pos);
 
 	base->cam.target.x = 600;//			POINT REGARDÉ
 	base->cam.target.y = 600;
 	base->cam.target.z = 600;
-	//base->cam.target = normalize(base->cam.target);
 
 	base->cam.up.x = 0;//				VECTEUR HAUT
 	base->cam.up.y = -1;

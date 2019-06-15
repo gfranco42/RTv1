@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/12 14:16:52 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/15 16:29:59 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # define WIDTH 1200
 # define HEIGHT 1200
 
-//*************  STRUCTURES  ****************
 typedef struct	s_color
 {
 	int			r;
@@ -47,12 +46,12 @@ typedef struct	s_light
 	t_color		color;
 }				t_light;
 
-typedef	struct	s_camera
+/*typedef	struct	s_camera
 {
 	t_vector	pos;
 	t_vector	target;
 	t_vector	up;
-}				t_camera;
+}				t_camera;*/
 
 
 typedef struct	s_ray
@@ -94,10 +93,8 @@ typedef struct	s_cone
 {
 	t_vector	tip;
 	t_color		color;
-	t_vector	b_center;
 	t_vector	dir;
 	double		angle;
-	double		b_radius;
 }				t_cone;
 
 typedef struct s_plane
@@ -141,9 +138,7 @@ typedef struct	s_base
 	t_light		light;
 	t_ray		ray;
 	t_cam		cam;
-	int			x;
-	int			y;
-	double		t;
+	t_tools		tools;
 }				t_base;
 
 
@@ -168,17 +163,16 @@ typedef struct	s_all
 	t_ray		ray;
 }				t_all;
 
-//************* ENUM ****************
 typedef enum	e_type
 {
 	SPHERE,
 	PLANE,
 	CONE,
 	CYLINDER,
-	LIGHT
+	LIGHT,
+	CAMERA
 }				t_type;
 
-//************* STRUCTURE UNION ****************
 typedef	struct	s_prim
 {
 	t_type				type;
@@ -189,11 +183,10 @@ typedef	struct	s_prim
 		t_cone		cone;
 		t_cylinder	cyl;
 		t_light		light;
-		t_camera	camera;
+		t_cam		cam;
 	};
 }				t_prim;
 
-//*************  FUNCTIONS ****************
 double		ambient_l(t_vector eye, t_vector normal);
 void		camera_ch(int fd);
 void		camera_fill(int fd, t_prim *prim, int index);
@@ -208,17 +201,21 @@ t_vector	cross(t_vector a, t_vector b);
 void		cylinder_ch(int fd);
 void		cylinder_fill(int fd, t_prim *prim, int index);
 int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t);
-int			cylinder_light_inter(t_cylinder cyl, t_light light, t_vector inter_p);
+int			cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p);
 t_color		diffuse_l(t_vector normal, t_vector lr, t_color color);
+t_color		diffuse_l_plane(t_vector normal, t_vector lr, t_color color);
 double		dot(t_vector a, t_vector b);
 double		double_extract(int fd);
-void		draw_cone(t_base base, t_object object, t_mlx mlx, t_tools tools);
-void		draw_cylinder(t_base base, t_object object, t_mlx mlx, t_tools tools);
-void		draw_plane(t_base base, t_object object, t_mlx mlx, t_tools tools);
+void		draw_cone(t_base base, t_cone cone, t_mlx mlx, t_tools tools);
+void		draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools);
+void		draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools);
+void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i);
 void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
 t_object	initialize_var(t_base *base);
-double		intersect_prim(t_prim *prim, int i, t_base base);
+double		intersect_prim(t_prim *prim, int i, t_base base, double t);
 void		fail(int i);
+void		free_tab(char **tab, int len);
+double		get_double(char **split);
 int			key(int key, void *param);
 int			lexer(char *file, int number, int *cam);
 void		light_ch(int fd);
@@ -240,7 +237,7 @@ t_color		specular_l(t_vector normal, t_vector half, t_color color);
 void		sphere_ch(int fd);
 void		sphere_fill(int fd, t_prim *prim, int index);
 int			sphere_intersect(t_sphere sphere, t_ray ray, double t);
-int			sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p);
+int			sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p);
 int			str_isdigit(char *str);
 int			str_isdot(char *str);
 int			str_isdouble(char *str);

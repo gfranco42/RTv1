@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 11:28:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 14:15:09 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:10:59 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@ double		ambient_l(t_vector eye, t_vector normal)
 
 	ambient = dot(eye, normal) * 0.5;
 	return (ambient);
+}
+
+t_color		diffuse_l_plane(t_vector normal, t_vector lr, t_color color)
+{
+	t_color		diff;
+	double		di;
+
+	di = dot(normal, lr) * 2.5;
+	di = di < 0 ? 0 : di;
+	di *= di;
+	diff.r = color.r * di;
+	diff.g = color.g * di;
+	diff.b = color.b * di;
+	return (diff);
 }
 
 t_color		diffuse_l(t_vector normal, t_vector lr, t_color color)

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 20:00:30 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/07 13:17:30 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/13 16:00:55 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void		light_ch(int fd)
 			fail(1);
 		free(line);
 	}
-	printf("light OK\n");
 }

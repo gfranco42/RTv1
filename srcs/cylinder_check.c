@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 20:00:22 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 12:02:10 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/13 16:00:40 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,4 @@ void		cylinder_ch(int fd)
 	if (ft_strcmp(line, "") == 0)
 		fail(1);
 	free(line);
-	printf("cylinder OK\n");
 }

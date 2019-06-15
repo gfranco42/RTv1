@@ -6,13 +6,13 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/11 16:49:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/15 15:29:05 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
+int		sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
 {
 	t_vector	o_center;
 	t_vector	lr;
@@ -32,7 +32,7 @@ int		sphere_light_inter(t_sphere sphere, t_light light, t_vector inter_p)
 	t[2] = (-r[1] + disc) / (2 * r[0]);
 	t[1] = (-r[1] - disc) / (2 * r[0]);
 	t[0] = (t[1] < 0) ? t[2] : t[1];
-	if (t[0] > 0 && t[0] < 1)
+	if (t[0] >= 0 && t[0] <= 1)
 		return (1);
 	return (0);
 }
@@ -57,10 +57,8 @@ int		sphere_intersect(t_sphere sphere, t_ray ray, double t)
 		d[1] = (-r[1] + disc) / (2 * r[0]);
 		d[0] = (-r[1] - disc) / (2 * r[0]);
 		t = (d[0] < 0) ? d[1] : d[0];
-		if (t > 0)
-			return (t);
+		return (t);
 	}
-	return (t);
 }
 
 t_vector	getnormal_sphere(t_sphere sphere, t_vector inter_p)
@@ -92,12 +90,11 @@ void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 	t_vector 	eye;
 	t_l_eff		l_e;
 
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.s1));
+	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.t));
 	base.light.ray = normalize(vec_sub(base.light.src, inter_p));
-	normal = getnormal_sphere(sphere, inter_p);// calcul normal
+	normal = getnormal_sphere(sphere, inter_p);
 	eye = normalize(base.ray.dir);
-	half = vec_add(vec_mult_double(base.light.ray, -1), eye);
-	half = normalize(half);
+	half = normalize(vec_add(vec_mult_double(base.light.ray, -1), eye));
 	l_e.ambient = ambient_l(eye, normal);
 	l_e.diffuse = diffuse_l(normal, base.light.ray, sphere.color);
 	l_e.specular = specular_l(normal, half, base.light.color);

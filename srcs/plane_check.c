@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 19:59:41 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/07 12:30:04 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/13 16:01:01 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void		plane_ch(int fd)
 			fail(1);
 		free(line);
 	}
-	printf("plane OK\n");
 }

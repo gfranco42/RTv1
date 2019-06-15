@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 19:59:21 by gfranco           #+#    #+#             */
-/*   Updated: 2019/05/08 16:58:28 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/13 16:01:06 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,4 @@ void		sphere_ch(int fd)
 	if (ft_strcmp(line, "") == 0)
 		fail(1);
 	free(line);
-	printf("sphere OK\n");
 }

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 11:47:51 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 12:08:00 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/14 16:29:36 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void		camera_ch(int fd)
 			fail(1);
 		free(line);
 	}
-	printf("camera OK\n");
 }

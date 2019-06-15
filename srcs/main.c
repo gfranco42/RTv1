@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/12 14:50:26 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/15 16:28:39 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int		main(int ac, char **av)
 	t_mlx		mlx;
 	t_vector	upleft;
 	t_base		base;
-	t_tools		tools;
 	t_object	object;
 	t_prim		*prim;
-/*	double		t;
-	double		tmp;*/
+	double		tmp;
 	int			nb_obj;
 	int			cam;
+	int			i = -1;
+	int			j;
 
 	if (ac != 2)
 		fail(2);
@@ -73,44 +73,96 @@ int		main(int ac, char **av)
 		fail(1);
 	prim = create_tab(nb_obj);
 	prim = parser(av[1], nb_obj, prim);
-	int	i = -1;
 	while (++i < nb_obj)
-		printf("%d\n", prim[i].type);
+	{
+		if (prim[i].type == LIGHT)
+		{
+			base.light.src.x = prim[i].light.src.x;
+			base.light.src.y = prim[i].light.src.y;
+			base.light.src.z = prim[i].light.src.z;
+			base.light.color.r = prim[i].light.color.r;
+			base.light.color.g = prim[i].light.color.g;
+			base.light.color.b = prim[i].light.color.b;
+		}
+		if (prim[i].type == CAMERA)
+		{
+			base.cam.pos.x = prim[i].cam.pos.x;
+			base.cam.pos.y = prim[i].cam.pos.y;
+			base.cam.pos.z = prim[i].cam.pos.z;
+			base.cam.target.x = prim[i].cam.target.x;
+			base.cam.target.y = prim[i].cam.target.y;
+			base.cam.target.z = prim[i].cam.target.z;
+			base.cam.up.x = prim[i].cam.up.x;
+			base.cam.up.y = prim[i].cam.up.y;
+			base.cam.up.z = prim[i].cam.up.z;
+			prim[i].cam.forward = normalize(vec_sub(prim[i].cam.target, prim[i].cam.pos));
+			prim[i].cam.right = normalize(cross(prim[i].cam.forward, prim[i].cam.up));
+			prim[i].cam.vertical = normalize(cross(prim[i].cam.right, prim[i].cam.forward));
+			prim[i].cam.w_view = 1.0;
+			prim[i].cam.h_view = 1.0;
+			prim[i].cam.dist = 0.5;
+			base.cam.forward.x = prim[i].cam.forward.x;
+			base.cam.forward.y = prim[i].cam.forward.y;
+			base.cam.forward.z = prim[i].cam.forward.z;
+			base.cam.right.x = prim[i].cam.right.x;
+			base.cam.right.y = prim[i].cam.right.y;
+			base.cam.right.z = prim[i].cam.right.z;
+			base.cam.vertical.x = prim[i].cam.vertical.x;
+			base.cam.vertical.y = prim[i].cam.vertical.y;
+			base.cam.vertical.z = prim[i].cam.vertical.z;
+			base.cam.w_view = 1.0;
+			base.cam.h_view = 1.0;
+			base.cam.dist = 0.5;
+		}
+	}
 	i = -1;
 
 	win_create(&mlx);
 
-	tools.y = -1;
-	while (++tools.y < HEIGHT)
+	base.tools.y = -1;
+	while (++base.tools.y < HEIGHT)
 	{
-		tools.x = -1;
-		while (++tools.x < WIDTH)
+		base.tools.x = -1;
+		while (++base.tools.x < WIDTH)
 		{
-			tools.p = 20000;
+
+		/*	tools.p = 20000;
 			tools.s1 = 20000;
 			tools.s2 = 20000;
 			tools.c = 20000;
-			tools.cy = 20000;
+			tools.cy = 20000;*/
+			base.tools.t = 200000.0;
+			tmp = 200000.0;
 			base.ray.dir.x = upleft.x + base.cam.right.x * base.cam.h_view
-			/ WIDTH * tools.x - base.cam.up.x * base.cam.w_view / HEIGHT * tools.y;
+			/ WIDTH * base.tools.x - base.cam.up.x * base.cam.w_view / HEIGHT * base.tools.y;
 			base.ray.dir.y = upleft.y + base.cam.right.y * base.cam.h_view
-			/ WIDTH * tools.x - base.cam.up.y * base.cam.w_view / HEIGHT * tools.y;
+			/ WIDTH * base.tools.x - base.cam.up.y * base.cam.w_view / HEIGHT * base.tools.y;
 			base.ray.dir.z = upleft.z + base.cam.right.z * base.cam.h_view
-			/ WIDTH * tools.x - base.cam.up.z * base.cam.w_view / HEIGHT * tools.y;
+			/ WIDTH * base.tools.x - base.cam.up.z * base.cam.w_view / HEIGHT * base.tools.y;
 
 			base.ray.dir = normalize(base.ray.dir);
 
-		/*	while (++i < nb_obj)
+			while (++i < nb_obj)
 			{
-				tmp = t;
-				tools.t = intersect_prim(prim, i, base) < tmp ?
-			}*/
-			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
+				if (prim[i].type == CAMERA && prim[i].type == LIGHT)
+					continue ;
+				tmp = intersect_prim(prim, i, base, base.tools.t);
+				if (tmp < base.tools.t)
+				{
+			//		if (prim[i].type == CONE)
+			//			printf("tmp: %lf\n", tmp);
+					base.tools.t = tmp;
+					j = i;
+				}
+			}
+			i = -1;
+			draw_prim(prim, base, mlx, j);
+/*			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
 			tools.c = cone_intersect(object.cone, base.ray, tools.c);
-			tools.cy = cylinder_intersect(object.cyl, base.ray, tools.cy);
-			if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 100000
+			tools.cy = cylinder_intersect(object.cyl, base.ray, tools.cy);*/
+			/*if (tools.p < tools.s1 && tools.p < tools.s2 && tools.p <= 100000
 				&& tools.p < tools.c && tools.p < tools.cy)
 				draw_plane(base, object, mlx, tools);
 			if (tools.s1 < tools.p && tools.s1 < tools.s2
@@ -124,7 +176,7 @@ int		main(int ac, char **av)
 				draw_cone(base, object, mlx, tools);
 			if (tools.cy < tools.s1 && tools.cy < tools.p
 				&& tools.cy < tools.c && tools.cy < tools.s2)
-				draw_cylinder(base, object, mlx, tools);
+				draw_cylinder(base, object, mlx, tools);*/
 		}
 	}
 	mlx_hook(mlx.win, KEYPRESS, KEYPRESSMASK, key, 0);
