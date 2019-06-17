@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 17:11:41 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:13:26 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
 
 void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 {
-/*	t_vector	inter_p;
+	t_vector	inter_p;
 	t_vector	normal;
 	t_vector	half;
 	t_vector	eye;
@@ -115,79 +115,5 @@ void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 //		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
 //	}
 	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, cyl.color);
-	print_pixel(mlx, tools, l_e.effect);*/
-
-		t_vector	inter_p;
-	t_vector	normal;
-	double		ambient;
-
-	inter_p.x = base.ray.origin.x + base.ray.dir.x * tools.t;// intersection point
-	inter_p.y = base.ray.origin.y + base.ray.dir.y * tools.t;
-	inter_p.z = base.ray.origin.z + base.ray.dir.z * tools.t;
-/*	printf("inter_p: %lf || %lf || %lf\n", inter_p.x, inter_p.y, inter_p.z);
-	printf("ray origin: %lf || %lf || %lf\n", base.ray.origin.x, base.ray.origin.y, base.ray.origin.z);
-	printf("ray dir: %lf || %lf || %lf\n", base.ray.dir.x, base.ray.dir.y, base.ray.dir.z);
-	printf("t: %lf\n", tools.t);*/
-
-	base.light.ray.x = base.light.src.x - inter_p.x;// area of the light spot
-	base.light.ray.y = base.light.src.y - inter_p.y;
-	base.light.ray.z = base.light.src.z - inter_p.z;
-
-	normal = getnm_cyl(cyl, inter_p, base.ray, tools.t);// calcul normal
-	t_vector nm = normalize(normal);
-	//printf("nm: %lf || %lf || %lf\n", nm.x, nm.y, nm.z);
-	t_vector lr = normalize(base.light.ray);
-//	printf("lr: %lf || %lf || %lf\n", lr.x, lr.y, lr.z);
-	t_vector eye = normalize(base.ray.dir);
-	t_vector half;
-	half.x = -lr.x + eye.x;
-	half.y = -lr.y + eye.y;
-	half.z = -lr.z + eye.z;
-	half = normalize(half);
-
-	ambient = -dot(eye, nm) * 0.5;
-//	printf("ambient: %lf\n", ambient);
-
-	double	di = dot(nm, lr) * 2.5;
-	di = di < 0 ? 0 : di;
-	di *= di;
-
-	t_color	diff_color;
-	diff_color.r = cyl.color.r * di;
-	diff_color.g = cyl.color.g * di;
-	diff_color.b = cyl.color.b * di;
-
-	double	p = 80;//	shininess
-	double dot_p = -dot(nm, half);
-	dot_p = dot_p < 0 ? 0 : dot_p;
-	double si = 3 * power(dot_p, p);
-
-	t_color	spec_color;
-	spec_color.r = base.light.color.r * si;
-	spec_color.g = base.light.color.g * si;
-	spec_color.b = base.light.color.b * si;
-
-	//if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
-//		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
-//		|| cone_light_inter(object.cone, base.light, inter_p) == 1)
-	//{
-	//	spec_color.r = 0;
-	//	spec_color.g = 0;
-	//	spec_color.b = 0;
-	//	diff_color.r = 0;
-	//	diff_color.g = 0;
-	//	diff_color.b = 0;
-//	}
-
-	t_color effects;
-	effects.r = diff_color.r + spec_color.r + ambient * cyl.color.r;
-	effects.g = diff_color.g + spec_color.g + ambient * cyl.color.g;
-	effects.b = diff_color.b + spec_color.b + ambient * cyl.color.b;
-	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
-	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
-	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
-
-	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b;// Color the pixel
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = effects.g;
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = effects.r;
+	print_pixel(mlx, tools, l_e.effect);
 }
