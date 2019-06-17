@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/15 16:40:48 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 16:45:22 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int		cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
 	r[2] = dot(o_center, o_center) - dot(o_center, cyl.dir)
 	* dot(o_center, cyl.dir) - cyl.radius * cyl.radius;
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
-
 	if (disc < 0)
 		return (0);
 	disc = sqrt(disc);
@@ -48,28 +47,28 @@ int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 	double		disc;
 
 	o_center = vec_sub(ray.origin, cyl.center);
-	cyl.dir = normalize(cyl.dir);
-//	printf("raydirx: %lf || raydiry: %lf || raydirz: %lf\n", ray.dir.x, ray.dir.y, ray.dir.z);
-//	printf("cyldirx: %lf || cyldiry: %lf || cyldirz: %lf\n", cyl.dir.x, cyl.dir.y, cyl.dir.z);
-	r[0] = dot(normalize(ray.dir), normalize(ray.dir)) - dot(normalize(ray.dir), cyl.dir)
-	* dot(normalize(ray.dir), cyl.dir);
-	r[1] = 2 * (dot(normalize(ray.dir), o_center) - dot(normalize(ray.dir), cyl.dir)
+	r[0] = dot(ray.dir, ray.dir) - dot(ray.dir, cyl.dir)
+	* dot(ray.dir, cyl.dir);
+	r[1] = 2 * (dot(ray.dir, o_center) - dot(ray.dir, cyl.dir)
 	* dot(o_center, cyl.dir));
 	r[2] = dot(o_center, o_center) - dot(o_center, cyl.dir)
 	* dot(o_center, cyl.dir) - cyl.radius * cyl.radius;
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
-
 	if (disc < 0)
+	{
+	//	printf("cyl disc: %lf\n", disc);
+
 		return (t);
+	}
 	else
 	{
 		disc = sqrt(disc);
 		d[1] = (-r[1] + disc) / (2 * r[0]);
 		d[0] = (-r[1] - disc) / (2 * r[0]);
 		t = (d[0] < 0) ? d[1] : d[0];
+	//	printf("cyl t: %lf\n", t);
 		return (t);
 	}
-	return (t);
 }
 
 t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
@@ -86,57 +85,74 @@ t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
 	normal.x = inter_p.x - cyl.center.x - cyl.dir.x * m;
 	normal.y = inter_p.y - cyl.center.y - cyl.dir.y * m;
 	normal.z = inter_p.z - cyl.center.z - cyl.dir.z * m;
-	//normal = normalize(normal);
-
 	return (normal);
 }
 
 void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 {
-	t_vector	inter_p;
+/*	t_vector	inter_p;
 	t_vector	normal;
 	t_vector	half;
 	t_vector	eye;
 	t_l_eff		l_e;
 
-	cyl.dir = normalize(cyl.dir);
 	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.t));
 	base.light.ray = normalize(vec_sub(base.light.src, inter_p));
-	normal = getnm_cyl(cyl, inter_p, base.ray, tools.t);
+	normal = normalize(getnm_cyl(cyl, inter_p, base.ray, tools.t));
 	eye = normalize(base.ray.dir);
 	half = normalize(vec_add(vec_mult_double(base.light.ray, -1), eye));
 
-	l_e.ambient = ambient_l(eye, normal);
-	l_e.diffuse = diffuse_l(normal, base.light.ray, cyl.color);
-	l_e.specular = specular_l(normal, half, base.light.color);
+	l_e.ambient = ambient_l(eye, normal, -0.5);
+	l_e.diffuse = diffuse_l_alt(normal, base.light.ray, cyl.color);
+	l_e.specular = specular_l(normal, half, base.light.color, -1.0);
 
-	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
-		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
-		|| cone_light_inter(object.cone, base.light, inter_p) == 1
-		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
-	{
-		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
-		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-	}*/
+	//if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
+	//	|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
+	//	|| cone_light_inter(object.cone, base.light, inter_p) == 1
+	//	|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
+	//{
+	//	l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
+//		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
+//	}
 	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, cyl.color);
-	print_pixel(mlx, tools, l_e.effect);
-/*
+	print_pixel(mlx, tools, l_e.effect);*/
+
+		t_vector	inter_p;
+	t_vector	normal;
+	double		ambient;
+
+	inter_p.x = base.ray.origin.x + base.ray.dir.x * tools.cy;// intersection point
+	inter_p.y = base.ray.origin.y + base.ray.dir.y * tools.cy;
+	inter_p.z = base.ray.origin.z + base.ray.dir.z * tools.cy;
+	printf("inter_p: %lf || %lf || %lf\n", inter_p.x, inter_p.y, inter_p.z);
+
+	base.light.ray.x = base.light.src.x - inter_p.x;// area of the light spot
+	base.light.ray.y = base.light.src.y - inter_p.y;
+	base.light.ray.z = base.light.src.z - inter_p.z;
+
+	normal = getnm_cyl(cyl, inter_p, base.ray, tools.cy);// calcul normal
 	t_vector nm = normalize(normal);
+	printf("normal: %lf || %lf || %lf\n", normal.x, normal.y, normal.z);
+	t_vector lr = normalize(base.light.ray);
+	printf("light ray: %lf || %lf || %lf\n", base.light.ray.x, base.light.ray.y, base.light.ray.z);
+	t_vector eye = normalize(base.ray.dir);
+	t_vector half;
 	half.x = -lr.x + eye.x;
 	half.y = -lr.y + eye.y;
 	half.z = -lr.z + eye.z;
 	half = normalize(half);
 
 	ambient = -dot(eye, nm) * 0.5;
+	printf("ambient: %lf\n", ambient);
 
 	double	di = dot(nm, lr) * 2.5;
 	di = di < 0 ? 0 : di;
 	di *= di;
 
 	t_color	diff_color;
-	diff_color.r = object.cyl.color.r * di;
-	diff_color.g = object.cyl.color.g * di;
-	diff_color.b = object.cyl.color.b * di;
+	diff_color.r = cyl.color.r * di;
+	diff_color.g = cyl.color.g * di;
+	diff_color.b = cyl.color.b * di;
 
 	double	p = 80;//	shininess
 	double dot_p = -dot(nm, half);
@@ -148,27 +164,27 @@ void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 	spec_color.g = base.light.color.g * si;
 	spec_color.b = base.light.color.b * si;
 
-	if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
-		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
-		|| cone_light_inter(object.cone, base.light, inter_p) == 1)
-	{
-		spec_color.r = 0;
-		spec_color.g = 0;
-		spec_color.b = 0;
-		diff_color.r = 0;
-		diff_color.g = 0;
-		diff_color.b = 0;
-	}
+	//if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
+//		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
+//		|| cone_light_inter(object.cone, base.light, inter_p) == 1)
+	//{
+	//	spec_color.r = 0;
+	//	spec_color.g = 0;
+	//	spec_color.b = 0;
+	//	diff_color.r = 0;
+	//	diff_color.g = 0;
+	//	diff_color.b = 0;
+//	}
 
 	t_color effects;
-	effects.r = diff_color.r + spec_color.r + ambient * object.cyl.color.r;
-	effects.g = diff_color.g + spec_color.g + ambient * object.cyl.color.g;
-	effects.b = diff_color.b + spec_color.b + ambient * object.cyl.color.b;
+	effects.r = diff_color.r + spec_color.r + ambient * cyl.color.r;
+	effects.g = diff_color.g + spec_color.g + ambient * cyl.color.g;
+	effects.b = diff_color.b + spec_color.b + ambient * cyl.color.b;
 	effects.r = (effects.r / 255.0) / ((effects.r / 255.0) + 1) * 255.0;
 	effects.g = (effects.g / 255.0) / ((effects.g / 255.0) + 1) * 255.0;
 	effects.b = (effects.b / 255.0) / ((effects.b / 255.0) + 1) * 255.0;
 
 	mlx.str[(tools.y * WIDTH + tools.x) * 4] = effects.b;// Color the pixel
 	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = effects.g;
-	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = effects.r;*/
+	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = effects.r;
 }

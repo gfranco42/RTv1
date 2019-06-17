@@ -6,21 +6,21 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 11:28:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/13 18:10:59 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 13:52:57 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-double		ambient_l(t_vector eye, t_vector normal)
+double		ambient_l(t_vector eye, t_vector normal, double intensity)
 {
 	double	ambient;
 
-	ambient = dot(eye, normal) * 0.5;
+	ambient = dot(eye, normal) * intensity;
 	return (ambient);
 }
 
-t_color		diffuse_l_plane(t_vector normal, t_vector lr, t_color color)
+t_color		diffuse_l_alt(t_vector normal, t_vector lr, t_color color)
 {
 	t_color		diff;
 	double		di;
@@ -48,7 +48,7 @@ t_color		diffuse_l(t_vector normal, t_vector lr, t_color color)
 	return (diff);
 }
 
-t_color		specular_l(t_vector normal, t_vector half, t_color color)
+t_color		specular_l(t_vector normal, t_vector half, t_color color, int sign)
 {
 	t_color		spec;
 	double		p;
@@ -56,7 +56,7 @@ t_color		specular_l(t_vector normal, t_vector half, t_color color)
 	double		si;
 
 	p = 100;
-	dot_p = dot(normal, half);
+	dot_p = dot(normal, half) * sign;
 	dot_p = dot_p < 0 ? 0 : dot_p;
 	si = 3 * power(dot_p, p);
 	spec.r = color.r * si;

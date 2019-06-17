@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/15 15:29:05 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 13:52:31 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
 	normal = getnormal_sphere(sphere, inter_p);
 	eye = normalize(base.ray.dir);
 	half = normalize(vec_add(vec_mult_double(base.light.ray, -1), eye));
-	l_e.ambient = ambient_l(eye, normal);
+	l_e.ambient = ambient_l(eye, normal, 0.5);
 	l_e.diffuse = diffuse_l(normal, base.light.ray, sphere.color);
-	l_e.specular = specular_l(normal, half, base.light.color);
+	l_e.specular = specular_l(normal, half, base.light.color, 1.0);
 	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
 		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
 		|| cone_light_inter(object.cone, base.light, inter_p) == 1

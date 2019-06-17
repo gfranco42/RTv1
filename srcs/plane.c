@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/14 15:33:16 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 16:25:47 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,16 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)
 {
 	t_vector	inter_p;
-	t_vector	normal;
 	t_vector 	half;
 	t_vector	eye;
 	t_l_eff		l_e;
 
 	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.t));
-	base.light.ray = normalize(vec_sub(base.light.src, inter_p));
-	normal = normalize(plane.normal);
+	base.light.ray = normalize(vec_sub(inter_p, base.light.src));
 	eye = normalize(base.ray.dir);
 	half = normalize(vec_add(vec_mult_double(base.light.ray, -1), eye));
-	l_e.ambient = ambient_l(eye, normal);
-	l_e.diffuse = diffuse_l(normal, base.light.ray, plane.color);
+	l_e.ambient = ambient_l(eye, plane.normal, 0.5);
+	l_e.diffuse = diffuse_l_alt(plane.normal, base.light.ray, plane.color);
 	l_e.effect.r = l_e.diffuse.r + l_e.ambient * plane.color.r;
 	l_e.effect.g = l_e.diffuse.g + l_e.ambient * plane.color.g;
 	l_e.effect.b = l_e.diffuse.b + l_e.ambient * plane.color.b;

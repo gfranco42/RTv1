@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/15 16:28:39 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 16:51:27 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ int		main(int ac, char **av)
 			tools.s2 = 20000;
 			tools.c = 20000;
 			tools.cy = 20000;*/
-			base.tools.t = 200000.0;
-			tmp = 200000.0;
+			base.tools.t = 20000;
+			tmp = 20000;
 			base.ray.dir.x = upleft.x + base.cam.right.x * base.cam.h_view
 			/ WIDTH * base.tools.x - base.cam.up.x * base.cam.w_view / HEIGHT * base.tools.y;
 			base.ray.dir.y = upleft.y + base.cam.right.y * base.cam.h_view
@@ -141,6 +141,8 @@ int		main(int ac, char **av)
 			/ WIDTH * base.tools.x - base.cam.up.z * base.cam.w_view / HEIGHT * base.tools.y;
 
 			base.ray.dir = normalize(base.ray.dir);
+			//if (base.tools.y == 10 && base.tools.x == 20)
+			//	exit(0);
 
 			while (++i < nb_obj)
 			{
@@ -149,8 +151,6 @@ int		main(int ac, char **av)
 				tmp = intersect_prim(prim, i, base, base.tools.t);
 				if (tmp < base.tools.t)
 				{
-			//		if (prim[i].type == CONE)
-			//			printf("tmp: %lf\n", tmp);
 					base.tools.t = tmp;
 					j = i;
 				}

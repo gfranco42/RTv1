@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/15 16:29:59 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 13:51:51 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ typedef	struct	s_prim
 	};
 }				t_prim;
 
-double		ambient_l(t_vector eye, t_vector normal);
+double		ambient_l(t_vector eye, t_vector normal, double intensity);
 void		camera_ch(int fd);
 void		camera_fill(int fd, t_prim *prim, int index);
 int			check_vec3(char *line);
@@ -203,7 +203,7 @@ void		cylinder_fill(int fd, t_prim *prim, int index);
 int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t);
 int			cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p);
 t_color		diffuse_l(t_vector normal, t_vector lr, t_color color);
-t_color		diffuse_l_plane(t_vector normal, t_vector lr, t_color color);
+t_color		diffuse_l_alt(t_vector normal, t_vector lr, t_color color);
 double		dot(t_vector a, t_vector b);
 double		double_extract(int fd);
 void		draw_cone(t_base base, t_cone cone, t_mlx mlx, t_tools tools);
@@ -233,7 +233,7 @@ double		power(double i, int power_value);
 void		put_color(int x, int y, unsigned int *str, double dt);
 t_vector	reflect(t_vector n, t_vector i);
 t_color		rgb_value(t_color color, double r, double g, double b);
-t_color		specular_l(t_vector normal, t_vector half, t_color color);
+t_color		specular_l(t_vector normal, t_vector half, t_color color, int sign);
 void		sphere_ch(int fd);
 void		sphere_fill(int fd, t_prim *prim, int index);
 int			sphere_intersect(t_sphere sphere, t_ray ray, double t);
