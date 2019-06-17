@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 16:45:22 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:11:41 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,20 +121,23 @@ void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 	t_vector	normal;
 	double		ambient;
 
-	inter_p.x = base.ray.origin.x + base.ray.dir.x * tools.cy;// intersection point
-	inter_p.y = base.ray.origin.y + base.ray.dir.y * tools.cy;
-	inter_p.z = base.ray.origin.z + base.ray.dir.z * tools.cy;
-	printf("inter_p: %lf || %lf || %lf\n", inter_p.x, inter_p.y, inter_p.z);
+	inter_p.x = base.ray.origin.x + base.ray.dir.x * tools.t;// intersection point
+	inter_p.y = base.ray.origin.y + base.ray.dir.y * tools.t;
+	inter_p.z = base.ray.origin.z + base.ray.dir.z * tools.t;
+/*	printf("inter_p: %lf || %lf || %lf\n", inter_p.x, inter_p.y, inter_p.z);
+	printf("ray origin: %lf || %lf || %lf\n", base.ray.origin.x, base.ray.origin.y, base.ray.origin.z);
+	printf("ray dir: %lf || %lf || %lf\n", base.ray.dir.x, base.ray.dir.y, base.ray.dir.z);
+	printf("t: %lf\n", tools.t);*/
 
 	base.light.ray.x = base.light.src.x - inter_p.x;// area of the light spot
 	base.light.ray.y = base.light.src.y - inter_p.y;
 	base.light.ray.z = base.light.src.z - inter_p.z;
 
-	normal = getnm_cyl(cyl, inter_p, base.ray, tools.cy);// calcul normal
+	normal = getnm_cyl(cyl, inter_p, base.ray, tools.t);// calcul normal
 	t_vector nm = normalize(normal);
-	printf("normal: %lf || %lf || %lf\n", normal.x, normal.y, normal.z);
+	//printf("nm: %lf || %lf || %lf\n", nm.x, nm.y, nm.z);
 	t_vector lr = normalize(base.light.ray);
-	printf("light ray: %lf || %lf || %lf\n", base.light.ray.x, base.light.ray.y, base.light.ray.z);
+//	printf("lr: %lf || %lf || %lf\n", lr.x, lr.y, lr.z);
 	t_vector eye = normalize(base.ray.dir);
 	t_vector half;
 	half.x = -lr.x + eye.x;
@@ -143,7 +146,7 @@ void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 	half = normalize(half);
 
 	ambient = -dot(eye, nm) * 0.5;
-	printf("ambient: %lf\n", ambient);
+//	printf("ambient: %lf\n", ambient);
 
 	double	di = dot(nm, lr) * 2.5;
 	di = di < 0 ? 0 : di;

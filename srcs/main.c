@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 16:51:27 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:11:12 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ int		main(int ac, char **av)
 				}
 			}
 			i = -1;
-			draw_prim(prim, base, mlx, j);
+			if (base.tools.t < 20000)
+				draw_prim(prim, base, mlx, j);
 /*			tools.p = plane_intersect(object.plane, base.ray, tools.p);//check si intersection avec le plan
 			tools.s1 = sphere_intersect(object.sphere, base.ray, tools.s1);// check si ya un obstacle
 			tools.s2 = sphere_intersect(object.sphere2, base.ray, tools.s2);// check si ya un obstacle
