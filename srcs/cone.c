@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 16:34:34 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:23:40 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 		d[1] = (-r[1] + disc) / (2 * r[0]);
 		d[0] = (-r[1] - disc) / (2 * r[0]);
 		t = (d[0] < 0) ? d[1] : d[0];
-	//	printf("cone t: %lf\n", t);
-		return (t);
+		if (t > 0)
+			return (t);
 	}
+	return (20000);
+	//	printf("cone t: %lf\n", t);
 }
 
 t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)

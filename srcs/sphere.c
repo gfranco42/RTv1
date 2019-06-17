@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 13:52:31 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:25:24 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ int		sphere_intersect(t_sphere sphere, t_ray ray, double t)
 		d[1] = (-r[1] + disc) / (2 * r[0]);
 		d[0] = (-r[1] - disc) / (2 * r[0]);
 		t = (d[0] < 0) ? d[1] : d[0];
-		return (t);
+		if (t > 0)
+			return (t);
 	}
+	return (20000);
 }
 
 t_vector	getnormal_sphere(t_sphere sphere, t_vector inter_p)

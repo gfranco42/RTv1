@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 17:13:26 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:37:05 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,10 @@ int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 		d[1] = (-r[1] + disc) / (2 * r[0]);
 		d[0] = (-r[1] - disc) / (2 * r[0]);
 		t = (d[0] < 0) ? d[1] : d[0];
-	//	printf("cyl t: %lf\n", t);
-		return (t);
+		if (t > 0)
+			return (t);
 	}
+	return (20000);
 }
 
 t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/15 13:18:36 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:32:49 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,9 @@ t_object		initialize_var(t_base *base)
 	base->ray.origin.x = base->cam.pos.x;
 	base->ray.origin.y = base->cam.pos.y;
 	base->ray.origin.z = base->cam.pos.z;
-	base->ray.cam_dir.x = 0;//la direction se place au tools 0/0 et look straight
+	/*base->ray.cam_dir.x = 0;//la direction se place au tools 0/0 et look straight
 	base->ray.cam_dir.y = 0;
-	base->ray.cam_dir.z = 1;
+	base->ray.cam_dir.z = 1;*/
 	base->ray.cam_dir = normalize(base->ray.cam_dir);
 
 	return (object);

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 16:25:47 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:37:31 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	if ((dv = dot(ray.dir, plane.normal)) <= 0)
 		return (t);
 	t = xv / dv;
-	return (t);
+	if (t > 0)
+		return (t);
+//	printf("pl t: %lf\n", t);
+	return (20000);
 }
 
 void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)

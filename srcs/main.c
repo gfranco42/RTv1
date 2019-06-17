@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 17:11:12 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/17 17:48:03 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		main(int ac, char **av)
 	t_mlx		mlx;
 	t_vector	upleft;
 	t_base		base;
-	t_object	object;
+//	t_object	object;
 	t_prim		*prim;
 	double		tmp;
 	int			nb_obj;
@@ -65,8 +65,7 @@ int		main(int ac, char **av)
 
 	if (ac != 2)
 		fail(2);
-	object = initialize_var(&base);
-	upleft = upleft_calc(base);
+//	object = initialize_var(&base);
 	cam = 0;
 	nb_obj = lexer(av[1], 0, &cam);
 	if (cam != 1)
@@ -98,9 +97,6 @@ int		main(int ac, char **av)
 			prim[i].cam.forward = normalize(vec_sub(prim[i].cam.target, prim[i].cam.pos));
 			prim[i].cam.right = normalize(cross(prim[i].cam.forward, prim[i].cam.up));
 			prim[i].cam.vertical = normalize(cross(prim[i].cam.right, prim[i].cam.forward));
-			prim[i].cam.w_view = 1.0;
-			prim[i].cam.h_view = 1.0;
-			prim[i].cam.dist = 0.5;
 			base.cam.forward.x = prim[i].cam.forward.x;
 			base.cam.forward.y = prim[i].cam.forward.y;
 			base.cam.forward.z = prim[i].cam.forward.z;
@@ -112,9 +108,13 @@ int		main(int ac, char **av)
 			base.cam.vertical.z = prim[i].cam.vertical.z;
 			base.cam.w_view = 1.0;
 			base.cam.h_view = 1.0;
-			base.cam.dist = 0.5;
+			base.cam.dist = 1.0;
+			base.ray.origin.x = base.cam.pos.x;
+			base.ray.origin.y = base.cam.pos.y;
+			base.ray.origin.z = base.cam.pos.z;
 		}
 	}
+	upleft = upleft_calc(base);
 	i = -1;
 
 	win_create(&mlx);
