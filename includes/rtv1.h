@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 15:36:22 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 16:22:25 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct	s_base
 	t_light		light;
 	t_ray		ray;
 	t_cam		cam;
+	t_vector	upleft;
 	t_tools		tools;
 }				t_base;
 
@@ -173,6 +174,16 @@ typedef enum	e_type
 	CAMERA
 }				t_type;
 
+typedef struct	s_i
+{
+	int		i;
+	int		j;
+	int		cm;
+	int		lt;
+	int		nb;
+	int		tmp;
+}				t_i;
+
 typedef	struct	s_prim
 {
 	t_type				type;
@@ -188,6 +199,7 @@ typedef	struct	s_prim
 }				t_prim;
 
 double		ambient_l(t_vector eye, t_vector normal, double intensity);
+void		calc_dir(t_vector upleft, t_base *base);
 void		camera_ch(int fd);
 void		camera_fill(int fd, t_prim *prim, int index);
 int			check_vec3(char *line);
@@ -214,6 +226,7 @@ void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
 void		initialize_ray(t_cam cam, t_base *base);
 double		intersect_prim(t_prim *prim, int i, t_base base, double t);
 void		fail(int i);
+void		find_light_cam(t_i *i, t_prim *prim);
 void		free_prim(t_prim ***prim, int len);
 void		free_tab(char **tab, int len);
 double		get_double(char **split);
@@ -222,6 +235,7 @@ int			lexer(char *file, int number, int *cam);
 void		light_ch(int fd);
 t_color		light_effect(t_color diff, t_color spec, double amb, t_color color);
 void		light_fill(int fd, t_prim *prim, int index);
+void		main_algo(t_base base, t_prim *prim, t_mlx mlx, t_i i);
 int			name_obj(char *line);
 double		norm(t_vector v);
 t_vector	normalize(t_vector v);
