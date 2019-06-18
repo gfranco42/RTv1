@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 11:53:07 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 15:36:22 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void		draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools);
 void		draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools);
 void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i);
 void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
-t_object	initialize_var(t_base *base);
+void		initialize_ray(t_cam cam, t_base *base);
 double		intersect_prim(t_prim *prim, int i, t_base base, double t);
 void		fail(int i);
 void		free_prim(t_prim ***prim, int len);

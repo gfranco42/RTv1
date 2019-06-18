@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 14:04:26 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 15:35:59 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 // ---------------  initialisation des variables -----------------------------
 
-void		initialize_light(t_light *l, t_prim *p_l)
+void		initialize_ray(t_cam cam, t_base *base)
 {
-	l->src.x = p_l->src.x;
-	l->src.y = p_l->src.y;
-	l->src.z = p_l->src.z;
-	l->color.r = p_l->color.r;
-	l->color.g = p_l->color.g;
-	l->color.b = p_l->color.b;
-
+	base->ray.origin = vec_add_double(cam.pos, 0);
+	base->cam.pos = vec_add_double(cam.pos, 0);
+	base->cam.target = vec_add_double(cam.target, 0);
+	base->cam.up = vec_add_double(cam.up, 0);
+	base->cam.vertical = vec_add_double(cam.vertical, 0);
+	base->cam.right = vec_add_double(cam.right, 0);
+	base->cam.forward = vec_add_double(cam.forward, 0);
+	base->cam.w_view = 1.0;
+	base->cam.h_view = 1.0;
+	base->cam.dist = 0.5;
 }

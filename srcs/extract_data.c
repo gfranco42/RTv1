@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:48:33 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 11:53:25 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 14:21:28 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_vector	vec3_extract(int fd)
 	i = -1;
 	if (get_next_line(fd, &line) <= 0)
 		fail(4);
-	split = ft_strsplit(line, ' ');// split la line
+	split = ft_strsplit(line, ' ');
 	res.x = vec3_extract_x(split, split2);
 	res.y = vec3_extract_y(split, split2);
 	res.z = vec3_extract_z(split, split2);
@@ -70,7 +70,7 @@ t_color		color_extract(int fd)
 
 	if (get_next_line(fd, &line) <= 0)
 		fail(4);
-	split = ft_strsplit(line, ' ');// split la line
+	split = ft_strsplit(line, ' ');
 	res.r = ft_atoi(split[0]);
 	res.g = ft_atoi(split[1]);
 	res.b = ft_atoi(split[2]);
