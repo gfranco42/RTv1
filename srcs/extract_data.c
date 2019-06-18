@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:48:33 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/15 12:13:15 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 11:53:25 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,37 +45,20 @@ double		get_double(char **split)
 t_vector	vec3_extract(int fd)
 {
 	t_vector	res;
+	int			i;
 	char		*line;
 	char		**split;
 	char		**split2[3];
 
+	i = -1;
 	if (get_next_line(fd, &line) <= 0)
 		fail(4);
 	split = ft_strsplit(line, ' ');// split la line
-	if (str_isdot(split[0]) == 1)
-	{
-		split2[0] = ft_strsplit(split[0], '.');
-		res.x = get_double(split2[0]);
-	}
-	else
-	{
-
-		res.x = ft_atoi(split[0]);
-	}
-	if (str_isdot(split[1]) == 1)
-	{
-		split2[1] = ft_strsplit(split[1], '.');
-		res.y = get_double(split2[1]);
-	}
-	else
-		res.y = ft_atoi(split[1]);
-	if (str_isdot(split[2]) == 1)
-	{
-		split2[2] = ft_strsplit(split[2], '.');
-		res.z = get_double(split2[2]);
-	}
-	else
-		res.z = ft_atoi(split[2]);
+	res.x = vec3_extract_x(split, split2);
+	res.y = vec3_extract_y(split, split2);
+	res.z = vec3_extract_z(split, split2);
+	free_tab(split, 3);
+	free(line);
 	return (res);
 }
 
@@ -91,6 +74,8 @@ t_color		color_extract(int fd)
 	res.r = ft_atoi(split[0]);
 	res.g = ft_atoi(split[1]);
 	res.b = ft_atoi(split[2]);
+	free_tab(split, 3);
+	free(line);
 	return (res);
 }
 
@@ -113,5 +98,6 @@ double		double_extract(int fd)
 		res = ft_atoi(line);
 		(void)split;
 	}
+	free(line);
 	return (res);
 }

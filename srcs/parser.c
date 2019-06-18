@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:49:29 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 13:48:01 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 11:39:16 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ t_prim			*parser(char *file, int number, t_prim *prim)
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (ft_strcmp(line, "") == 0)
+		{
+			free(line);
 			continue ;
+		}
 		if ((i = name_obj(line)) != -1)
 			prim_obj[i](fd, prim, number);
 		else

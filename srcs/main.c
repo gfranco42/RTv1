@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 17:48:03 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 14:01:51 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,11 @@ int		main(int ac, char **av)
 	{
 		if (prim[i].type == LIGHT)
 		{
-			base.light.src.x = prim[i].light.src.x;
-			base.light.src.y = prim[i].light.src.y;
-			base.light.src.z = prim[i].light.src.z;
-			base.light.color.r = prim[i].light.color.r;
-			base.light.color.g = prim[i].light.color.g;
-			base.light.color.b = prim[i].light.color.b;
+			initialize_light(&base.light, &prim[i].light);
 		}
 		if (prim[i].type == CAMERA)
 		{
+			initialize_cam(base.cam, prim[i].cam);
 			base.cam.pos.x = prim[i].cam.pos.x;
 			base.cam.pos.y = prim[i].cam.pos.y;
 			base.cam.pos.z = prim[i].cam.pos.z;
@@ -108,7 +104,7 @@ int		main(int ac, char **av)
 			base.cam.vertical.z = prim[i].cam.vertical.z;
 			base.cam.w_view = 1.0;
 			base.cam.h_view = 1.0;
-			base.cam.dist = 1.0;
+			base.cam.dist = 0.5;
 			base.ray.origin.x = base.cam.pos.x;
 			base.ray.origin.y = base.cam.pos.y;
 			base.ray.origin.z = base.cam.pos.z;
@@ -180,7 +176,9 @@ int		main(int ac, char **av)
 				draw_cylinder(base, object, mlx, tools);*/
 		}
 	}
+	free(prim);
 	mlx_hook(mlx.win, KEYPRESS, KEYPRESSMASK, key, 0);
 	mlx_put_image_to_window(mlx.ptr, mlx.win, mlx.img, 0, 0);
+	//free_prim(&prim, nb_obj);
 	mlx_loop(mlx.ptr);
 }

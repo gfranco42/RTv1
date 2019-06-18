@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:11:46 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 14:08:45 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 11:27:56 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int			lexer(char *file, int number, int *cam)
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (ft_strcmp(line, "") == 0)
+		{
+			free(line);
 			continue ;
+		}
 		if ((i = name_obj(line)) != -1)
 			prim_obj[i](fd);
 		check_camera(i, cam);

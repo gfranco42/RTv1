@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 13:51:51 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 11:53:07 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
 t_object	initialize_var(t_base *base);
 double		intersect_prim(t_prim *prim, int i, t_base base, double t);
 void		fail(int i);
+void		free_prim(t_prim ***prim, int len);
 void		free_tab(char **tab, int len);
 double		get_double(char **split);
 int			key(int key, void *param);
@@ -251,5 +252,8 @@ t_vector	vec_sub_double(t_vector a, double b);
 t_vector	vec_mult_double(t_vector a, double b);
 t_vector	vec_div_double(t_vector a, double b);
 t_vector	vec3_extract(int fd);
+double		vec3_extract_x(char **split, char ***split2);
+double		vec3_extract_y(char **split, char ***split2);
+double		vec3_extract_z(char **split, char ***split2);
 
 #endif

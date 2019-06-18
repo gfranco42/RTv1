@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:58:46 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/06 11:50:11 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 11:27:53 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ int			check_vec3(char *line)
 	if (len != 3)// check si ya 3 strings
 		fail(1);
 	while (++i < len)
-	{
-		if (str_isdouble(split[i]) == 0)// check si les 3 strings sont des digits
+		if (str_isdouble(split[i]) == 0)
 			return(0);
-	}
+	i = -1;
+	free_tab(split, 3);
 	return (1);
 }
