@@ -6,15 +6,16 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 17:37:31 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 18:30:32 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int		plane_light_inter(t_plane plane, t_light light, double t)
+int		plane_light_inter(t_plane plane, t_light light)
 {
-	t_vector o_center;
+	t_vector	o_center;
+	int			t;
 
 	o_center = vec_sub(plane.point, light.src);
 	t = -dot(o_center, plane.normal) / dot(normalize(light.ray),
@@ -40,13 +41,15 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	return (20000);
 }
 
-void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)
+void	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_tools tools)
 {
 	t_vector	inter_p;
 	t_vector 	half;
 	t_vector	eye;
 	t_l_eff		l_e;
+	t_plane		plane;
 
+	plane = init_plane(prim[tools.i].plane);
 	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.t));
 	base.light.ray = normalize(vec_sub(inter_p, base.light.src));
 	eye = normalize(base.ray.dir);
@@ -59,13 +62,11 @@ void	draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools)
 	l_e.effect.r = (l_e.effect.r / 255.0) / ((l_e.effect.r / 255.0) + 1) * 255.0;
 	l_e.effect.g = (l_e.effect.g / 255.0) / ((l_e.effect.g / 255.0) + 1) * 255.0;
 	l_e.effect.b = (l_e.effect.b / 255.0) / ((l_e.effect.b / 255.0) + 1) * 255.0;
-	/*if (sphere_light_inter(object.sphere, base.light, inter_p) == 1
-		|| sphere_light_inter(object.sphere2, base.light, inter_p) == 1
-		|| cone_light_inter(object.cone, base.light, inter_p) == 1
-		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
+	printf("%d\n", base.tools.i);
+	if (shadow(prim, base.tools.i, base, inter_p) == 0)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-	}*/
+	}
 	print_pixel(mlx, tools, l_e.effect);
 }

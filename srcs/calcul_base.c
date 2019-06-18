@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:23 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/11 15:17:02 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 17:36:17 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,29 @@ t_vector	normalize(t_vector v)
 	return (v);
 }
 
-double	norm(t_vector v)
+double		norm(t_vector v)
 {
 	double	res;
 
 	v.x = v.x * v.x;
 	v.y = v.y * v.y;
 	v.z = v.z * v.z;
-
 	res = v.x + v.y + v.z;
 	res = sqrt(res);
-
 	return (res);
 }
 
-double	power(double i, int power_value)
+double		power(double i, int power_value)
 {
-	double	tmp = i;
+	double	tmp;
+
+	tmp = i;
 	while (power_value-- > 0)
 		i *= tmp;
 	return (i);
 }
 
-double	dot(t_vector a, t_vector b)
+double		dot(t_vector a, t_vector b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }

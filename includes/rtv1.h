@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 16:22:25 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 18:22:21 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ typedef struct	s_tools
 {
 	int		x;
 	int		y;
+	int		i;
 	double	t;
 	double	p;
 	double	s1;
@@ -177,7 +178,6 @@ typedef enum	e_type
 typedef struct	s_i
 {
 	int		i;
-	int		j;
 	int		cm;
 	int		lt;
 	int		nb;
@@ -220,10 +220,14 @@ double		dot(t_vector a, t_vector b);
 double		double_extract(int fd);
 void		draw_cone(t_base base, t_cone cone, t_mlx mlx, t_tools tools);
 void		draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools);
-void		draw_plane(t_base base, t_plane plane, t_mlx mlx, t_tools tools);
+void		draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_tools tools);
 void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i);
 void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
 void		initialize_ray(t_cam cam, t_base *base);
+t_cone		init_cone(t_cone cone);
+t_cylinder	init_cylinder(t_cylinder cylinder);
+t_plane		init_plane(t_plane plane);
+t_sphere	init_sphere(t_sphere sphere);
 double		intersect_prim(t_prim *prim, int i, t_base base, double t);
 void		fail(int i);
 void		find_light_cam(t_i *i, t_prim *prim);
@@ -242,12 +246,14 @@ t_vector	normalize(t_vector v);
 void		plane_ch(int fd);
 void		plane_fill(int fd, t_prim *prim, int index);
 int			plane_intersect(t_plane plane, t_ray ray, double t);
+int			plane_light_inter(t_plane plane, t_light light);
 t_prim		*parser(char *file, int number, t_prim *prim);
 void		print_pixel(t_mlx mlx, t_tools tools, t_color color);
 double		power(double i, int power_value);
 void		put_color(int x, int y, unsigned int *str, double dt);
 t_vector	reflect(t_vector n, t_vector i);
 t_color		rgb_value(t_color color, double r, double g, double b);
+int			shadow(t_prim *prim, int i, t_base base, t_vector inter_p);
 t_color		specular_l(t_vector normal, t_vector half, t_color color, int sign);
 void		sphere_ch(int fd);
 void		sphere_fill(int fd, t_prim *prim, int index);

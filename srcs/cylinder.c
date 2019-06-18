@@ -6,13 +6,13 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/17 17:37:05 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 17:41:37 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int		cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
+int			cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
 {
 	t_vector	o_center;
 	t_vector	lr;
@@ -39,7 +39,7 @@ int		cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
 	return (0);
 }
 
-int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
+int			cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 {
 	t_vector	o_center;
 	double		r[3];
@@ -55,11 +55,7 @@ int		cylinder_intersect(t_cylinder cyl, t_ray ray, double t)
 	* dot(o_center, cyl.dir) - cyl.radius * cyl.radius;
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
 	if (disc < 0)
-	{
-	//	printf("cyl disc: %lf\n", disc);
-
 		return (t);
-	}
 	else
 	{
 		disc = sqrt(disc);
@@ -81,7 +77,6 @@ t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
 	o_center.x = ray.origin.x - cyl.center.x;
 	o_center.y = ray.origin.y - cyl.center.y;
 	o_center.z = ray.origin.z - cyl.center.z;
-
 	m = dot(ray.dir, cyl.dir) * t + dot(o_center, cyl.dir);
 	normal.x = inter_p.x - cyl.center.x - cyl.dir.x * m;
 	normal.y = inter_p.y - cyl.center.y - cyl.dir.y * m;
@@ -89,7 +84,7 @@ t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
 	return (normal);
 }
 
-void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
+void		draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 {
 	t_vector	inter_p;
 	t_vector	normal;
@@ -102,11 +97,9 @@ void	draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools)
 	normal = normalize(getnm_cyl(cyl, inter_p, base.ray, tools.t));
 	eye = normalize(base.ray.dir);
 	half = normalize(vec_add(vec_mult_double(base.light.ray, -1), eye));
-
 	l_e.ambient = ambient_l(eye, normal, -0.5);
 	l_e.diffuse = diffuse_l_alt(normal, base.light.ray, cyl.color);
 	l_e.specular = specular_l(normal, half, base.light.color, -1.0);
-
 	//if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
 	//	|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
 	//	|| cone_light_inter(object.cone, base.light, inter_p) == 1

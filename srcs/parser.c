@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:49:29 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 11:39:16 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 17:35:12 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_prim		*create_tab(int nb_obj)
 {
 	t_prim	*prim;
-	printf("nb_obj: %d\n", nb_obj);
 
 	if (!(prim = (t_prim*)malloc(sizeof(*prim) * nb_obj)))
 		fail(3);

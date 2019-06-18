@@ -6,7 +6,7 @@
 #    By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/10 12:13:05 by gfranco           #+#    #+#              #
-#    Updated: 2019/06/11 15:55:52 by gfranco          ###   ########.fr        #
+#    Updated: 2019/06/18 18:28:08 by gfranco          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,11 @@ OBJDIR =	./objs
 
 SRC =		calcul_base.c camera_check.c camera_fill.c cone.c cone_check.c     \
 			cone_fill.c	cylinder.c cylinder_check.c cylinder_fill.c            \
-			draw_prim.c event.c extract_data.c initialize.c lexer.c            \
-			light_check.c light_fill.c main.c objects_check.c parser.c         \
+			draw_prim.c event.c extract_data.c initialize.c init_prim.c        \
+			lexer.c light_check.c light_fill.c main.c objects_check.c parser.c \
 			plane.c plane_check.c plane_fill.c sphere.c sphere_check.c         \
-			sphere_fill.c light_calculation.c tools.c vec_calculation.c        \
-			vec_calculation2.c
+			sphere_fill.c light_calculation.c shadow.c tools.c                 \
+			vec_calculation.c vec_calculation2.c
 
 INC =		rtv1.h
 
