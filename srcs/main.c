@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 14:01:51 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/18 14:05:21 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,15 @@ int		main(int ac, char **av)
 	{
 		if (prim[i].type == LIGHT)
 		{
-			initialize_light(&base.light, &prim[i].light);
+			base.light.src.x = prim[i].light.src.x;
+			base.light.src.y = prim[i].light.src.y;
+			base.light.src.z = prim[i].light.src.z;
+			base.light.color.r = prim[i].light.color.r;
+			base.light.color.g = prim[i].light.color.g;
+			base.light.color.b = prim[i].light.color.b;
 		}
 		if (prim[i].type == CAMERA)
 		{
-			initialize_cam(base.cam, prim[i].cam);
 			base.cam.pos.x = prim[i].cam.pos.x;
 			base.cam.pos.y = prim[i].cam.pos.y;
 			base.cam.pos.z = prim[i].cam.pos.z;
