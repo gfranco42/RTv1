@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:50:07 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 18:32:02 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 12:46:57 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ double		intersect_prim(t_prim *prim, int i, t_base base, double t)
 
 void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i)
 {
-	printf("tools: %d\n", base.tools.i);
-	printf("i: %d\n", i);
 	if (prim[i].type == SPHERE)
 		draw_sphere(base, prim[i].sphere, mlx, base.tools);
 	if (prim[i].type == PLANE)
@@ -43,6 +41,7 @@ void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i)
 
 void		main_algo(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
+	base.tools.y = -1;
 	while (++base.tools.y < HEIGHT)
 	{
 		base.tools.x = -1;

@@ -6,11 +6,25 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 17:43:40 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 12:23:46 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+t_vector	upleft_calc(t_base base)
+{
+	t_vector	upleft;
+
+	upleft.x = base.cam.dist * base.cam.forward.x + base.cam.h_view / 2
+	* base.cam.up.x - base.cam.w_view / 2 * base.cam.right.x;
+	upleft.y = base.cam.dist * base.cam.forward.y + base.cam.h_view / 2
+	* base.cam.up.y - base.cam.w_view / 2 * base.cam.right.y;
+	upleft.z = base.cam.dist * base.cam.forward.z + base.cam.h_view / 2
+	* base.cam.up.z - base.cam.w_view / 2 * base.cam.right.z;
+	upleft = normalize(upleft);
+	return (upleft);
+}
 
 void		initialize_ray(t_cam cam, t_base *base)
 {

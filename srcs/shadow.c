@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 10:45:27 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 18:29:54 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 11:49:17 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ int		shadow(t_prim *prim, int i, t_base base, t_vector inter_p)
 		t = cone_light_inter(prim[i].cone, base.light, inter_p);
 	if (prim[i].type == CYLINDER && t == 0)
 		t = cyl_light_inter(prim[i].cyl, base.light, inter_p);
-	printf("%d\n", t);
 	return (t);
 }
