@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 16:22:15 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 15:00:38 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		main(int ac, char **av)
 	prim = create_tab(i.nb);
 	prim = parser(av[1], i.nb, prim);
 	i.i = -1;
-	find_light_cam(&i, prim);
+	find_cam(&i, prim);
 	initialize_ray(prim[i.cm].cam, &base);
 	base.upleft = upleft_calc(base);
 	i.i = -1;

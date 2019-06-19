@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 12:46:22 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 16:18:48 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,11 +218,11 @@ t_color		diffuse_l(t_vector normal, t_vector lr, t_color color);
 t_color		diffuse_l_alt(t_vector normal, t_vector lr, t_color color);
 double		dot(t_vector a, t_vector b);
 double		double_extract(int fd);
-void		draw_cone(t_base base, t_cone cone, t_mlx mlx, t_tools tools);
-void		draw_cyl(t_base base, t_cylinder cyl, t_mlx mlx, t_tools tools);
-void		draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_tools tools);
-void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i);
-void		draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools);
+void		draw_cone(t_base base, t_prim *prim, t_mlx mlx, t_i i);
+void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i);
+void		draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i);
+void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, t_i i);
+void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i);
 void		initialize_ray(t_cam cam, t_base *base);
 t_cone		init_cone(t_cone cone);
 t_cylinder	init_cylinder(t_cylinder cylinder);
@@ -230,7 +230,8 @@ t_plane		init_plane(t_plane plane);
 t_sphere	init_sphere(t_sphere sphere);
 double		intersect_prim(t_prim *prim, int i, t_base base, double t);
 void		fail(int i);
-void		find_light_cam(t_i *i, t_prim *prim);
+void		find_cam(t_i *i, t_prim *prim);
+int			find_light(t_i i, t_prim *prim);
 void		free_prim(t_prim ***prim, int len);
 void		free_tab(char **tab, int len);
 double		get_double(char **split);
@@ -253,7 +254,7 @@ double		power(double i, int power_value);
 void		put_color(int x, int y, unsigned int *str, double dt);
 t_vector	reflect(t_vector n, t_vector i);
 t_color		rgb_value(t_color color, double r, double g, double b);
-int			shadow(t_prim *prim, int i, t_base base, t_vector inter_p);
+int			shadow(t_prim *prim, t_i i, t_light light, t_vector inter_p);
 t_color		specular_l(t_vector normal, t_vector half, t_color color, int sign);
 void		sphere_ch(int fd);
 void		sphere_fill(int fd, t_prim *prim, int index);

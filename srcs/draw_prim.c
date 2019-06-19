@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:50:07 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 12:46:57 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 14:55:21 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 double		intersect_prim(t_prim *prim, int i, t_base base, double t)
 {
+/*	int		j;
+
+	j =
+	base.light = vec_add_double(prim[]);*/
 	if (prim[i].type == SPHERE)
 		t = sphere_intersect(prim[i].sphere, base.ray, t);
 	else if (prim[i].type == PLANE)
@@ -25,18 +29,16 @@ double		intersect_prim(t_prim *prim, int i, t_base base, double t)
 	return (t);
 }
 
-void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, int i)
+void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, t_i i)
 {
-	if (prim[i].type == SPHERE)
-		draw_sphere(base, prim[i].sphere, mlx, base.tools);
-	if (prim[i].type == PLANE)
-	{
-		draw_plane(base, prim, mlx, base.tools);
-	}
-	if (prim[i].type == CONE)
-		draw_cone(base, prim[i].cone, mlx, base.tools);
-	if (prim[i].type == CYLINDER)
-		draw_cyl(base, prim[i].cyl, mlx, base.tools);
+	if (prim[base.tools.i].type == SPHERE)
+		draw_sphere(base, prim, mlx, i);
+	if (prim[base.tools.i].type == PLANE)
+		draw_plane(base, prim, mlx, i);
+	if (prim[base.tools.i].type == CONE)
+		draw_cone(base, prim, mlx, i);
+	if (prim[base.tools.i].type == CYLINDER)
+		draw_cyl(base, prim, mlx, i);
 }
 
 void		main_algo(t_base base, t_prim *prim, t_mlx mlx, t_i i)
@@ -63,7 +65,7 @@ void		main_algo(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 			}
 			i.i = -1;
 			if (base.tools.t < 20000)
-				draw_prim(prim, base, mlx, base.tools.i);
+				draw_prim(prim, base, mlx, i);
 		}
 	}
 	free(prim);

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 12:46:55 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 15:51:10 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,30 +84,39 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
-void	draw_sphere(t_base base, t_sphere sphere, t_mlx mlx, t_tools tools)
+void	draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
 	t_vector	normal;
 	t_vector 	half;
 	t_vector 	eye;
 	t_l_eff		l_e;
+	t_sphere		sphere;
 
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, tools.t));
-	base.light.ray = normalize(vec_sub(base.light.src, inter_p));
+	i.i = find_light(i, prim);
+	sphere = init_sphere(prim[base.tools.i].sphere);
+	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir,
+	base.tools.t));
 	normal = getnormal_sphere(sphere, inter_p);
 	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_double(base.light.ray, -1), eye));
+	half = normalize(vec_add(vec_mult_double(prim[i.i].light.ray, -1), eye));
+	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
 	l_e.ambient = ambient_l(eye, normal, 0.5);
-	l_e.diffuse = diffuse_l(normal, base.light.ray, sphere.color);
-	l_e.specular = specular_l(normal, half, base.light.color, 1.0);
-	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, base.light, inter_p) == 1)
-		|| (t == tools.s1 && sphere_light_inter(object.sphere2, base.light, inter_p) == 1)
-		|| cone_light_inter(object.cone, base.light, inter_p) == 1
-		|| cylinder_light_inter(object.cyl, base.light, inter_p) == 1)
+	l_e.diffuse = diffuse_l(normal, prim[i.i].light.ray, sphere.color);
+	l_e.specular = specular_l(normal, half, prim[i.i].light.color, 1.0);
+	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, prim[i.i].light, inter_p) == 1)
+		|| (t == tools.s1 && sphere_light_inter(object.sphere2, prim[i.i].light, inter_p) == 1)
+		|| cone_light_inter(object.cone, prim[i.i].light, inter_p) == 1
+		|| cylinder_light_inter(object.cyl, prim[i.i].light, inter_p) == 1)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
 	}*/
+	if (shadow(prim, i, prim[i.i].light, inter_p) == 1)
+	{
+		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
+		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
+	}
 	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, sphere.color);
-	print_pixel(mlx, tools, l_e.effect);
+	print_pixel(mlx, base.tools, l_e.effect);
 }

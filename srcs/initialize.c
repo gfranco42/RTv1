@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 17:21:26 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 12:23:46 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 15:03:47 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,20 @@ void		calc_dir(t_vector upleft, t_base *base)
 	base->ray.dir = normalize(base->ray.dir);
 }
 
-void		find_light_cam(t_i *i, t_prim *prim)
+void		find_cam(t_i *i, t_prim *prim)
 {
 	while (++i->i < i->nb)
-	{
-		if (prim[i->i].type == LIGHT)
-			i->lt = i->i;
 		if (prim[i->i].type == CAMERA)
 			i->cm = i->i;
-	}
+}
+
+int			find_light(t_i i, t_prim *prim)
+{
+	int		j;
+
+	j = -1;
+	while (++j < i.nb)
+		if (prim[j].type == LIGHT)
+			return (j);
+	return (j);
 }
