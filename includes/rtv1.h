@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 16:18:48 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:17:08 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,7 @@ t_vector	vec_mult(t_vector a, t_vector b);
 t_vector	vec_div(t_vector a, t_vector b);
 t_vector	vec_add_double(t_vector a, double b);
 t_vector	vec_sub_double(t_vector a, double b);
-t_vector	vec_mult_double(t_vector a, double b);
+t_vector	mult_double(t_vector a, double b);
 t_vector	vec_div_double(t_vector a, double b);
 t_vector	vec3_extract(int fd);
 double		vec3_extract_x(char **split, char ***split2);

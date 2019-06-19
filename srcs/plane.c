@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 15:57:13 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:17:08 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int		plane_light_inter(t_plane plane, t_light light)
 	o_center.x = plane.point.x - light.src.x;
 	o_center.y = plane.point.y - light.src.y;
 	o_center.z = plane.point.z - light.src.z;
-	//o_center = vec_sub(plane.point, light.src);
 	t = -dot(o_center, plane.normal) / dot(normalize(light.ray),
 	normalize(plane.normal));
 	if (t >= 0 && t <= 1)
@@ -35,7 +34,7 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	double		dv;
 
 	o_center = vec_sub(ray.origin, plane.point);
-	o_center = vec_mult_double(o_center, -1);
+	o_center = mult_double(o_center, -1);
 	xv = dot(o_center, plane.normal);
 	if ((dv = dot(ray.dir, plane.normal)) <= 0)
 		return (t);
@@ -45,20 +44,20 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	return (20000);
 }
 
-void 	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
+void	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
-	t_vector 	half;
+	t_vector	half;
 	t_vector	eye;
 	t_l_eff		l_e;
 	t_plane		plane;
 
 	i.i = find_light(i, prim);
 	plane = init_plane(prim[base.tools.i].plane);
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir,
+	inter_p = vec_add(base.ray.origin, mult_double(base.ray.dir,
 	base.tools.t));
 	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_double(prim[i.i].light.ray, -1), eye));
+	half = normalize(vec_add(mult_double(prim[i.i].light.ray, -1), eye));
 	prim[i.i].light.ray = normalize(vec_sub(inter_p, prim[i.i].light.src));
 	l_e.ambient = ambient_l(eye, plane.normal, 0.5);
 	l_e.diffuse = diffuse_l_alt(plane.normal, prim[i.i].light.ray, plane.color);

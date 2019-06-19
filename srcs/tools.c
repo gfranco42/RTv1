@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 12:26:25 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 11:53:40 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:18:36 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@ void		print_pixel(t_mlx mlx, t_tools tools, t_color color)
 	mlx.str[(tools.y * WIDTH + tools.x) * 4] = color.b;
 	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 1] = color.g;
 	mlx.str[(tools.y * WIDTH + tools.x) * 4 + 2] = color.r;
-}
-
-void		free_tab(char **tab, int len)
-{
-	int		i;
-
-	i = -1;
-	while (++i < len)
-		free(tab[i]);
-	free(tab);
 }
 
 double		vec3_extract_x(char **split, char ***split2)
@@ -66,7 +56,6 @@ double		vec3_extract_y(char **split, char ***split2)
 		res.y = ft_atoi(split[1]);
 	return (res.y);
 }
-
 
 double		vec3_extract_z(char **split, char ***split2)
 {

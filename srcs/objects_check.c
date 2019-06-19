@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects_check.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 18:58:46 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 14:21:15 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 16:46:40 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			check_vec3(char *line)
 		fail(1);
 	while (++i < len)
 		if (str_isdouble(split[i]) == 0)
-			return(0);
+			return (0);
 	i = -1;
 	free_tab(split, 3);
 	return (1);

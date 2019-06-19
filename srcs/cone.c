@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 15:50:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:17:08 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 
 	o_tip = vec_sub(inter_p, cone.tip);
 	lr = vec_sub(light.src, inter_p);
-
 	r[0] = dot(lr, lr) - (1 + cone.angle * cone.angle)
 	* dot(lr, cone.dir) * dot(lr, cone.dir);
 	r[1] = 2 * (dot(lr, o_tip) - (1 + cone.angle * cone.angle)
@@ -30,7 +29,6 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 	r[2] = dot(o_tip, o_tip) - (1 + cone.angle * cone.angle)
 	* dot(o_tip, cone.dir) * dot(o_tip, cone.dir);
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
-
 	if (disc < 0)
 		return (0);
 	disc = sqrt(disc);
@@ -58,10 +56,7 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 	* dot(o_tip, cone.dir) * dot(o_tip, cone.dir);
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
 	if (disc < 0)
-	{
-	//	printf("cone disc: %lf\n", disc);
 		return (t);
-	}
 	else
 	{
 		disc = sqrt(disc);
@@ -72,10 +67,9 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 			return (t);
 	}
 	return (20000);
-	//	printf("cone t: %lf\n", t);
 }
 
-t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
+t_vector	getnormal_cone(t_vector inter_p, t_cone cone, t_ray ray, double t)
 {
 	t_vector	normal;
 	t_vector	vec_minus;
@@ -92,42 +86,34 @@ t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 	vec_minus.z = inter_p.z - cone.tip.z - normal.z;
 	normal = normalize(vec_minus);
 	if (dot(ray.dir, normal) > 0.0001)
-		normal = vec_mult_double(normal, -1);
+		normal = mult_double(normal, -1);
 	return (normal);
 }
 
 void		draw_cone(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
-	t_vector	inter_p;
-	t_vector	normal;
-	t_vector	half;
-	t_vector	eye;
+	t_vector	tab[4];
 	t_l_eff		l_e;
 	t_cone		cone;
 
 	i.i = find_light(i, prim);
 	cone = init_cone(prim[base.tools.i].cone);
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, base.tools.t));
-	normal = getnormal_cone(inter_p, cone, base.ray, base.tools.t);
-	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_double(prim[i.i].light.ray, -1), eye));
-	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
-	l_e.ambient = ambient_l(eye, normal, -0.5);
-	l_e.diffuse = diffuse_l_alt(normal, prim[i.i].light.ray, cone.color);
-	l_e.specular = specular_l(normal, half, prim[i.i].light.color, -1.0);
-	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, prim[i.i].light, inter_p) == 1)
-		|| (t == tools.s1 && sphere_light_inter(object.sphere2, prim[i.i].light, inter_p) == 1)
-		|| cone_light_inter(object.cone, prim[i.i].light, inter_p) == 1
-		|| cylinder_light_inter(object.cyl, prim[i.i].light, inter_p) == 1)
-	{
-		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
-		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-	}*/
-	if (shadow(prim, i, prim[i.i].light, inter_p) == 1)
+	tab[0] = vec_add(base.ray.origin, \
+		mult_double(base.ray.dir, base.tools.t));
+	tab[1] = getnormal_cone(tab[0], cone, base.ray, base.tools.t);
+	tab[3] = normalize(base.ray.dir);
+	tab[2] = \
+		normalize(vec_add(mult_double(prim[i.i].light.ray, -1), tab[3]));
+	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, tab[0]));
+	l_e.ambient = ambient_l(tab[3], tab[1], -0.5);
+	l_e.diffuse = diffuse_l_alt(tab[1], prim[i.i].light.ray, cone.color);
+	l_e.specular = specular_l(tab[1], tab[2], prim[i.i].light.color, -1.0);
+	if (shadow(prim, i, prim[i.i].light, tab[0]) == 1)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
 	}
-	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, cone.color);
+	l_e.effect = \
+		light_effect(l_e.diffuse, l_e.specular, l_e.ambient, cone.color);
 	print_pixel(mlx, base.tools, l_e.effect);
 }

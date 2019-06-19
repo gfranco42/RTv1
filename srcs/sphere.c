@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 15:51:10 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:17:08 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int		sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
+int			sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
 {
 	t_vector	o_center;
 	t_vector	lr;
@@ -37,7 +37,7 @@ int		sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
 	return (0);
 }
 
-int		sphere_intersect(t_sphere sphere, t_ray ray, double t)
+int			sphere_intersect(t_sphere sphere, t_ray ray, double t)
 {
 	t_vector	o_center;
 	double		r[3];
@@ -84,39 +84,29 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
-void	draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
+void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
-	t_vector	inter_p;
-	t_vector	normal;
-	t_vector 	half;
-	t_vector 	eye;
+	t_vector	tab[4];
 	t_l_eff		l_e;
-	t_sphere		sphere;
+	t_sphere	sphere;
 
 	i.i = find_light(i, prim);
 	sphere = init_sphere(prim[base.tools.i].sphere);
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir,
+	tab[0] = vec_add(base.ray.origin, mult_double(base.ray.dir,
 	base.tools.t));
-	normal = getnormal_sphere(sphere, inter_p);
-	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_double(prim[i.i].light.ray, -1), eye));
-	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
-	l_e.ambient = ambient_l(eye, normal, 0.5);
-	l_e.diffuse = diffuse_l(normal, prim[i.i].light.ray, sphere.color);
-	l_e.specular = specular_l(normal, half, prim[i.i].light.color, 1.0);
-	/*if ((t == tools.s2 && sphere_light_inter(object.sphere, prim[i.i].light, inter_p) == 1)
-		|| (t == tools.s1 && sphere_light_inter(object.sphere2, prim[i.i].light, inter_p) == 1)
-		|| cone_light_inter(object.cone, prim[i.i].light, inter_p) == 1
-		|| cylinder_light_inter(object.cyl, prim[i.i].light, inter_p) == 1)
-	{
-		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
-		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-	}*/
-	if (shadow(prim, i, prim[i.i].light, inter_p) == 1)
+	tab[1] = getnormal_sphere(sphere, tab[0]);
+	tab[2] = normalize(base.ray.dir);
+	tab[3] = normalize(vec_add(mult_double(prim[i.i].light.ray, -1), tab[2]));
+	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, tab[0]));
+	l_e.ambient = ambient_l(tab[2], tab[1], 0.5);
+	l_e.diffuse = diffuse_l(tab[1], prim[i.i].light.ray, sphere.color);
+	l_e.specular = specular_l(tab[1], tab[3], prim[i.i].light.color, 1.0);
+	if (shadow(prim, i, prim[i.i].light, tab[0]) == 1)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
 	}
-	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, sphere.color);
+	l_e.effect = \
+		light_effect(l_e.diffuse, l_e.specular, l_e.ambient, sphere.color);
 	print_pixel(mlx, base.tools, l_e.effect);
 }
