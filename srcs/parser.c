@@ -6,7 +6,7 @@
 /*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:49:29 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/20 18:04:16 by pchambon         ###   ########.fr       */
+/*   Updated: 2019/06/20 18:10:03 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@ t_prim		*create_tab(int nb_obj)
 	if (!(prim = (t_prim*)malloc(sizeof(*prim) * nb_obj)))
 		fail(3);
 	return (prim);
+}
+
+void		normed(char *line)
+{
+	free(line);
+	fail(1);
 }
 
 t_prim		*parser(char *file, int number, t_prim *prim)
@@ -43,10 +49,7 @@ t_prim		*parser(char *file, int number, t_prim *prim)
 		if ((i = name_obj(line)) != -1)
 			prim_obj[i](fd, prim, number);
 		else
-		{
-			free(line);
-			fail(1);
-		}
+			normed(line);
 		free(line);
 		number++;
 	}
