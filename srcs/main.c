@@ -6,7 +6,7 @@
 /*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 17:18:32 by pchambon         ###   ########.fr       */
+/*   Updated: 2019/06/20 18:17:35 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		free_tab(char **tab, int len)
 void		win_create(t_mlx *mlx)
 {
 	mlx->ptr = mlx_init();
-	mlx->win = mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "FRACTOL GFRANCO");
+	mlx->win = mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "RTv1");
 	mlx->img = mlx_new_image(mlx->ptr, WIDTH, HEIGHT);
 	mlx->str = mlx_get_data_addr(mlx->img, &(mlx->bpp), &(mlx->s_l),
 	&(mlx->endian));
