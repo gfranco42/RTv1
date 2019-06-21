@@ -6,7 +6,7 @@
 /*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 17:17:08 by pchambon         ###   ########.fr       */
+/*   Updated: 2019/06/21 23:32:07 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,47 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
+t_l_eff		test_light(t_vector	*tab, t_prim *prim, int nb, t_sphere sphere)
+{
+	int		i;
+	t_color	tmp;
+	t_color	tmp2;
+	t_l_eff l_e;
+
+	i = 0;
+	l_e.specular.r = 0;
+	l_e.specular.g = 0;
+	l_e.specular.b = 0;
+	l_e.ambient = ambient_l(tab[2], tab[1], 0.5);
+	while (i <= nb)
+	{
+		if (prim[i].type == LIGHT)
+		{
+			printf("%i\n", i);
+			tab[3] = normalize(vec_add(mult_double(prim[i].light.ray, -1), tab[2]));
+			prim[i].light.ray = normalize(vec_sub(prim[i].light.src, tab[0]));
+			tmp2 = diffuse_l(tab[1], prim[i].light.ray, sphere.color);
+			tmp = specular_l(tab[1], tab[3], prim[i].light.color, 1.0);
+			//printf("%i | %i | %i \n", tmp.r, tmp.g, tmp.b);
+			l_e.specular.r += tmp.r;
+			l_e.specular.g += tmp.g;
+			l_e.specular.b += tmp.b;
+			l_e.diffuse.r += tmp2.r;
+			l_e.diffuse.g += tmp2.g;
+			l_e.diffuse.b += tmp2.b;
+		}
+		i++;
+	}
+	//printf("%i | %i | %i \n", l_e.specular.r, l_e.specular.g, l_e.specular.b);
+	l_e.specular.r > 255 ? l_e.specular.r = 255 : 0;
+	l_e.specular.g > 255 ? l_e.specular.g = 255 : 0;
+	l_e.specular.b > 255 ? l_e.specular.b = 255 : 0;
+	l_e.diffuse.r > 255 ? l_e.diffuse.r = 255 : 0;
+	l_e.diffuse.g > 255 ? l_e.diffuse.g = 255 : 0;
+	l_e.diffuse.b > 255 ? l_e.diffuse.b = 255 : 0;
+	return (l_e);
+}
+
 void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	tab[4];
@@ -96,11 +137,7 @@ void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 	base.tools.t));
 	tab[1] = getnormal_sphere(sphere, tab[0]);
 	tab[2] = normalize(base.ray.dir);
-	tab[3] = normalize(vec_add(mult_double(prim[i.i].light.ray, -1), tab[2]));
-	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, tab[0]));
-	l_e.ambient = ambient_l(tab[2], tab[1], 0.5);
-	l_e.diffuse = diffuse_l(tab[1], prim[i.i].light.ray, sphere.color);
-	l_e.specular = specular_l(tab[1], tab[3], prim[i.i].light.color, 1.0);
+	l_e = test_light(tab, prim, i.nb, sphere);
 	if (shadow(prim, i, prim[i.i].light, tab[0]) == 1)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);

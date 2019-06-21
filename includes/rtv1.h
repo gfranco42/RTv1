@@ -6,20 +6,20 @@
 /*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/20 18:51:10 by pchambon         ###   ########.fr       */
+/*   Updated: 2019/06/21 03:18:54 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
+# include <mlx.h>
+# include <math.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
-# include <mlx.h>
-# include "../libft/libft.h"
 # include "macros.h"
-# include <math.h>
+# include "../libft/libft.h"
 # include <stdio.h>
 
 # define WIDTH 1200
