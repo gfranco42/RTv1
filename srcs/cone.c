@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 15:50:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 11:26:05 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 	vec_minus.z = inter_p.z - cone.tip.z - normal.z;
 	normal = normalize(vec_minus);
 	if (dot(ray.dir, normal) > 0.0001)
-		normal = vec_mult_double(normal, -1);
+		normal = vec_mult_d(normal, -1);
 	return (normal);
 }
 
@@ -107,10 +107,10 @@ void		draw_cone(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 
 	i.i = find_light(i, prim);
 	cone = init_cone(prim[base.tools.i].cone);
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir, base.tools.t));
+	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
 	normal = getnormal_cone(inter_p, cone, base.ray, base.tools.t);
 	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_double(prim[i.i].light.ray, -1), eye));
+	half = normalize(vec_add(vec_mult_d(prim[i.i].light.ray, -1), eye));
 	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
 	l_e.ambient = ambient_l(eye, normal, -0.5);
 	l_e.diffuse = diffuse_l_alt(normal, prim[i.i].light.ray, cone.color);

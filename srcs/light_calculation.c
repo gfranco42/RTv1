@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 11:28:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 19:30:18 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/21 15:25:55 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_color		diffuse_l_alt(t_vector normal, t_vector lr, t_color color)
 	t_color		diff;
 	double		di;
 
-	di = dot(normal, lr) * 2.5;
+	di = dot(normal, lr) * 1.0;
 	di = di < 0 ? 0 : di;
 	di *= di;
 	diff.r = color.r * di;
@@ -39,7 +39,7 @@ t_color		diffuse_l(t_vector normal, t_vector lr, t_color color)
 	t_color		diff;
 	double		di;
 
-	di = -dot(normal, lr) * 2.5;
+	di = -dot(normal, lr) * 1.0;
 	di = di < 0 ? 0 : di;
 	di *= di;
 	diff.r = color.r * di;

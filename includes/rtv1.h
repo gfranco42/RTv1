@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 16:18:48 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 11:25:52 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ typedef enum	e_type
 typedef struct	s_i
 {
 	int		i;
+	int		j;
 	int		cm;
 	int		lt;
 	int		nb;
@@ -202,6 +203,7 @@ double		ambient_l(t_vector eye, t_vector normal, double intensity);
 void		calc_dir(t_vector upleft, t_base *base);
 void		camera_ch(int fd);
 void		camera_fill(int fd, t_prim *prim, int index);
+t_color		cap(t_color color);
 int			check_vec3(char *line);
 t_color		color_extract(int fd);
 void		cone_ch(int fd);
@@ -223,6 +225,9 @@ void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i);
 void		draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i);
 void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, t_i i);
 void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i);
+t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t);
+t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t);
+t_vector	getnormal_sphere(t_sphere sphere, t_vector inter_p);
 void		initialize_ray(t_cam cam, t_base *base);
 t_cone		init_cone(t_cone cone);
 t_cylinder	init_cylinder(t_cylinder cylinder);
@@ -241,6 +246,8 @@ void		light_ch(int fd);
 t_color		light_effect(t_color diff, t_color spec, double amb, t_color color);
 void		light_fill(int fd, t_prim *prim, int index);
 void		main_algo(t_base base, t_prim *prim, t_mlx mlx, t_i i);
+t_color		multi_l_s(t_prim *prim, t_base base, t_color color, t_i i);
+t_color		multi_l_p(t_prim *prim, t_base base, t_color color, t_i i);
 int			name_obj(char *line);
 double		norm(t_vector v);
 t_vector	normalize(t_vector v);
@@ -270,7 +277,7 @@ t_vector	vec_mult(t_vector a, t_vector b);
 t_vector	vec_div(t_vector a, t_vector b);
 t_vector	vec_add_double(t_vector a, double b);
 t_vector	vec_sub_double(t_vector a, double b);
-t_vector	vec_mult_double(t_vector a, double b);
+t_vector	vec_mult_d(t_vector a, double b);
 t_vector	vec_div_double(t_vector a, double b);
 t_vector	vec3_extract(int fd);
 double		vec3_extract_x(char **split, char ***split2);

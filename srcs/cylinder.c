@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 15:50:44 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 11:25:55 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,17 @@ void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 
 	i.i = find_light(i, prim);
 	cylinder = init_cylinder(prim[base.tools.i].cyl);
-	inter_p = vec_add(base.ray.origin, vec_mult_double(base.ray.dir,
+	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir,
 	base.tools.t));
 	normal = normalize(getnm_cyl(prim[base.tools.i].cyl, inter_p, base.ray,
 	base.tools.t));
 	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_double(prim[i.i].light.ray, -1), eye));
+	half = normalize(vec_add(vec_mult_d(prim[i.i].light.ray, -1), eye));
 	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
 	l_e.ambient = ambient_l(eye, normal, -0.5);
 	l_e.diffuse = diffuse_l_alt(normal, prim[i.i].light.ray,
 	prim[base.tools.i].cyl.color);
 	l_e.specular = specular_l(normal, half, prim[i.i].light.color, -1.0);
-	//if ((t == tools.s2 && sphere_light_inter(object.sphere, prim[i.i].light, inter_p) == 1)
-	//	|| (t == tools.s1 && sphere_light_inter(object.sphere2, prim[i.i].light, inter_p) == 1)
-	//	|| cone_light_inter(object.cone, prim[i.i].light, inter_p) == 1
-	//	|| cylinder_light_inter(object.cyl, prim[i.i].light, inter_p) == 1)
-	//{
-	//	l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
-//		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-//	}
 	if (shadow(prim, i, prim[i.i].light, inter_p) == 1)
 	{
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);

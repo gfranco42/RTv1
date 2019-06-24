@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   veci_calculation2.c                                :+:      :+:    :+:   */
+/*   vec_calculation2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 12:05:24 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/05 12:06:52 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 11:27:54 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_vector		vec_sub_double(t_vector a, double b)
 	return(vec);
 }
 
-t_vector		vec_mult_double(t_vector a, double b)
+t_vector		vec_mult_d(t_vector a, double b)
 {
 	t_vector	vec;
 
