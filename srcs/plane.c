@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/24 15:34:51 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 21:03:31 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int		plane_light_inter(t_plane plane, t_light light)
 	o_center.x = plane.point.x - light.src.x;
 	o_center.y = plane.point.y - light.src.y;
 	o_center.z = plane.point.z - light.src.z;
-	//o_center = vec_sub(plane.point, light.src);
 	t = -dot(o_center, plane.normal) / dot(normalize(light.ray),
 	normalize(plane.normal));
 	if (t >= 0 && t <= 1)
@@ -45,7 +44,7 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 	return (20000);
 }
 
-void 	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
+void	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
 //	t_vector 	half;

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/06/24 11:26:05 by gfranco          ###   ########.fr       */
+=======
+/*   Updated: 2019/06/19 17:17:08 by pchambon         ###   ########.fr       */
+>>>>>>> b9daabd7e66dd3a019b7c1bdac02ae51a838f0fb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +26,6 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 
 	o_tip = vec_sub(inter_p, cone.tip);
 	lr = vec_sub(light.src, inter_p);
-
 	r[0] = dot(lr, lr) - (1 + cone.angle * cone.angle)
 	* dot(lr, cone.dir) * dot(lr, cone.dir);
 	r[1] = 2 * (dot(lr, o_tip) - (1 + cone.angle * cone.angle)
@@ -30,7 +33,6 @@ int			cone_light_inter(t_cone cone, t_light light, t_vector inter_p)
 	r[2] = dot(o_tip, o_tip) - (1 + cone.angle * cone.angle)
 	* dot(o_tip, cone.dir) * dot(o_tip, cone.dir);
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
-
 	if (disc < 0)
 		return (0);
 	disc = sqrt(disc);
@@ -58,10 +60,7 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 	* dot(o_tip, cone.dir) * dot(o_tip, cone.dir);
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
 	if (disc < 0)
-	{
-	//	printf("cone disc: %lf\n", disc);
 		return (t);
-	}
 	else
 	{
 		disc = sqrt(disc);
@@ -72,10 +71,9 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 			return (t);
 	}
 	return (20000);
-	//	printf("cone t: %lf\n", t);
 }
 
-t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
+t_vector	getnormal_cone(t_vector inter_p, t_cone cone, t_ray ray, double t)
 {
 	t_vector	normal;
 	t_vector	vec_minus;
@@ -98,10 +96,7 @@ t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t)
 
 void		draw_cone(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
-	t_vector	inter_p;
-	t_vector	normal;
-	t_vector	half;
-	t_vector	eye;
+	t_vector	tab[4];
 	t_l_eff		l_e;
 	t_cone		cone;
 
@@ -128,6 +123,7 @@ void		draw_cone(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
 	}
-	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient, cone.color);
+	l_e.effect = \
+		light_effect(l_e.diffuse, l_e.specular, l_e.ambient, cone.color);
 	print_pixel(mlx, base.tools, l_e.effect);
 }

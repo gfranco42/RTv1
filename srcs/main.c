@@ -3,19 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:09:17 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 15:00:38 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/20 21:41:29 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-void	win_create(t_mlx *mlx)
+void		free_tab(char **tab, int len)
+{
+	int		i;
+
+	i = -1;
+	while (++i < len)
+		free(tab[i]);
+	free(tab);
+}
+
+void		win_create(t_mlx *mlx)
 {
 	mlx->ptr = mlx_init();
-	mlx->win = mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "FRACTOL GFRANCO");
+	mlx->win = mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "RTv1");
 	mlx->img = mlx_new_image(mlx->ptr, WIDTH, HEIGHT);
 	mlx->str = mlx_get_data_addr(mlx->img, &(mlx->bpp), &(mlx->s_l),
 	&(mlx->endian));
@@ -50,7 +60,7 @@ void		fail(int i)
 	}
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	t_mlx		mlx;
 	t_base		base;

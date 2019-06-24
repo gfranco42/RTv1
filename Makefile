@@ -3,10 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+         #
+#    By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/10 12:13:05 by gfranco           #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2019/06/21 12:08:05 by gfranco          ###   ########.fr        #
+=======
+#    Updated: 2019/06/21 03:09:18 by pchambon         ###   ########.fr        #
+>>>>>>> b9daabd7e66dd3a019b7c1bdac02ae51a838f0fb
 #                                                                              #
 # **************************************************************************** #
 

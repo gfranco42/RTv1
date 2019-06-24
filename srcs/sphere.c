@@ -6,13 +6,13 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/24 15:37:01 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 21:05:05 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int		sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
+int			sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
 {
 	t_vector	o_center;
 	t_vector	lr;
@@ -37,7 +37,7 @@ int		sphere_light_int(t_sphere sphere, t_light light, t_vector inter_p)
 	return (0);
 }
 
-int		sphere_intersect(t_sphere sphere, t_ray ray, double t)
+int			sphere_intersect(t_sphere sphere, t_ray ray, double t)
 {
 	t_vector	o_center;
 	double		r[3];
@@ -84,7 +84,7 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
-void	draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
+t_l_eff		test_light(t_vector	*tab, t_prim *prim, int nb, t_sphere sphere)
 {
 	t_l_eff		l_e;
 	t_vector	inter_p;

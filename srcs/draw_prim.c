@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_prim.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:50:07 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/19 19:26:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/20 21:41:35 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 double		intersect_prim(t_prim *prim, int i, t_base base, double t)
 {
-/*	int		j;
-
-	j =
-	base.light = vec_add_double(prim[]);*/
 	if (prim[i].type == SPHERE)
 		t = sphere_intersect(prim[i].sphere, base.ray, t);
 	else if (prim[i].type == PLANE)
@@ -54,8 +50,6 @@ void		main_algo(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 			calc_dir(base.upleft, &base);
 			while (++i.i < i.nb)
 			{
-				if (prim[i.i].type == CAMERA && prim[i.i].type == LIGHT)
-					continue ;
 				i.tmp = intersect_prim(prim, i.i, base, base.tools.t);
 				if (i.tmp < base.tools.t)
 				{

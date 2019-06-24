@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 17:11:46 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 11:27:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:49:12 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,23 @@ int			name_obj(char *line)
 
 int			lexer(char *file, int number, int *cam)
 {
-	int				i;
-	int				fd;
+	int				tab[2];
 	char			*line;
 	typedef void	(*t_check)(int);
 	const t_check	prim_obj[] = {&sphere_ch, &plane_ch, &cone_ch, &cylinder_ch,
 	&light_ch, &camera_ch};
 
-	if ((fd = open(file, O_RDONLY)) < 0)
-		fail(1);
-	while (get_next_line(fd, &line) > 0)
+	(tab[1] = open(file, O_RDONLY)) < 0 ? fail(1) : 0;
+	while (get_next_line(tab[1], &line) > 0)
 	{
 		if (ft_strcmp(line, "") == 0)
 		{
 			free(line);
 			continue ;
 		}
-		if ((i = name_obj(line)) != -1)
-			prim_obj[i](fd);
-		check_camera(i, cam);
-		if (i == -1)
+		(tab[0] = name_obj(line)) != -1 ? prim_obj[tab[0]](tab[1]) : 0;
+		check_camera(tab[0], cam);
+		if (tab[0] == -1)
 		{
 			free(line);
 			fail(1);

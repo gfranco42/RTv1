@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/24 11:25:55 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/24 21:03:45 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,6 @@ int			cyl_light_inter(t_cylinder cyl, t_light light, t_vector inter_p)
 	disc = r[1] * r[1] - 4.0 * r[0] * r[2];
 	if (disc < 0)
 		return (0);
-	/*disc = sqrt(disc);
-	t[1] = (-r[1] + disc) / (2 * r[0]);
-	t[0] = (-r[1] - disc) / (2 * r[0]);
-	t[2] = (t[0] < 0) ? t[1] : t[0];
-	if (t[2] >= 0 && t[2] <= 1)
-		return (1);*/
 	disc = sqrt(disc);
 	t[2] = (-r[1] + disc) / (2 * r[0]);
 	t[1] = (-r[1] - disc) / (2 * r[0]);
@@ -92,18 +86,15 @@ t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
 
 void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
-	t_vector	inter_p;
-	t_vector	normal;
-	t_vector	half;
-	t_vector	eye;
+	t_vector	tab[4];
 	t_l_eff		l_e;
-	t_cylinder		cylinder;
+	t_cylinder	cylinder;
 
 	i.i = find_light(i, prim);
 	cylinder = init_cylinder(prim[base.tools.i].cyl);
 	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir,
 	base.tools.t));
-	normal = normalize(getnm_cyl(prim[base.tools.i].cyl, inter_p, base.ray,
+	tab[1] = normalize(getnm_cyl(prim[base.tools.i].cyl, tab[0], base.ray,
 	base.tools.t));
 	eye = normalize(base.ray.dir);
 	half = normalize(vec_add(vec_mult_d(prim[i.i].light.ray, -1), eye));
