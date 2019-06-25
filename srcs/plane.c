@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/24 21:03:31 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/25 16:53:53 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ int		plane_intersect(t_plane plane, t_ray ray, double t)
 void	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
-//	t_vector 	half;
-//	t_vector	eye;
 	t_l_eff		l_e;
 	t_plane		plane;
 
@@ -56,18 +54,6 @@ void	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 	base.tools.t));
 	l_e.ambient = ambient_l(normalize(base.ray.dir),
 	prim[base.tools.i].plane.normal, 0.5);
-	//l_e.ambient = ambient_l(eye, plane.normal, 0.5);
-	//eye = normalize(base.ray.dir);
-	//half = normalize(vec_add(vec_mult_d(prim[i.i].light.ray, -1), eye));
-	//prim[i.i].light.ray = normalize(vec_sub(inter_p, prim[i.i].light.src));
-	//l_e.diffuse = diffuse_l_alt(plane.normal, prim[i.i].light.ray, plane.color);
-	/*if (shadow(prim, i, prim[i.i].light, inter_p) == 1)
-	{
-		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
-		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
-	}
-	l_e.effect = light_effect(l_e.diffuse, rgb_value(l_e.specular, 0, 0, 0),
-	l_e.ambient, plane.color);*/
 	plane = init_plane(prim[base.tools.i].plane);
 	l_e.effect = multi_l_p(prim, base, prim[base.tools.i].plane.color, i);
 	i.j = 0;

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/24 21:03:45 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/25 15:48:46 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,20 +86,37 @@ t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t)
 
 void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
-	t_vector	tab[4];
+	t_vector	inter_p;
 	t_l_eff		l_e;
 	t_cylinder	cylinder;
 
-	i.i = find_light(i, prim);
+	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
+	l_e.ambient = ambient_l(normalize(base.ray.dir),
+	getnm_cyl(prim[base.tools.i].cyl, inter_p, base.ray, base.tools.t), -0.5);
+//	tab[1] = normalize(getnm_cyl(prim[base.tools.i].cyl, tab[0], base.ray,
+//	base.tools.t));
+//	eye = normalize(base.ray.dir);
+//	half = normalize(vec_add(vec_mult_d(prim[i.i].light.ray, -1), eye));
+//	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
 	cylinder = init_cylinder(prim[base.tools.i].cyl);
-	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir,
-	base.tools.t));
-	tab[1] = normalize(getnm_cyl(prim[base.tools.i].cyl, tab[0], base.ray,
-	base.tools.t));
-	eye = normalize(base.ray.dir);
-	half = normalize(vec_add(vec_mult_d(prim[i.i].light.ray, -1), eye));
-	prim[i.i].light.ray = normalize(vec_sub(prim[i.i].light.src, inter_p));
-	l_e.ambient = ambient_l(eye, normal, -0.5);
+	l_e.effect = multi_l_cy(prim, base, prim[base.tools.i].cyl.color, i);
+	i.j = 0;
+	i.lt = 0;
+	i.i = base.tools.i;
+	/*while (++i.j < i.nb)
+	{
+		if (prim[i.j].type == LIGHT && shadow(prim, i, prim[i.j].light,
+		inter_p) == 0)
+			i.lt++;
+	}
+	if (i.lt == 0)
+	{
+		l_e.specular = rgb_value(l_e.specular, 0, 0, 0);
+		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
+		l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient,
+		prim[base.tools.i].cyl.color);
+	}*/
+/*	l_e.ambient = ambient_l(eye, normal, -0.5);
 	l_e.diffuse = diffuse_l_alt(normal, prim[i.i].light.ray,
 	prim[base.tools.i].cyl.color);
 	l_e.specular = specular_l(normal, half, prim[i.i].light.color, -1.0);
@@ -109,6 +126,6 @@ void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 		l_e.diffuse = rgb_value(l_e.diffuse, 0, 0, 0);
 	}
 	l_e.effect = light_effect(l_e.diffuse, l_e.specular, l_e.ambient,
-	prim[base.tools.i].cyl.color);
+	prim[base.tools.i].cyl.color);*/
 	print_pixel(mlx, base.tools, l_e.effect);
 }

@@ -3,14 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+         #
+#    By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/10 12:13:05 by gfranco           #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2019/06/21 12:08:05 by gfranco          ###   ########.fr        #
-=======
-#    Updated: 2019/06/21 03:09:18 by pchambon         ###   ########.fr        #
->>>>>>> b9daabd7e66dd3a019b7c1bdac02ae51a838f0fb
+#    Updated: 2019/06/25 15:14:14 by gfranco          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +36,7 @@ SRC =		calcul_base.c camera_check.c camera_fill.c cone.c cone_check.c     \
 			lexer.c light_check.c light_fill.c main.c objects_check.c parser.c \
 			plane.c plane_check.c plane_fill.c sphere.c sphere_check.c         \
 			sphere_fill.c light_calculation.c light_calculation2.c shadow.c    \
-			tools.c vec_calculation.c vec_calculation2.c
+			tools.c tools2.c vec_calculation.c vec_calculation2.c
 
 INC =		rtv1.h
 

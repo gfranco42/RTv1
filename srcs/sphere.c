@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/24 21:05:05 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/25 15:58:18 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,13 @@ t_vector	get_r(t_vector normal, t_vector light)
 	return (r);
 }
 
-t_l_eff		test_light(t_vector	*tab, t_prim *prim, int nb, t_sphere sphere)
+void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
-	t_l_eff		l_e;
 	t_vector	inter_p;
+	t_l_eff		l_e;
 	t_sphere	sphere;
 
-
-	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir,
-	base.tools.t));
+	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
 	l_e.ambient = ambient_l(normalize(base.ray.dir),
 	getnormal_sphere(prim[base.tools.i].sphere, inter_p), 0.5);
 	sphere = init_sphere(prim[base.tools.i].sphere);
