@@ -6,7 +6,7 @@
 /*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/26 19:06:26 by pchambon         ###   ########.fr       */
+/*   Updated: 2019/06/26 19:06:52 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <unistd.h>
 # include "macros.h"
 # include "../libft/libft.h"
-# include <stdio.h>
 
 # define WIDTH 1200
 # define HEIGHT 1200
