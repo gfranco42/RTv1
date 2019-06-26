@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   cone_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 20:00:06 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 10:58:48 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/25 02:27:28 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+void		cone_ch_ext(char *line)
+{
+	if (ft_strcmp(line, "") == 0)
+		fail(1);
+	free(line);
+}
 
 void		cone_ch(int fd)
 {
@@ -21,16 +28,22 @@ void		cone_ch(int fd)
 	while (++i < 3)
 	{
 		if (get_next_line(fd, &line) > 0)
+		{
 			if (check_vec3(line) == 0)
 				fail(1);
+		}
+		else
+			fail(1);
 		if (ft_strcmp(line, "") == 0)
 			fail(1);
 		free(line);
 	}
 	if (get_next_line(fd, &line) > 0)
+	{
 		if (str_isdouble(line) == 0)
 			fail(1);
-	if (ft_strcmp(line, "") == 0)
+	}
+	else
 		fail(1);
-	free(line);
+	cone_ch_ext(line);
 }

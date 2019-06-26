@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 19:59:41 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/13 16:01:01 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/25 02:20:17 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ void		plane_ch(int fd)
 	while (++i < 3)
 	{
 		if (get_next_line(fd, &line) > 0)
+		{
 			if (check_vec3(line) == 0)
 				fail(1);
+		}
+		else
+			fail(1);
 		if (ft_strcmp(line, "") == 0)
 			fail(1);
 		free(line);

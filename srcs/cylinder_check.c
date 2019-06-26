@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 20:00:22 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 11:00:10 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/25 02:29:54 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+void		cylinder_ch_ext(char *line)
+{
+	if (ft_strcmp(line, "") == 0)
+		fail(1);
+	free(line);
+}
 
 void		cylinder_ch(int fd)
 {
@@ -21,16 +28,22 @@ void		cylinder_ch(int fd)
 	while (++i < 3)
 	{
 		if (get_next_line(fd, &line) > 0)
+		{
 			if (check_vec3(line) == 0)
 				fail(1);
+		}
+		else
+			fail(1);
 		if (ft_strcmp(line, "") == 0)
 			fail(1);
 		free(line);
 	}
 	if (get_next_line(fd, &line) > 0)
+	{
 		if (str_isdouble(line) == 0)
 			fail(1);
-	if (ft_strcmp(line, "") == 0)
+	}
+	else
 		fail(1);
-	free(line);
+	cylinder_ch_ext(line);
 }
