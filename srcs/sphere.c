@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/25 15:58:18 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/26 13:55:54 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_vector	getnormal_sphere(t_sphere sphere, t_vector inter_p)
 	normal.x = sphere.center.x - inter_p.x;
 	normal.y = sphere.center.y - inter_p.y;
 	normal.z = sphere.center.z - inter_p.z;
-	normal = normalize(normal);
+	normal = nrmz(normal);
 	return (normal);
 }
 
@@ -78,9 +78,9 @@ t_vector	get_r(t_vector normal, t_vector light)
 {
 	t_vector	r;
 
-	r.x = 2 * dot(normalize(light), normalize(normal)) * (normal.x - light.x);
-	r.y = 2 * dot(normalize(light), normalize(normal)) * (normal.y - light.y);
-	r.z = 2 * dot(normalize(light), normalize(normal)) * (normal.z - light.z);
+	r.x = 2 * dot(nrmz(light), nrmz(normal)) * (normal.x - light.x);
+	r.y = 2 * dot(nrmz(light), nrmz(normal)) * (normal.y - light.y);
+	r.z = 2 * dot(nrmz(light), nrmz(normal)) * (normal.z - light.z);
 	return (r);
 }
 
@@ -88,12 +88,10 @@ void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
 	t_l_eff		l_e;
-	t_sphere	sphere;
 
 	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
-	l_e.ambient = ambient_l(normalize(base.ray.dir),
+	l_e.ambient = ambient_l(nrmz(base.ray.dir),
 	getnormal_sphere(prim[base.tools.i].sphere, inter_p), 0.5);
-	sphere = init_sphere(prim[base.tools.i].sphere);
 	l_e.effect = multi_l_s(prim, base, prim[base.tools.i].sphere.color, i);
 	i.j = 0;
 	i.lt = 0;

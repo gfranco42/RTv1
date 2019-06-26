@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 11:26:54 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/25 16:53:53 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/26 13:56:02 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		plane_light_inter(t_plane plane, t_light light)
 	o_center.x = plane.point.x - light.src.x;
 	o_center.y = plane.point.y - light.src.y;
 	o_center.z = plane.point.z - light.src.z;
-	t = -dot(o_center, plane.normal) / dot(normalize(light.ray),
-	normalize(plane.normal));
+	t = -dot(o_center, plane.normal) / dot(nrmz(light.ray),
+	nrmz(plane.normal));
 	if (t >= 0 && t <= 1)
 		return (1);
 	return (0);
@@ -48,13 +48,11 @@ void	draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
 	t_l_eff		l_e;
-	t_plane		plane;
 
 	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir,
 	base.tools.t));
-	l_e.ambient = ambient_l(normalize(base.ray.dir),
+	l_e.ambient = ambient_l(nrmz(base.ray.dir),
 	prim[base.tools.i].plane.normal, 0.5);
-	plane = init_plane(prim[base.tools.i].plane);
 	l_e.effect = multi_l_p(prim, base, prim[base.tools.i].plane.color, i);
 	i.j = 0;
 	i.lt = 0;

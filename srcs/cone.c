@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:08:43 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/25 17:24:09 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/26 13:56:44 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			cone_intersect(t_cone cone, t_ray ray, double t)
 	return (20000);
 }
 
-t_vector	getnormal_cone(t_vector inter_p, t_cone cone, t_ray ray, double t)
+t_vector	getnm_co(t_vector inter_p, t_cone cone, t_ray ray, double t)
 {
 	t_vector	normal;
 	t_vector	vec_minus;
@@ -84,7 +84,7 @@ t_vector	getnormal_cone(t_vector inter_p, t_cone cone, t_ray ray, double t)
 	vec_minus.x = inter_p.x - cone.tip.x - normal.x;
 	vec_minus.y = inter_p.y - cone.tip.y - normal.y;
 	vec_minus.z = inter_p.z - cone.tip.z - normal.z;
-	normal = normalize(vec_minus);
+	normal = nrmz(vec_minus);
 	if (dot(ray.dir, normal) > 0.0001)
 		normal = vec_mult_d(normal, -1);
 	return (normal);
@@ -94,13 +94,11 @@ void		draw_cone(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
 	t_l_eff		l_e;
-	t_cone		cone;
 
 	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
-	l_e.ambient = ambient_l(normalize(base.ray.dir),
-	getnormal_cone(inter_p, prim[base.tools.i].cone, base.ray, base.tools.t),
+	l_e.ambient = ambient_l(nrmz(base.ray.dir), getnm_co(inter_p,
+	prim[base.tools.i].cone, base.ray, base.tools.t),
 	-0.5);
-	cone = init_cone(prim[base.tools.i].cone);
 	l_e.effect = multi_l_co(prim, base, prim[base.tools.i].cone.color, i);
 	i.j = 0;
 	i.lt = 0;

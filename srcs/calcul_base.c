@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:06:23 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/18 17:36:17 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/26 13:52:39 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vector	cross(t_vector a, t_vector b)
 	return (vector);
 }
 
-t_vector	normalize(t_vector v)
+t_vector	nrmz(t_vector v)
 {
 	double	mg;
 

@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/25 15:21:56 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/26 13:56:54 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i);
 void		draw_plane(t_base base, t_prim *prim, t_mlx mlx, t_i i);
 void		draw_prim(t_prim *prim, t_base base, t_mlx mlx, t_i i);
 void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i);
-t_vector	getnormal_cone(t_vector	inter_p, t_cone cone, t_ray ray, double t);
+t_vector	getnm_co(t_vector	inter_p, t_cone cone, t_ray ray, double t);
 t_vector	getnm_cyl(t_cylinder cyl, t_vector inter_p, t_ray ray, double t);
 t_vector	getnormal_sphere(t_sphere sphere, t_vector inter_p);
 void		initialize_ray(t_cam cam, t_base *base);
@@ -241,7 +241,7 @@ t_color		multi_l_p(t_prim *prim, t_base base, t_color color, t_i i);
 t_color		multi_l_s(t_prim *prim, t_base base, t_color color, t_i i);
 int			name_obj(char *line);
 double		norm(t_vector v);
-t_vector	normalize(t_vector v);
+t_vector	nrmz(t_vector v);
 void		plane_ch(int fd);
 void		plane_fill(int fd, t_prim *prim, int index);
 int			plane_intersect(t_plane plane, t_ray ray, double t);

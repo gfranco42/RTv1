@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 14:43:02 by gfranco           #+#    #+#             */
-/*   Updated: 2019/06/25 17:29:27 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/06/26 13:55:27 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,13 @@ void		draw_cyl(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 {
 	t_vector	inter_p;
 	t_l_eff		l_e;
-	t_cylinder	cylinder;
 
 	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
-	l_e.ambient = ambient_l(normalize(base.ray.dir),
-	normalize(getnm_cyl(prim[base.tools.i].cyl, inter_p, base.ray, base.tools.t)), -0.5);
-	cylinder = init_cylinder(prim[base.tools.i].cyl);
+	l_e.ambient = ambient_l(nrmz(base.ray.dir),
+	nrmz(getnm_cyl(prim[base.tools.i].cyl, inter_p, base.ray, base.tools.t)),
+	-0.5);
 	l_e.effect = multi_l_cy(prim, base, prim[base.tools.i].cyl.color, i);
-	i.j = 0;
+	i.j = -1;
 	i.lt = 0;
 	i.i = base.tools.i;
 	while (++i.j < i.nb)
