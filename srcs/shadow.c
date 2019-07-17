@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 10:45:27 by gfranco           #+#    #+#             */
-/*   Updated: 2019/07/16 14:41:57 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/07/16 16:18:01 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ t_color			first_cap(t_color color)
 	color.r = color.r > 255 ? 255 : color.r;
 	color.g = color.g > 255 ? 255 : color.g;
 	color.b = color.b > 255 ? 255 : color.b;
+	color.r = color.r < 0 ? 0 : color.r;
+	color.g = color.g < 0 ? 0 : color.g;
+	color.b = color.b < 0 ? 0 : color.b;
 	return (color);
 }
 

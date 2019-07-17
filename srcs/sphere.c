@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 17:33:16 by gfranco           #+#    #+#             */
-/*   Updated: 2019/07/16 14:21:40 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/07/16 16:21:02 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,7 @@ void		draw_sphere(t_base base, t_prim *prim, t_mlx mlx, t_i i)
 	inter_p = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
 	l_e.a = ambient_l(nrmz(base.ray.dir),
 	getnormal_sphere(prim[base.tools.i].sphere, inter_p), 0.5);
+	i.j = -1;
 	l_e.effect = multi_l_s(prim, base, prim[base.tools.i].sphere.color, i);
-	i.j = 0;
-	i.lt = 0;
-	i.i = base.tools.i;
 	print_pixel(mlx, base.tools, l_e.effect);
 }

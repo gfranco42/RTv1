@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 11:27:36 by gfranco           #+#    #+#             */
-/*   Updated: 2019/07/16 15:05:44 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/07/16 19:04:13 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 
 t_color		cap(t_color color)
 {
-	color.r = color.r > 254 ? 0 : color.r;
-	color.g = color.g > 254 ? 0 : color.g;
-	color.b = color.b > 254 ? 0 : color.b;
-	color.r = color.r < 0 ? 0 : color.r;
-	color.g = color.g < 0 ? 0 : color.g;
-	color.b = color.b < 0 ? 0 : color.b;
+	color.r = color.r > 255 ? 255 : color.r;
+	color.g = color.g > 255 ? 255 : color.g;
+	color.b = color.b > 255 ? 255 : color.b;
 	return (color);
 }
 
@@ -44,10 +41,8 @@ t_color		multi_l_co(t_prim *prim, t_base base, t_color color, t_i i)
 			l_e.a = ambient_l(v[0], v[3], -0.5);
 			l_e.d = diffuse_l_alt(v[3], prim[i.j].light.ray, color);
 			l_e.s = specular_l(v[3], v[2], prim[i.j].light.color, -1.0);
-			if (shadow(prim, i, prim[i.j].light, v[1]) == 0)
+			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
-			else
-				final = l_effect(l_e.d, l_e.s, l_e.a, color);
 		}
 	}
 	return (cap(final));
@@ -73,10 +68,8 @@ t_color		multi_l_cy(t_prim *prim, t_base base, t_color color, t_i i)
 			l_e.a = ambient_l(v[0], v[3], -0.5);
 			l_e.d = diffuse_l_alt(v[3], prim[i.j].light.ray, color);
 			l_e.s = specular_l(v[3], v[2], prim[i.j].light.color, -1.0);
-			if (shadow(prim, i, prim[i.j].light, v[1]) == 0)
+			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
-			else
-				final = l_effect(l_e.d, l_e.s, l_e.a, color);
 		}
 	}
 	return (cap(final));
@@ -89,7 +82,6 @@ t_color		multi_l_s(t_prim *prim, t_base base, t_color color, t_i i)
 	t_color		final;
 
 	final = rgb_value(color, 0, 0, 0);
-	i.j = -1;
 	v[1] = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
 	v[3] = getnormal_sphere(prim[base.tools.i].sphere, v[1]);
 	v[0] = nrmz(base.ray.dir);
@@ -102,10 +94,8 @@ t_color		multi_l_s(t_prim *prim, t_base base, t_color color, t_i i)
 			l_e.a = ambient_l(v[0], v[3], 0.5);
 			l_e.d = diffuse_l(v[3], prim[i.j].light.ray, color);
 			l_e.s = specular_l(v[3], v[2], prim[i.j].light.color, 1.0);
-			if (shadow(prim, i, prim[i.j].light, v[1]) == 0)
+			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
-			else
-				final = l_effect(l_e.d, l_e.s, l_e.a, color);
 		}
 	}
 	return (cap(final));
@@ -119,22 +109,20 @@ t_color		multi_l_p(t_prim *prim, t_base base, t_color color, t_i i)
 
 	final = rgb_value(color, 0, 0, 0);
 	i.j = -1;
-	v[2] = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
+	v[1] = vec_add(base.ray.origin, vec_mult_d(base.ray.dir, base.tools.t));
 	v[0] = nrmz(base.ray.dir);
 	while (++i.j < i.nb)
 	{
 		if (prim[i.j].type == LIGHT)
 		{
-			v[1] = nrmz(vec_add(vec_mult_d(prim[i.j].light.ray, -1), v[0]));
-			prim[i.j].light.ray = nrmz(vec_sub(v[2], prim[i.j].light.src));
+			v[2] = nrmz(vec_add(vec_mult_d(prim[i.j].light.ray, -1), v[0]));
+			prim[i.j].light.ray = nrmz(vec_sub(v[1], prim[i.j].light.src));
 			l_e.a = ambient_l(v[0], prim[base.tools.i].plane.normal, 0.5);
 			l_e.d = diffuse_l_alt(prim[base.tools.i].plane.normal,
 			prim[i.j].light.ray, color);
 			l_e.s = rgb_value(color, 0, 0, 0);
-			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
+			if (shadow(prim, i, prim[i.j].light, v[1]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
-			else
-				final = l_effect(l_e.d, l_e.s, l_e.a, color);
 		}
 	}
 	return (cap(final));
