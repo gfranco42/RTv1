@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 10:45:27 by gfranco           #+#    #+#             */
-/*   Updated: 2019/07/16 16:18:01 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/08/19 11:56:41 by pchambon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int			shadow(t_prim *prim, t_i i, t_light light, t_vector inter_p)
+int				shadow(t_prim *prim, t_i i, t_light light, t_vector inter_p)
 {
 	int		t;
 
@@ -42,5 +42,3 @@ t_color			first_cap(t_color color)
 	color.b = color.b < 0 ? 0 : color.b;
 	return (color);
 }
-
-//t_color		final_calc(t_l_eff l_e, t_color final, )

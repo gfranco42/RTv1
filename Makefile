@@ -3,24 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+         #
+#    By: pchambon <pchambon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/10 12:13:05 by gfranco           #+#    #+#              #
-#    Updated: 2019/06/25 15:14:14 by gfranco          ###   ########.fr        #
+#    Updated: 2019/09/03 13:45:46 by pchambon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Colors.
 
-ORANGE =	\033[1;33m   #It is actually Yellow, but i changed yellow to orange.
+ORANGE =	\033[1;33m
 
 GREEN =		\033[1;32m
 
 RED =		\033[1;31m
 
 RES =		\033[0m
-
-#------------------------------------------------------------------------------#
 
 NAME = 		rtv1
 
@@ -54,8 +52,6 @@ LIB =		$(LIBDIR)/$(LIBNAME)
 
 LIBINC =	$(LIBDIR)
 
-#------------------------------------------------------------------------------#
-
 CC =		clang
 
 CFLAGS =	-Wall			\
@@ -73,9 +69,6 @@ LFLAGS =	-L $(LIBDIR) -l$(LIBNAME:lib%.a=%)	\
 
 FLAGS =		$(CFLAGS)		\
 			$(INCFLAGS)
-
-#------------------------------------------------------------------------------#
-# Primary rules
 
 all:
 	@$(MAKE) -C $(LIBDIR)
