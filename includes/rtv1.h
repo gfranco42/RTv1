@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 12:18:42 by gfranco           #+#    #+#             */
-/*   Updated: 2019/07/16 14:42:23 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/09/04 11:21:55 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ double			power(double i, int power_value);
 void			put_color(int x, int y, unsigned int *str, double dt);
 t_vector		reflect(t_vector n, t_vector i);
 t_color			rgb_value(t_color color, double r, double g, double b);
-int				shadow(t_prim *prim, t_i i, t_light light, t_vector inter_p);
+int				shadow(t_prim *prim, t_i i, t_base base, t_vector inter_p);
 t_color			specular_l(t_vector norm, t_vector half, t_color c, int sign);
 void			sphere_ch(int fd);
 void			sphere_fill(int fd, t_prim *prim, int index);

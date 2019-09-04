@@ -6,7 +6,7 @@
 /*   By: gfranco <gfranco@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 11:27:36 by gfranco           #+#    #+#             */
-/*   Updated: 2019/07/16 19:04:13 by gfranco          ###   ########.fr       */
+/*   Updated: 2019/09/04 11:25:47 by gfranco          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ t_color		multi_l_co(t_prim *prim, t_base base, t_color color, t_i i)
 			v[2] = nrmz(vec_add(vec_mult_d(prim[i.j].light.ray, -1), v[0]));
 			prim[i.j].light.ray = nrmz(vec_sub(prim[i.j].light.src, v[1]));
 			l_e.a = ambient_l(v[0], v[3], -0.5);
-			l_e.d = diffuse_l_alt(v[3], prim[i.j].light.ray, color);
+			l_e.d = diffuse_l(v[3], prim[i.j].light.ray, color);
 			l_e.s = specular_l(v[3], v[2], prim[i.j].light.color, -1.0);
-			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
+			if (shadow(prim, i, base, v[1]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
 		}
 	}
@@ -66,9 +66,9 @@ t_color		multi_l_cy(t_prim *prim, t_base base, t_color color, t_i i)
 			v[2] = nrmz(vec_add(vec_mult_d(prim[i.j].light.ray, -1), v[0]));
 			prim[i.j].light.ray = nrmz(vec_sub(prim[i.j].light.src, v[1]));
 			l_e.a = ambient_l(v[0], v[3], -0.5);
-			l_e.d = diffuse_l_alt(v[3], prim[i.j].light.ray, color);
+			l_e.d = diffuse_l(v[3], prim[i.j].light.ray, color);
 			l_e.s = specular_l(v[3], v[2], prim[i.j].light.color, -1.0);
-			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
+			if (shadow(prim, i, base, v[1]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
 		}
 	}
@@ -94,7 +94,7 @@ t_color		multi_l_s(t_prim *prim, t_base base, t_color color, t_i i)
 			l_e.a = ambient_l(v[0], v[3], 0.5);
 			l_e.d = diffuse_l(v[3], prim[i.j].light.ray, color);
 			l_e.s = specular_l(v[3], v[2], prim[i.j].light.color, 1.0);
-			if (shadow(prim, i, prim[i.j].light, v[2]) == 0)
+			if (shadow(prim, i, base, v[1]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
 		}
 	}
@@ -121,7 +121,7 @@ t_color		multi_l_p(t_prim *prim, t_base base, t_color color, t_i i)
 			l_e.d = diffuse_l_alt(prim[base.tools.i].plane.normal,
 			prim[i.j].light.ray, color);
 			l_e.s = rgb_value(color, 0, 0, 0);
-			if (shadow(prim, i, prim[i.j].light, v[1]) == 0)
+			if (shadow(prim, i, base, v[1]) == 0)
 				final = color_add(final, l_effect(l_e.d, l_e.s, l_e.a, color));
 		}
 	}
